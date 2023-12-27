@@ -1,10 +1,18 @@
 "use client"
-import style from "./cadastrarmesa.module.css"
+import { IoMdArrowBack } from "react-icons/io"
+import { useRouter } from "next/navigation"
 
-export default function RecordData() {
+import style from "./registrarinfo.module.css"
+
+export default function RecordInfo() {
+	const router = useRouter()
+	const routerBack = () => router.replace("/dashboard")
 
 	return (
 		<main className={style.main}>
+			<div className={style.topOptions}>
+				<button onClick={routerBack}><IoMdArrowBack /><span>Voltar</span></button>
+			</div>
 			<form className={style.form}>
 				<div>
 					<button type="button">Adicionar funcionário</button>

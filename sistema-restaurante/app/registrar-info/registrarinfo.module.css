@@ -3,6 +3,19 @@
 	bg-black/50 text-base rounded-sm shadow-md shadow-black;
 }
 
+.topOptions {
+	@apply col-span-2 flex justify-between px-4 py-2 bg-black/50 text-base
+	text-gray-100 font-medium rounded-3xl shadow shadow-black;
+}
+
+.topOptions button {
+	@apply flex items-center gap-x-1;
+}
+
+.topOptions button svg {
+	@apply text-xl translate-y-[2px];
+}
+
 .form {
 	@apply grid sm:grid-cols-3 gap-8 p-4 bg-black/50 text-base rounded-sm
 	shadow-md shadow-black;
