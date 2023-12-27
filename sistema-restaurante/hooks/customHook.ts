@@ -9,8 +9,7 @@ export const useCustomHook = () => {
 		const loginData = JSON.parse(localStorage.getItem("local")!) || { user: "", password: "" }
 		const { user, password } = loginData
 		if (user == "usuario123" && password == "qwer1234" && pathname == "/") {
-			console.log(pathname)
-			router.push("/restaurante")
+			router.push("/dashboard")
 		}
 	}, [router, pathname])
 	return pathname
