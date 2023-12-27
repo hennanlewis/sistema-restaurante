@@ -30,4 +30,10 @@ type OrderData = {
 	price: number
 	clientNumber: number
 	isFinished: boolean
+	staffUser: string
+}
+
+type UserData = {
+	username: string
+	roles: string[]
 }
