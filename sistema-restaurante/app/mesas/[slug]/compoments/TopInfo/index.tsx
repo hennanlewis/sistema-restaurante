@@ -1,8 +1,8 @@
 "use client"
 import { IoMdArrowBack } from "react-icons/io"
 import { useParams, useRouter } from "next/navigation"
-import { currencyFormater, str2Slug, sumArrayValues } from "@/utils/dataFormater"
-import { ElapsedTimer } from "@/app/restaurante/components/ElapserTime"
+import { currencyFormater, sumArrayValues } from "@/utils/dataFormater"
+import { ElapsedTimer } from "@/app/mesas/components/ElapserTime"
 import { useTableContext } from "@/contexts/TableContext"
 
 import { TableOrderInfo } from "../TableInfo"
