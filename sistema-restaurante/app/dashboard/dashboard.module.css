@@ -1,0 +1,4 @@
+.main {
+	@apply flex flex-col w-[40rem] max-w-[95vw] gap-y-4 m-auto p-4
+	bg-black/50 text-base rounded-sm shadow-md shadow-black;
+}
