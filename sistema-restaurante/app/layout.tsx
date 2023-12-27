@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import { TableContextProvider } from "@/contexts/TableContext"
+import { TableContextProvider } from "@/contexts/MainContext"
 
 export const metadata: Metadata = {
 	title: "Controle de Negócio",

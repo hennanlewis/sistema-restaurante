@@ -1,6 +1,6 @@
 "use client"
 import { str2Slug } from "@/utils/dataFormater"
-import { useTableContext } from "@/contexts/TableContext"
+import { useBaseContext } from "@/contexts/MainContext"
 
 import { MenuClientsOptions } from "./components/MenuClientOptions"
 import { SelectOrderClient } from "./components/SelectOrderClient"
@@ -8,7 +8,7 @@ import TopInfo from "../compoments/TopInfo"
 import style from "./pedidos.module.css"
 
 export default function OrderForClient({ params }: { params: { slug: string } }) {
-	const { orders, restaurantTables } = useTableContext()
+	const { orders, restaurantTables } = useBaseContext()
 
 	const [currentTable] = restaurantTables.filter(item => str2Slug(item.name) == params.slug)
 	const filteredOrders = orders

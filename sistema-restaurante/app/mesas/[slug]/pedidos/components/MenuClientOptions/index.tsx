@@ -1,12 +1,12 @@
 import style from "./menuclientsoptions.module.css"
-import { useTableContext } from "@/contexts/TableContext"
+import { useBaseContext } from "@/contexts/MainContext"
 
 type ClientsOptionsSettingsProps = {
 	table: RestaurantTableData
 }
 
 export function MenuClientsOptions({ table }: ClientsOptionsSettingsProps) {
-	const { setRestaurantTables } = useTableContext()
+	const { setRestaurantTables } = useBaseContext()
 
 	const addClient = () => {
 		setRestaurantTables(currentValues =>

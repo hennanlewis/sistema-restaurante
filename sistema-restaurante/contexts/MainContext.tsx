@@ -1,4 +1,5 @@
 "use client"
+import { usePathname, useRouter } from "next/navigation"
 import React, {
 	createContext,
 	useContext,
@@ -10,6 +11,8 @@ import React, {
 } from "react"
 
 type ContextProps = {
+	user: UserData | null
+	setUser: Dispatch<SetStateAction<UserData | null>>
 	orders: OrderData[]
 	setOrders: Dispatch<SetStateAction<OrderData[]>>
 	notOrderedStack: OrderData[]
@@ -25,40 +28,39 @@ type fetchDataResult = {
 	staff_info: number
 }
 
-const getData = async () => {
-	const url = `/api/table-info`
-	const result = await fetch(url, { next: { revalidate: 300 } })
-	return result.json()
-}
-
 export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [orders, setOrders] = useState<OrderData[]>([])
+	const [user, setUser] = useState<UserData | null>(null)
 	const [notOrderedStack, setNotOrderedStack] = useState<OrderData[]>([])
 	const [restaurantTables, setRestaurantTables] = useState<RestaurantTableData[]>([])
-	const [isLoading, setIsloading] = useState(true)
+	const [isLoading, setIsLoading] = useState(true)
+
+	const router = useRouter()
+	const pathname = usePathname()
 
 	useEffect(() => {
-		const getTablesInfo = async () => {
-			const { tables_info: tablesInfo, staff_info: staffInfo }: fetchDataResult = await getData()
-			setRestaurantTables([...tablesInfo])
-			setIsloading(false)
-		}
-		getTablesInfo()
-	}, [])
+		setIsLoading(true)
+		if(pathname == "/") setIsLoading(false)
+		if (pathname != "/" && !user) router.push("/")
+	}, [user])
 
 	return (
 		<RestaurantTableContext.Provider value={{
-			orders, setOrders, notOrderedStack, setNotOrderedStack, restaurantTables, setRestaurantTables
+			user, setUser,
+			orders, setOrders,
+			notOrderedStack,
+			setNotOrderedStack,
+			restaurantTables, setRestaurantTables
 		}}>
 			{children}
 		</RestaurantTableContext.Provider>
 	)
 }
 
-export const useTableContext = (): ContextProps => {
+export const useBaseContext = (): ContextProps => {
 	const contexto = useContext(RestaurantTableContext)
 	if (!contexto) {
-		throw new Error("useTableContext deve ser utilizado dentro de um TableContextProvider")
+		throw new Error("useBaseContext deve ser utilizado dentro de um TableContextProvider")
 	}
 	return contexto
 }

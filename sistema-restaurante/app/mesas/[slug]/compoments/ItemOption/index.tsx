@@ -2,7 +2,7 @@ import { ImMinus, ImPlus } from "react-icons/im"
 import { currencyFormater } from "@/utils/dataFormater"
 
 import style from "./itemoption.module.css"
-import { useTableContext } from "@/contexts/TableContext"
+import { useBaseContext } from "@/contexts/MainContext"
 
 type MenuItemProps = SizeItemMenu & {
 	optionName: string
@@ -10,7 +10,7 @@ type MenuItemProps = SizeItemMenu & {
 }
 
 export function ItemOption({ optionName, price, tableID, type }: MenuItemProps) {
-	const { orders, setOrders } = useTableContext()
+	const { orders, setOrders } = useBaseContext()
 	const currentID = `${optionName} ${type}`.trim()
 	const itemQuantity = orders
 		.filter((item) =>

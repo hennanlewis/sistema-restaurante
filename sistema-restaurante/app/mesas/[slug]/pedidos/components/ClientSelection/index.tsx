@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react"
 
 import style from "./clientselection.module.css"
-import { useTableContext } from "@/contexts/TableContext"
+import { useBaseContext } from "@/contexts/MainContext"
 
 type ClientSelectionProps = {
 	numberOfClients: number
@@ -9,7 +9,7 @@ type ClientSelectionProps = {
 }
 
 export function ClientSelection({ numberOfClients, orderKey }: ClientSelectionProps) {
-	const { orders, setOrders } = useTableContext()
+	const { orders, setOrders } = useBaseContext()
 
 	const clientsNumber = Array.from({ length: numberOfClients }, (_, index) => ++index)
 	const [selectedOrder] = orders.filter(order => order.orderKey == orderKey)

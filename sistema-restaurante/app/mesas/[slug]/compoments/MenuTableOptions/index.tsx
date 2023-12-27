@@ -1,16 +1,17 @@
 "use client"
 import Link from "next/link"
-import style from "./menutableoptions.module.css"
-import { useTableContext } from "@/contexts/TableContext"
-import { sumArrayValues } from "@/utils/dataFormater"
 import { useEffect } from "react"
+import { useBaseContext } from "@/contexts/MainContext"
+import { sumArrayValues } from "@/utils/dataFormater"
+
+import style from "./menutableoptions.module.css"
 
 type MenuTableOptionsProps = {
 	table: RestaurantTableData
 }
 
 export function MenuTableOptions({ table }: MenuTableOptionsProps) {
-	const { orders, setOrders, setRestaurantTables } = useTableContext()
+	const { orders, setOrders, setRestaurantTables } = useBaseContext()
 	const updatedProcessedOrders = JSON.stringify(orders.filter(item => item.isFinished == true && table.name == item.tableID))
 
 	const startTable = () => {
@@ -25,7 +26,6 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
 	}
 
 	const processOrders = () => {
-		const totalPrice: { table: string, totalPrice: number, totalItems: number }[] = []
 		setOrders(currentValues => currentValues
 			.map(item => item.tableID == table.name ?
 				{ ...item, isFinished: true }

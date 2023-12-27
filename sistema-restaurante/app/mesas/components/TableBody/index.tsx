@@ -1,11 +1,11 @@
 "use client"
-import { useTableContext } from "@/contexts/TableContext"
+import { useBaseContext } from "@/contexts/MainContext"
 import { TableItem } from "../TableItem"
 
 import style from "./tablebody.module.css"
 
 export function TableBody() {
-	const { restaurantTables } = useTableContext()
+	const { restaurantTables } = useBaseContext()
 
 	return (
 		<div className={style.listBody}>

@@ -3,13 +3,13 @@ import { IoMdArrowBack } from "react-icons/io"
 import { useParams, useRouter } from "next/navigation"
 import { currencyFormater, sumArrayValues } from "@/utils/dataFormater"
 import { ElapsedTimer } from "@/app/mesas/components/ElapserTime"
-import { useTableContext } from "@/contexts/TableContext"
+import { useBaseContext } from "@/contexts/MainContext"
 
 import { TableOrderInfo } from "../TableInfo"
 import style from "./topinfo.module.css"
 
 export default function TopInfo() {
-	const { orders, restaurantTables } = useTableContext()
+	const { orders, restaurantTables } = useBaseContext()
 	const router = useRouter()
 	const params = useParams()
 
