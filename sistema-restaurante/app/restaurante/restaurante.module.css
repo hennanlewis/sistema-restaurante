@@ -1,0 +1,13 @@
+.main {
+	@apply flex flex-col w-[40rem] max-w-[95vw] gap-y-4 m-auto sm:px-4;
+}
+
+.table {
+	@apply flex flex-col gap-y-2 p-4 bg-black/50 text-center text-xs
+	text-gray-100 font-medium rounded-sm shadow-md shadow-black;
+}
+
+.orders {
+	@apply py-4 px-2 bg-emerald-700 transition text-center text-2xl text-gray-100
+	font-medium rounded shadow shadow-black/50 sm:px-4;
+}

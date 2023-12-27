@@ -1,0 +1,30 @@
+.optionsDetails {
+	@apply flex flex-col;
+}
+
+.optionsTitle {
+	@apply relative ml-4 text-xl text-left capitalize;
+}
+
+.optionsTitle:before {
+	@apply absolute top-0 -left-4 bottom-0 transition rotate-0;
+	content: "+";
+}
+
+.focusedOption::before {
+	@apply rotate-45;
+}
+
+.optionsTitle:focus:before {
+	@apply rotate-45;
+}
+
+.optionsGrid {
+	@apply grid grid-cols-1 gap-1 max-h-0 overflow-hidden bg-black/50 rounded shadow shadow-black;
+}
+
+.optionsTitle:focus~.optionsGrid,
+.optionsGrid:hover,
+.focusedOption~.optionsGrid {
+	@apply mt-2 p-2 max-h-full transition-[max-height] duration-300;
+}

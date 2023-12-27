@@ -1,0 +1,9 @@
+.infoCardHalfSized,
+.infoCard {
+	@apply col-span-2 sm:col-span-1 flex flex-col p-4 bg-black/50
+	rounded-sm shadow shadow-black;
+}
+
+.infoCard { @apply col-span-2; }
+.infoValue { @apply text-center text-2xl sm:text-3xl; }
+ 

@@ -1,0 +1,23 @@
+.container {
+	@apply grid gap-6 p-4 bg-black/50 rounded-sm shadow-md
+	shadow-black;
+}
+
+.orderOptionsContent {
+	@apply flex flex-col gap-2 text-left;
+}
+
+.contentTitle {
+	@apply text-2xl font-bold;
+}
+
+.buttonOptions {
+	@apply grid grid-cols-2 sm:grid-cols-3 gap-2;
+}
+
+.buttonOptions > button, .buttonOptions > a {
+	@apply p-2 bg-sky-800 text-base font-bold hover:bg-emerald-600
+	rounded-3xl border border-black/20 shadow-md shadow-black
+	duration-300;
+	text-shadow: 1px 1px 2px #0008;
+}

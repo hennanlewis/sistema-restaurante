@@ -1,0 +1,13 @@
+.orderItem {
+	@apply flex items-center gap-x-2 w-full text-base font-bold leading-none;
+}
+
+.orderItem .buttons {
+	@apply flex gap-x-1 bg-black rounded;
+}
+
+.buttons button {
+	@apply px-2 py-1 hover:bg-emerald-600 rounded-sm duration-300;
+}
+
+.orderItem span { @apply p-1 font-medium; }

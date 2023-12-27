@@ -1,0 +1,21 @@
+.listItem,
+.listItemEmpty {
+	@apply grid grid-cols-5 p-2 bg-black/50 text-center text-sm
+	text-gray-100 font-medium rounded shadow shadow-black/50
+	transition hover:bg-sky-800/50;
+	text-shadow: 1px 1px 2px #0008;
+}
+
+.listItem span,
+.listItemEmpty span {
+	@apply flex justify-center items-center gap-x-1 p-2;
+}
+
+.listItemEmpty span:last-child {
+	@apply bg-emerald-700 rounded;
+}
+
+.listItem span svg,
+.listItemEmpty span svg {
+	@apply text-[1.25em] drop-shadow-sm;
+}
