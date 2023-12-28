@@ -5,7 +5,13 @@ const client = new MongoClient(DATABASE_URI, {})
 
 const DATABASE_NAME = process.env.DATABASE_NAME || ""
 
-export async function db(collection: string) {
-	await client.connect()
-	return  client.db(DATABASE_NAME).collection(collection)
+export async function getUser(username: string, password: string) {
+	try {
+		await client.connect()
+		const user = await client.db(DATABASE_NAME).collection("users")
+			.findOne<UserData>({ username, password }, { projection: { _id: 0, password: 0 } })
+		return user
+	} finally {
+		await client.close()
+	}
 }

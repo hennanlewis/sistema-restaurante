@@ -1,16 +1,22 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export const useCustomHook = () => {
+	const [user, setUser] = useState()
 	const pathname = usePathname()
 	const router = useRouter()
+
 	useEffect(() => {
-		const loginData = JSON.parse(localStorage.getItem("local")!) || { user: "", password: "" }
-		const { user, password } = loginData
-		if (user == "usuario123" && password == "qwer1234" && pathname == "/") {
+		const loginData = JSON.parse(localStorage.getItem("user")!)
+
+		if(loginData) setUser(loginData)
+
+		const { username, role } = loginData
+		if (username && role && pathname == "/") {
 			router.push("/dashboard")
 		}
 	}, [router, pathname])
-	return pathname
+
+	return user
 }

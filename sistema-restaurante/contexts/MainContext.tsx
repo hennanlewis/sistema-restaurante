@@ -1,4 +1,5 @@
 "use client"
+import { useCustomHook } from "@/hooks/customHook"
 import { usePathname, useRouter } from "next/navigation"
 import React, {
 	createContext,
@@ -23,11 +24,6 @@ type ContextProps = {
 
 const RestaurantTableContext = createContext<ContextProps | undefined>(undefined)
 
-type fetchDataResult = {
-	tables_info: RestaurantTableData[]
-	staff_info: number
-}
-
 export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [orders, setOrders] = useState<OrderData[]>([])
 	const [user, setUser] = useState<UserData | null>(null)
@@ -37,12 +33,16 @@ export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 	const router = useRouter()
 	const pathname = usePathname()
+	const customHook = useCustomHook()
 
 	useEffect(() => {
+		console.log(customHook)
 		setIsLoading(true)
-		if(pathname == "/") setIsLoading(false)
-		if (pathname != "/" && !user) router.push("/")
-	}, [user])
+		if (customHook) setUser(customHook)
+		if (pathname == "/" && user) router.push("/dashboard")
+		if (!user) router.push("/")
+		setIsLoading(false)
+	}, [user, pathname])
 
 	return (
 		<RestaurantTableContext.Provider value={{
@@ -52,7 +52,7 @@ export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 			setNotOrderedStack,
 			restaurantTables, setRestaurantTables
 		}}>
-			{children}
+			{!isLoading && children}
 		</RestaurantTableContext.Provider>
 	)
 }
