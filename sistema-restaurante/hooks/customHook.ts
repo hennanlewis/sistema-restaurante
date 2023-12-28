@@ -12,8 +12,8 @@ export const useCustomHook = () => {
 
 		if(loginData) setUser(loginData)
 
-		const { username, role } = loginData
-		if (username && role && pathname == "/") {
+		const { username } = loginData
+		if (username && pathname == "/") {
 			router.push("/dashboard")
 		}
 	}, [router, pathname])

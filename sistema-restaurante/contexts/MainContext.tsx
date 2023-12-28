@@ -36,8 +36,8 @@ export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 	const customHook = useCustomHook()
 
 	useEffect(() => {
-		console.log(customHook)
 		setIsLoading(true)
+		console.log(customHook)
 		if (customHook) setUser(customHook)
 		if (pathname == "/" && user) router.push("/dashboard")
 		if (!user) router.push("/")

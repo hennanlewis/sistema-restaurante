@@ -22,7 +22,8 @@ export function HomeComponent() {
 
 		const user = await response.json()
 		if (user) {
-			localStorage.setItem("user", JSON.stringify(user))
+			console.log(user)
+			localStorage.setItem("user", JSON.stringify({ username: user.username }))
 			setUser(user)
 		}
 	}

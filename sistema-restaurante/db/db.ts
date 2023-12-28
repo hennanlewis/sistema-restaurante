@@ -15,3 +15,14 @@ export async function getUser(username: string, password: string) {
 		await client.close()
 	}
 }
+
+export async function getRestaurantTables() {
+	try {
+		await client.connect()
+		const cursor = client.db(DATABASE_NAME).collection("tables").find()
+		const tables = await cursor.toArray()
+		return tables
+	} finally {
+		await client.close()
+	}
+}
