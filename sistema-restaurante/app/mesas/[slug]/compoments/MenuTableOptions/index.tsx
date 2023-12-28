@@ -12,7 +12,8 @@ type MenuTableOptionsProps = {
 
 export function MenuTableOptions({ table }: MenuTableOptionsProps) {
 	const { orders, setOrders, setRestaurantTables } = useBaseContext()
-	const updatedProcessedOrders = JSON.stringify(orders.filter(item => item.isFinished == true && table.name == item.tableID))
+	const updatedProcessedOrders = JSON.stringify(orders
+		.filter(item => item.isFinished == true && table.name == item.tableID))
 
 	const startTable = () => {
 		setRestaurantTables(currentValues => {

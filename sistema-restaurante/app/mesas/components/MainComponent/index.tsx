@@ -1,0 +1,34 @@
+"use client"
+import { useEffect } from "react"
+import { useBaseContext } from "@/contexts/MainContext"
+
+import { TableBody } from "../TableBody"
+import { TableHead } from "../TableHead"
+import style from "../../restaurante.module.css"
+
+type MainComponentProps = {
+	restaurantTables: RestaurantTableData[]
+}
+
+export function MainComponent({ restaurantTables }: MainComponentProps) {
+	const {setRestaurantTables} = useBaseContext()
+
+	useEffect(()=>{
+		if(restaurantTables)
+			setRestaurantTables(restaurantTables)
+	}, [restaurantTables])
+
+	return (
+		<main className={style.main}>
+			<div className={style.table}>
+				<TableHead />
+				<TableBody />
+				{/* <div className={style.orders}>
+					{currencyFormater(restaurantTables
+						.reduce((sum, restaurantTable) => sum += restaurantTable.orderValue, 0)
+					)}
+				</div> */}
+			</div>
+		</main>
+	)
+}

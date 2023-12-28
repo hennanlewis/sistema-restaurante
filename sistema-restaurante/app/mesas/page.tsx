@@ -1,21 +1,13 @@
-import { TableHead } from "./components/TableHead"
-import { TableBody } from "./components/TableBody"
+import { MainComponent } from "./components/MainComponent"
 
-import style from "./restaurante.module.css"
+async function getTables() {
+	const url = `${process.env.VERCEL_URL}/api/mesas`
+	const response = await fetch(url)
+	return response.json()
+}
 
-export default function Home() {
+export default async function RestaurantTables() {
+	const restaurantTables: RestaurantTableData[] = await getTables()
 
-	return (
-		<main className={style.main}>
-			<div className={style.table}>
-				<TableHead />
-				<TableBody />
-				{/* <div className={style.orders}>
-					{currencyFormater(restaurantTables
-						.reduce((sum, restaurantTable) => sum += restaurantTable.orderValue, 0)
-					)}
-				</div> */}
-			</div>
-		</main>
-	)
+	return <MainComponent restaurantTables={restaurantTables} />
 }
