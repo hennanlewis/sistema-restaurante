@@ -19,7 +19,7 @@ export async function getUser(username: string, password: string) {
 export async function getRestaurantTables() {
 	try {
 		await client.connect()
-		const cursor = client.db(DATABASE_NAME).collection("tables").find({}, { projection: { _id: 0 } })
+		const cursor = client.db(DATABASE_NAME).collection("tables").find()
 		const tables = await cursor.toArray()
 		return tables
 	} finally {

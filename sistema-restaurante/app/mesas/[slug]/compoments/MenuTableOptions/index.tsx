@@ -5,13 +5,14 @@ import { useBaseContext } from "@/contexts/MainContext"
 import { sumArrayValues } from "@/utils/dataFormater"
 
 import style from "./menutableoptions.module.css"
+import RestaurantTables from "@/app/mesas/page"
 
 type MenuTableOptionsProps = {
 	table: RestaurantTableData
 }
 
 export function MenuTableOptions({ table }: MenuTableOptionsProps) {
-	const { orders, setOrders, setRestaurantTables } = useBaseContext()
+	const { orders, setOrders,restaurantTables, setRestaurantTables } = useBaseContext()
 	const updatedProcessedOrders = JSON.stringify(orders
 		.filter(item => item.isFinished == true && table.name == item.tableID))
 
@@ -45,7 +46,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
 			.map(item => item.name == table.name ?
 				{ ...item, ordersTotalPrice: totalOrderPrice, ordersTotalQuantity: totalOrderItems }
 				: item)
-			)
+		)
 	}, [updatedProcessedOrders])
 
 	return (
@@ -59,6 +60,9 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
 					<button onClick={processOrders}>Processar pedidos</button>
 					<Link href={`/mesas/${table.name}/pedidos`}>
 						Separar pedidos
+					</Link>
+					<Link href={`/mesas/${table.name}/transferir`}>
+						Transferir mesa
 					</Link>
 				</>}
 			</div>

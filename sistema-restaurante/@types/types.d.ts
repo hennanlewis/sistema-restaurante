@@ -1,4 +1,5 @@
 type RestaurantTableData = {
+	_id: string
 	name: string
 	ordersTotalPrice: number
 	ordersTotalQuantity: number
@@ -23,6 +24,7 @@ type MenuSection = {
 }
 
 type OrderData = {
+	_id?: string
 	orderKey: string
 	tableID: string
 	itemID: string

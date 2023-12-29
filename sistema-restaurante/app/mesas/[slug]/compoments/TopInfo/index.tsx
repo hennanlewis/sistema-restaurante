@@ -1,6 +1,8 @@
 "use client"
+import Link from "next/link"
 import { IoMdArrowBack } from "react-icons/io"
 import { useParams, useRouter } from "next/navigation"
+import { hasAdminPermission } from "@/utils/testPermissions"
 import { currencyFormater, sumArrayValues } from "@/utils/dataFormater"
 import { ElapsedTimer } from "@/app/mesas/components/ElapserTime"
 import { useBaseContext } from "@/contexts/MainContext"
@@ -9,7 +11,7 @@ import { TableOrderInfo } from "../TableInfo"
 import style from "./topinfo.module.css"
 
 export default function TopInfo() {
-	const { orders, restaurantTables } = useBaseContext()
+	const { orders, restaurantTables, user } = useBaseContext()
 	const router = useRouter()
 	const params = useParams()
 
@@ -46,7 +48,9 @@ export default function TopInfo() {
 		<div className={style.infoCards}>
 			<div className={style.topOptions}>
 				<button onClick={routerBack}><IoMdArrowBack /><span>Voltar</span></button>
-				<button onClick={finish}>Finalizar pedidos</button>
+				{user && hasAdminPermission(user.role) && currentTable.occupiedAt &&
+					<Link href={`/mesas/${currentTable.name}/transferir`} onClick={finish}>Fechar conta</Link>
+				}
 			</div>
 
 			<div className="text-base"></div>

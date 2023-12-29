@@ -14,7 +14,7 @@ export function MainComponent({ restaurantTablesFromAPI }: MainComponentProps) {
 	const { restaurantTables, setRestaurantTables } = useBaseContext()
 
 	useEffect(() => {
-		setRestaurantTables(currentValues => !restaurantTables ? restaurantTablesFromAPI : currentValues)
+		setRestaurantTables(currentValues => restaurantTables.length == 0 ? restaurantTablesFromAPI : currentValues)
 	}, [])
 
 
