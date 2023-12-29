@@ -14,7 +14,7 @@ export default function RecordInfo() {
 		username: "",
 		password: "",
 		confirmPass: "",
-		role: "",
+		role: "atendente",
 	})
 
 	const [formError, setFormError] = useState("")
@@ -28,14 +28,35 @@ export default function RecordInfo() {
 		setFormData(previousValue => ({ ...previousValue, [inputName]: inputValue }))
 	}
 
-	const submitData = (event: FormEvent<HTMLFormElement>) => {
+	const submitData = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		const { name, username, password, confirmPass, role } = formData
 		if (name == "" && username == "" && password == "" && confirmPass == "" && role == "")
 			return setFormError("Preencha todos os campos")
 
+		if (username.length < 6 && password.length < 6)
+			return setFormError("O nome de usuário e senha deve ter mais de 6 dígitos")
 
+		const staff = { name, username: removeSpace(username), password, role }
+		const response = await fetch("/api/casdastrar-acesso", {
+			method: "POST",
+			body: JSON.stringify(staff),
+		})
+		if (response.ok) {
+			setFormError(`Usuário ${username} cadastrado com sucesso`)
+			setFormData({
+				name: "",
+				username: "",
+				password: "",
+				confirmPass: "",
+				role: "atendente",
+			})
+			return
+		}
+		setFormError("Ocorreu algum erro")
 	}
+
+	const removeSpace = (str: string) => str.replace(" ", "")
 
 	return (
 		<main className={style.main}>
@@ -48,24 +69,24 @@ export default function RecordInfo() {
 					<button type="button">Adicionar funcionário</button>
 					<label className={style.labelCol}>
 						<span>Nome</span>
-						<input type="text" name="name" onChange={typeText} />
+						<input type="text" name="name" onChange={typeText} value={formData.name} />
 					</label>
 					<label className={style.labelCol}>
 						<span>Usuário para acesso</span>
-						<input type="text" name="username" onChange={typeText} />
+						<input type="text" name="username" onChange={typeText} value={removeSpace(formData.username)} />
 					</label>
 					<label className={style.labelCol}>
 						<span>Senha</span>
-						<input type="password" name="password" onChange={typeText} />
+						<input type="password" name="password" onChange={typeText} value={formData.password} />
 					</label>
 					<label className={style.labelCol}>
 						<span>Confirme a senha</span>
-						<input type="password" name="confirmPass" onChange={typeText} />
+						<input type="password" name="confirmPass" onChange={typeText} value={formData.confirmPass} />
 						{errorPass}
 					</label>
 					<label className={style.labelCol}>
 						<span>Categoria</span>
-						<select onChange={typeText} name="role">
+						<select onChange={typeText} name="role" value={formData.role}>
 							<option value="atendente">Atendente</option>
 							<option value="caixa">Caixa</option>
 						</select>

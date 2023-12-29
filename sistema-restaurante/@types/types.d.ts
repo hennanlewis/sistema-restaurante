@@ -36,5 +36,5 @@ type OrderData = {
 type UserData = {
 	name: string
 	username: string
-	roles: string[]
+	role: string
 }
