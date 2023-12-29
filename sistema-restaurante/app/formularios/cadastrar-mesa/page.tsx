@@ -1,17 +1,49 @@
 "use client"
-import { useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import { IoMdArrowBack } from "react-icons/io"
 import { useRouter } from "next/navigation"
 
-import style from "./registrarinfo.module.css"
+import style from "../formularios.module.css"
 
 export default function AddTable() {
-	const [formData, setFormData] = useState()
+	const [formError, setFormError] = useState("")
+	const [formData, setFormData] = useState({
+		name: "",
+		ordersTotalPrice: 0,
+		ordersTotalQuantity: 0,
+		customersQuantity: 0,
+		occupiedAt: null
+	})
 	const router = useRouter()
 	const routerBack = () => router.replace("/dashboard")
 
-	const addNewStaff = () => {
+	const changeData = (event: ChangeEvent<HTMLInputElement>) => {
+		const inputName = event.currentTarget.name
+		const inputValue = event.currentTarget.value
+		setFormData(previousValue => ({ ...previousValue, [inputName]: inputValue }))
+	}
 
+	const submitData = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		if (formData.name == "")
+			return setFormError("Preencha todos os campos")
+
+		const response = await fetch("/api/cadastrar-mesa", {
+			method: "POST",
+			body: JSON.stringify(formData),
+		})
+		if (response.ok) {
+			setFormError(`Mesa ${formData.name} cadastrada com sucesso`)
+			setFormData({
+				name: "",
+				ordersTotalPrice: 0,
+				ordersTotalQuantity: 0,
+				customersQuantity: 0,
+				occupiedAt: null
+			})
+			return
+		}
+		setFormError("Ocorreu algum erro")
 	}
 
 	return (
@@ -19,14 +51,15 @@ export default function AddTable() {
 			<div className={style.topOptions}>
 				<button onClick={routerBack}><IoMdArrowBack /><span>Voltar</span></button>
 			</div>
-			<form className={style.form}>
+			<form className={style.form} onSubmit={submitData}>
 				<div>
 					<button type="button">Adicionar mesa</button>
 					<label className={style.labelCol}>
 						<span>Número</span>
-						<input type="number" value={1} min={1} />
+						<input type="number" name="name" onChange={changeData} value={formData.name} min={1} />
 					</label>
 					<button className={style.buttonOptions}>Adicionar mesa</button>
+					{formError}
 				</div>
 			</form>
 		</main >

@@ -7,16 +7,16 @@ import { TableHead } from "../TableHead"
 import style from "../../restaurante.module.css"
 
 type MainComponentProps = {
-	restaurantTables: RestaurantTableData[]
+	restaurantTablesFromAPI: RestaurantTableData[]
 }
 
-export function MainComponent({ restaurantTables }: MainComponentProps) {
-	const {setRestaurantTables} = useBaseContext()
+export function MainComponent({ restaurantTablesFromAPI }: MainComponentProps) {
+	const { restaurantTables, setRestaurantTables } = useBaseContext()
 
-	useEffect(()=>{
-		if(restaurantTables)
-			setRestaurantTables(restaurantTables)
-	}, [restaurantTables])
+	useEffect(() => {
+		setRestaurantTables(currentValues => !restaurantTables ? restaurantTablesFromAPI : currentValues)
+	}, [])
+
 
 	return (
 		<main className={style.main}>
