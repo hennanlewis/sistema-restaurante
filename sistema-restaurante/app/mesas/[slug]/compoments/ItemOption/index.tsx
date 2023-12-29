@@ -10,7 +10,7 @@ type MenuItemProps = SizeItemMenu & {
 }
 
 export function ItemOption({ optionName, price, tableID, type }: MenuItemProps) {
-	const { orders, setOrders } = useBaseContext()
+	const { orders, setOrders, user } = useBaseContext()
 	const currentID = `${optionName} ${type}`.trim()
 	const itemQuantity = orders
 		.filter((item) =>
@@ -42,7 +42,8 @@ export function ItemOption({ optionName, price, tableID, type }: MenuItemProps) 
 			clientNumber: 1,
 			tableID,
 			price,
-			isFinished: false
+			isFinished: false,
+			staffUser: user?.username!
 		}
 
 		setOrders(currentValues => [...currentValues, itemToAdd])

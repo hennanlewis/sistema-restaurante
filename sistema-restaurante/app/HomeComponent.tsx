@@ -7,6 +7,7 @@ import { useBaseContext } from "@/contexts/MainContext"
 export function HomeComponent() {
 	const { setUser } = useBaseContext()
 	const [login, setLogin] = useState({ username: "", password: "" })
+	const [formError, setFormError] = useState("")
 	const typeText = (event: ChangeEvent<HTMLInputElement>) => {
 		const inputName = event.currentTarget.name
 		const inputValue = event.currentTarget.value
@@ -15,16 +16,22 @@ export function HomeComponent() {
 
 	const submitLogin = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
+		console.log("Tentando logar")
 		const response = await fetch("/api/signin", {
 			method: "POST",
 			body: JSON.stringify(login),
 		})
 
 		const user = await response.json()
+		console.log(user)
 		if (user) {
-			localStorage.setItem("user", JSON.stringify({ username: user.username }))
+			localStorage.setItem("user", JSON.stringify(user))
 			setUser(user)
+			setFormError("")
+			return
 		}
+
+		setFormError("Usuário ou senhas inválidos")
 	}
 
 	return (
@@ -42,6 +49,7 @@ export function HomeComponent() {
 				<button type="submit" className={style.button}>
 					Login
 				</button>
+				{formError}
 			</form>
 		</main>
 	)
