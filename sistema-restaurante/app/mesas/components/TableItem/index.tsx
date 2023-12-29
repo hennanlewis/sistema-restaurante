@@ -7,24 +7,32 @@ import { ElapsedTimer } from "../ElapserTime"
 import { currencyFormater } from "@/utils/dataFormater"
 
 import "@/app/globals.css"
+import { useBaseContext } from "@/contexts/MainContext"
+import { hasAdminPermission } from "@/utils/testPermissions"
 
 type TableBodyItemProps = {
 	tableInfo: RestaurantTableData
 }
 
 export function TableItem({ tableInfo }: TableBodyItemProps) {
+	const { user } = useBaseContext()
 	const { name, ordersTotalPrice, ordersTotalQuantity, customersQuantity, occupiedAt } = tableInfo
 	const url = "/mesas/" + name.toLocaleLowerCase().replace(" ", "_")
 
+	const itemClass = () => {
+		if(user && hasAdminPermission(user.role)) return style.listItem2
+		return style.listItem
+	}
+
 	return (
 		<Link href={url}>
-			<div className={occupiedAt ? style.listItem : style.listItemEmpty}>
+			<div className={itemClass()}>
 				<span>{name}</span>
-				<span>{currencyFormater(ordersTotalPrice)}</span>
+				{user && hasAdminPermission(user.role) && <span>{currencyFormater(ordersTotalPrice)}</span>}
 				<span>{ordersTotalQuantity} <MdChecklist /> </span>
 				<span>{customersQuantity} <IoPeople /></span>
 				{occupiedAt && <ElapsedTimer occupiedAt={occupiedAt} />}
-				{!occupiedAt && <span>Livre</span>}
+				{!occupiedAt && <span className={style.listFreeTable}>Livre</span>}
 			</div>
 		</Link>
 	)

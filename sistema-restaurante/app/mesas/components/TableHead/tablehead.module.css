@@ -1,5 +1,9 @@
-.listHead {
-	@apply grid grid-cols-5 px-2 py-3 bg-black/90 text-center text-base
+.listHead, .listHead2 {
+	@apply grid grid-cols-4 px-2 py-3 bg-black/90 text-center text-base
 	text-gray-100 font-medium rounded shadow shadow-black/50;
 	text-shadow: 1px 1px 2px #0008;
+}
+
+.listHead2 {
+	@apply grid-cols-5;
 }
