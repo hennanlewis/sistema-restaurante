@@ -22,7 +22,6 @@ export function HomeComponent() {
 
 		const user = await response.json()
 		if (user) {
-			console.log(user)
 			localStorage.setItem("user", JSON.stringify({ username: user.username }))
 			setUser(user)
 		}
@@ -33,7 +32,7 @@ export function HomeComponent() {
 			<form className={style.home} onSubmit={submitLogin} method="post">
 				<h1 className="text-4xl font-black">Faça login</h1>
 				<label className={style.field}>
-					Email
+					Usuário
 					<input onChange={typeText} name="username" type="text" value={login.username} />
 				</label>
 				<label className={style.field}>

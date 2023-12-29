@@ -8,7 +8,7 @@ export const useCustomHook = () => {
 	const router = useRouter()
 
 	useEffect(() => {
-		const loginData = JSON.parse(localStorage.getItem("user")!)
+		const loginData = JSON.parse(localStorage.getItem("user")!) || {}
 
 		if(loginData) setUser(loginData)
 
