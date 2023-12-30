@@ -33,6 +33,7 @@ type OrderData = {
 	clientNumber: number
 	isFinished: boolean
 	staffUser: string
+	isClosed?: Date
 }
 
 type UserData = {

@@ -1,0 +1,7 @@
+.contentTitle {
+	@apply text-2xl font-bold;
+}
+
+.content {
+	@apply flex flex-col gap-2 p-4 bg-black/50 rounded-sm shadow-md shadow-black;
+}

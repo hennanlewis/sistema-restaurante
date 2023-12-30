@@ -10,7 +10,11 @@ import { useBaseContext } from "@/contexts/MainContext"
 import { TableOrderInfo } from "../TableInfo"
 import style from "./topinfo.module.css"
 
-export default function TopInfo() {
+type TopInfoProps = {
+	hideCloseOrder?: boolean
+}
+
+export default function TopInfo({ hideCloseOrder = false }: TopInfoProps) {
 	const { orders, restaurantTables, user } = useBaseContext()
 	const router = useRouter()
 	const params = useParams()
@@ -42,14 +46,17 @@ export default function TopInfo() {
 	]
 
 	const routerBack = () => router.back()
-	const finish = () => router.back()
+
+	const showCloseOrder = () => {
+		return !hideCloseOrder && user && hasAdminPermission(user.role) && currentTable.occupiedAt
+	}
 
 	return (
 		<div className={style.infoCards}>
 			<div className={style.topOptions}>
 				<button onClick={routerBack}><IoMdArrowBack /><span>Voltar</span></button>
-				{user && hasAdminPermission(user.role) && currentTable.occupiedAt &&
-					<Link href={`/mesas/${currentTable.name}/transferir`} onClick={finish}>Fechar conta</Link>
+				{ showCloseOrder() &&
+					<Link href={`/mesas/${currentTable.name}/fechar`}>Fechar conta</Link>
 				}
 			</div>
 
