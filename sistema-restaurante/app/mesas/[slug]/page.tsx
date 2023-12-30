@@ -28,7 +28,7 @@ export default function Mesas({ params }: { params: { slug: string } }) {
 				{currentTable.occupiedAt && waitingOrders.length > 0 &&
 					<ShowOrders label="Pedidos pendentes" orders={waitingOrders} />}
 				{currentTable.occupiedAt && processedOrders.length > 0 &&
-					<ShowOrders label="Pedidos processados" orders={processedOrders} />}
+					<ShowOrders label="Pedidos realizados" orders={processedOrders} />}
 				{currentTable.occupiedAt &&
 					<MenuOptions menuSections={menuSections} table={currentTable} />
 				}

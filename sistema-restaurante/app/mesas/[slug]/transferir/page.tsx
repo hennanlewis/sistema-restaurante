@@ -4,7 +4,6 @@ import { useBaseContext } from "@/contexts/MainContext"
 
 import TopInfo from "../compoments/TopInfo"
 import style from "./transferir.module.css"
-import { sumArrayValues } from "@/utils/dataFormater"
 
 export default function TransferTable() {
 	const params = useParams()

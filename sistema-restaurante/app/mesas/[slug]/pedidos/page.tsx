@@ -24,7 +24,7 @@ export default function OrderForClient({ params }: { params: { slug: string } })
 				<MenuClientsOptions table={currentTable} />
 
 				<SelectOrderClient
-					label="Pedidos processados"
+					label="Pedidos realizados"
 					numberOfClients={customersQuantity}
 					orders={processedOrders}
 				/>

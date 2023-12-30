@@ -57,12 +57,12 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
 					<button onClick={startTable}>Ocupar mesa</button>
 				}
 				{table.occupiedAt && <>
-					<button onClick={processOrders}>Processar pedidos</button>
+					<button onClick={processOrders}>Imprimir pedidos</button>
 					<Link href={`/mesas/${table.name}/pedidos`}>
-						Separar pedidos
+						Separar por cliente
 					</Link>
 					<Link href={`/mesas/${table.name}/transferir`}>
-						Transferir mesa
+						Mudar mesa
 					</Link>
 				</>}
 			</div>
