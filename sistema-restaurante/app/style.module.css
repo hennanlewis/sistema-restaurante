@@ -17,9 +17,9 @@
 	text-shadow: 1px 1px 2px #0008;
 }
 
-.button, .errorButton {
-	@apply w-[20rem] max-w-full mt-4 py-2 bg-gray-950 text-white rounded hover:bg-emerald-700
-	transition font-bold duration-500 shadow-md shadow-black;
+.button, .errorButton, .loading {
+	@apply relative w-[20rem] max-w-full mt-4 py-2 bg-gray-950 text-white rounded
+    hover:bg-emerald-700 transition font-bold duration-500 shadow-md shadow-black;
 }
 
 .errorTitle {
@@ -28,4 +28,10 @@
 
 .errorButton {
 	@apply m-auto;
+}
+
+.loading::after {
+    content: "";
+    @apply absolute right-4 w-6 aspect-square border-white border-4 border-l-transparent
+    rounded-full animate-spin;
 }

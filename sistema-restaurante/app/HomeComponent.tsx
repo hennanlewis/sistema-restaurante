@@ -8,13 +8,17 @@ export function HomeComponent() {
 	const { setUser } = useBaseContext()
 	const [login, setLogin] = useState({ username: "", password: "" })
 	const [formError, setFormError] = useState("")
-	const typeText = (event: ChangeEvent<HTMLInputElement>) => {
+    const [isLoading, setIsLoading] = useState(false)
+
+    const typeText = (event: ChangeEvent<HTMLInputElement>) => {
 		const inputName = event.currentTarget.name
 		const inputValue = event.currentTarget.value
 		setLogin(previousValue => ({ ...previousValue, [inputName]: inputValue }))
 	}
 
 	const submitLogin = async (event: FormEvent<HTMLFormElement>) => {
+        setFormError("")
+        setIsLoading(true)
 		event.preventDefault()
 		console.log("Tentando logar")
 		const response = await fetch("/api/signin", {
@@ -32,6 +36,7 @@ export function HomeComponent() {
 		}
 
 		setFormError("Usuário ou senhas inválidos")
+        setIsLoading(false)
 	}
 
 	return (
@@ -46,7 +51,7 @@ export function HomeComponent() {
 					Senha
 					<input onChange={typeText} name="password" type="password" value={login.password} />
 				</label>
-				<button type="submit" className={style.button}>
+                <button type="submit" className={isLoading ? style.loading : style.button}>
 					Login
 				</button>
 				{formError}

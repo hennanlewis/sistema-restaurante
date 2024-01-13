@@ -45,7 +45,7 @@ export default function TopInfo({ hideCloseOrder = false }: TopInfoProps) {
 		}
 	]
 
-	const routerBack = () => router.back()
+    const routerBack = () => router.replace("/mesas")
 
 	const showCloseOrder = () => {
 		return !hideCloseOrder && user && hasAdminPermission(user.role) && currentTable.occupiedAt
