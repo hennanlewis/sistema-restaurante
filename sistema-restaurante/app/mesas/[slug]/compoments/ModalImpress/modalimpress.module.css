@@ -21,7 +21,7 @@
 }
 
 .orders ul li {
-    @apply flex flex-wrap;
+    @apply flex flex-wrap leading-[1.4];
 }
 
 .orders span {
@@ -29,7 +29,8 @@
 }
 
 .dots {
-    @apply flex-1 min-w-[8px] h-0 border-b-2 border-dotted border-white translate-y-4 print:border-black;
+    @apply flex-1 min-w-[8px] h-0 border-b border-dotted border-white
+    translate-y-4 print:translate-y-3 print:border-black;
  }
 
 .modalContent button {

@@ -1,7 +1,7 @@
 import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "./modalimpress.module.css"
-import { currencyFormater, showedOrdersFormater } from "@/utils/dataFormater"
+import { currencyFormater, showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
 
 type ModalProps = {
     closeModal: () => void
@@ -32,9 +32,15 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                                 <span>{item.itemQuantity}x {item.itemID}</span>
                                 <span className={style.dots}></span>
                                 <span className={style.dots}></span>
-                                <span>{currencyFormater(item.price)}</span>
+                                <span>{currencyFormater(item.price*item.itemQuantity)}</span>
                             </li>
                         )}
+                        <li>
+                            <span>Total</span>
+                            <span className={style.dots}></span>
+                            <span className={style.dots}></span>
+                            <span>{currencyFormater(sumArrayValues(waitingOrders.map(item => item.price * item.itemQuantity)))}</span>
+                        </li>
                     </ul>
                 </div>
                 <button onClick={printOrders}>Imprimir pedido</button>
