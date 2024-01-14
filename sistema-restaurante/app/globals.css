@@ -3,27 +3,37 @@
 @tailwind utilities;
 
 :root {
-	--foreground-rgb: 0, 0, 0;
-	--background-start-rgb: 214, 219, 220;
-	--background-end-rgb: 255, 255, 255;
-	--bg-primary: hsl(37, 46%, 57%);
-	--bg-secondary: hsl(7, 40%, 47%);
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+    --bg-primary: hsl(37, 46%, 57%);
+    --bg-secondary: hsl(7, 40%, 47%);
 }
 
 \* {
-	margin: 0;
-	padding: 0;
-	font-family: "Inter";
-	box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter";
+    box-sizing: border-box;
 }
 
 body {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	padding: 3rem 0;
-	background: linear-gradient(150deg, var(--bg-primary), var(--bg-secondary), var(--bg-secondary), hsl(37, 46%, 57%));
-	color: #FFF;
-	letter-spacing: -0.04em;
-	font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 3rem 0;
+    background: linear-gradient(150deg, var(--bg-primary), var(--bg-secondary), var(--bg-secondary), hsl(37, 46%, 57%));
+    color: #FFF;
+    letter-spacing: -0.04em;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+@media print {
+    @page {
+        margin: 0;
+    }
+    main {
+        height: 0;
+        overflow: hidden;
+    }
 }

@@ -1,71 +1,84 @@
 "use client"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useBaseContext } from "@/contexts/MainContext"
 import { sumArrayValues } from "@/utils/dataFormater"
 
 import style from "./menutableoptions.module.css"
-import RestaurantTables from "@/app/mesas/page"
+import { ModalImpress } from "../ModalImpress"
 
 type MenuTableOptionsProps = {
-	table: RestaurantTableData
+    table: RestaurantTableData
 }
 
 export function MenuTableOptions({ table }: MenuTableOptionsProps) {
-	const { orders, setOrders,restaurantTables, setRestaurantTables } = useBaseContext()
-	const updatedProcessedOrders = JSON.stringify(orders
-		.filter(item => item.isFinished == true && table.name == item.tableID))
+    const { orders, setOrders, setRestaurantTables } = useBaseContext()
+    const [showModal, setShowModal] = useState(false)
+    const updatedProcessedOrders = JSON.stringify(orders
+        .filter(item => item.isFinished == true && table.name == item.tableID))
 
-	const startTable = () => {
-		setRestaurantTables(currentValues => {
-			const newValues = currentValues.map(values =>
-				values.name == table.name ?
-					{ ...values, occupiedAt: new Date(), customersQuantity: 1 }
-					:
-					values)
-			return newValues
-		})
-	}
+    const startTable = () => {
+        setRestaurantTables(currentValues => {
+            const newValues = currentValues.map(values =>
+                values.name == table.name ?
+                    { ...values, occupiedAt: new Date(), customersQuantity: 1 }
+                    :
+                    values)
+            return newValues
+        })
+    }
 
-	const processOrders = () => {
-		setOrders(currentValues => currentValues
-			.map(item => item.tableID == table.name ?
-				{ ...item, isFinished: true }
-				:
-				item
-			)
-		)
-	}
+    const openModal = () => setShowModal(true)
+    const closeModal = () => { setShowModal(false) }
 
-	useEffect(() => {
-		const object: OrderData[] = JSON.parse(updatedProcessedOrders)
-		const totalOrderPrice = sumArrayValues(object.map(item => item.price))
-		const totalOrderItems = sumArrayValues(object.map(item => item.itemQuantity))
+    const processOrders = () => {
+        setOrders(currentValues => currentValues
+            .map(item => item.tableID == table.name ?
+                { ...item, isFinished: true }
+                :
+                item
+            )
+        )
 
-		setRestaurantTables(currentValues => currentValues
-			.map(item => item.name == table.name ?
-				{ ...item, ordersTotalPrice: totalOrderPrice, ordersTotalQuantity: totalOrderItems }
-				: item)
-		)
-	}, [updatedProcessedOrders])
+        closeModal()
+    }
 
-	return (
-		<div className={style.orderOptionsContent}>
-			<h2 className={style.contentTitle}>Mesa</h2>
-			<div className={style.buttonOptions}>
-				{!table.occupiedAt &&
-					<button onClick={startTable}>Ocupar mesa</button>
-				}
-				{table.occupiedAt && <>
-					<button onClick={processOrders}>Imprimir pedidos</button>
-					<Link href={`/mesas/${table.name}/pedidos`}>
-						Separar por cliente
-					</Link>
-					<Link href={`/mesas/${table.name}/transferir`}>
-						Mudar mesa
-					</Link>
-				</>}
-			</div>
-		</div>
-	)
+    useEffect(() => {
+        const object: OrderData[] = JSON.parse(updatedProcessedOrders)
+        const totalOrderPrice = sumArrayValues(object.map(item => item.price))
+        const totalOrderItems = sumArrayValues(object.map(item => item.itemQuantity))
+
+        setRestaurantTables(currentValues => currentValues
+            .map(item => item.name == table.name ?
+                { ...item, ordersTotalPrice: totalOrderPrice, ordersTotalQuantity: totalOrderItems }
+                : item)
+        )
+    }, [updatedProcessedOrders])
+
+    return (
+        <div className={style.orderOptionsContent}>
+            <h2 className={style.contentTitle}>Mesa</h2>
+            <div className={style.buttonOptions}>
+                {!table.occupiedAt &&
+                    <button onClick={startTable}>Ocupar mesa</button>
+                }
+                {table.occupiedAt && <>
+                    <button onClick={openModal}>Imprimir pedidos</button>
+                    <Link href={`/mesas/${table.name}/pedidos`}>
+                        Separar por cliente
+                    </Link>
+                    <Link href={`/mesas/${table.name}/transferir`}>
+                        Mudar mesa
+                    </Link>
+                </>}
+            </div>
+            {showModal &&
+                <ModalImpress
+                    closeModal={closeModal}
+                    processOrders={processOrders}
+                    tableName={table.name}
+                />
+            }
+        </div>
+    )
 }
