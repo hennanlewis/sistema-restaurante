@@ -17,24 +17,33 @@
 }
 
 .form {
-	@apply grid sm:grid-cols-3 gap-8 p-4 bg-black/50 text-base rounded-sm
+	@apply flex flex-col gap-8 p-4 bg-black/50 text-base rounded-sm
 	shadow-md shadow-black;
 }
 
 .form div {
-	@apply sm:col-start-1 sm:col-end-3 flex flex-col gap-2;
+	@apply grid grid-cols-1 gap-4 sm:grid-cols-2;
 }
 
-.labelCol { @apply flex flex-col gap-y-1; }
-.labelCol h2 { @apply text-lg font-bold; }
-.labelLine { @apply col-start-1 flex gap-y-1 gap-x-2; }
-.labelCol input, .labelCol select {
+.titleForm {
+    @apply col-span-1 text-center text-[1.3em] font-bold sm:col-span-2;
+}
+
+.labelCol {
+    @apply col-span-1 flex flex-col gap-y-1 sm:col-span-2;
+}
+
+.labelColHalf {
+    @apply col-span-1 flex flex-col gap-y-1;
+}
+
+.labelCol input, .labelColHalf input, .labelCol select {
 	@apply p-1 px-2 h-8 text-black rounded-sm;
 }
 
 .buttonOptions {
-	@apply p-2 bg-sky-800 text-sm font-bold hover:bg-emerald-600
+	@apply col-span-1 p-2 bg-sky-800 text-sm font-bold hover:bg-emerald-600
 	rounded-3xl border border-black/20 shadow-md shadow-black
-	duration-300;
+	duration-300 sm:col-span-2;
 	text-shadow: 1px 1px 2px #0008;
 }
