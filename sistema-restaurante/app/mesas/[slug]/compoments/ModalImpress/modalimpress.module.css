@@ -1,0 +1,28 @@
+.modal {
+    @apply fixed w-auto min-h-full top-0 left-0 right-0 bottom-0 flex flex-col
+    gap-y-4 bg-black/90 z-10 overflow-auto print:absolute print:shadow-transparent;
+}
+
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+.modalContent {
+    @apply flex flex-col gap-2 p-4 max-w-full m-auto bg-black/50 text-base
+    rounded-sm shadow-md shadow-black print:shadow-transparent;
+}
+
+.orders {
+    @apply flex flex-col mb-auto print:text-black;
+}
+
+.orders > h3 {
+    @apply text-lg font-bold;
+}
+
+.modalContent button {
+    @apply flex justify-center p-2 bg-sky-800 text-base font-bold
+    hover:bg-emerald-600 rounded-3xl border border-black/20 shadow-md shadow-black
+    duration-300 print:hidden;
+    text-shadow: 1px 1px 2px #0008;
+}
