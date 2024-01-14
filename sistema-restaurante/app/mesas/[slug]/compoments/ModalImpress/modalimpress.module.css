@@ -13,12 +13,24 @@
 }
 
 .orders {
-    @apply flex flex-col mb-auto print:text-black;
+    @apply flex flex-col mb-auto print:text-black print:text-[.8em];
 }
 
 .orders > h3 {
-    @apply text-lg font-bold;
+    @apply text-lg font-bold print:text-base;
 }
+
+.orders ul li {
+    @apply flex flex-wrap;
+}
+
+.orders span {
+    @apply flex-shrink-0;
+}
+
+.dots {
+    @apply flex-1 min-w-[8px] h-0 border-b-2 border-dotted border-white translate-y-4 print:border-black;
+ }
 
 .modalContent button {
     @apply flex justify-center p-2 bg-sky-800 text-base font-bold

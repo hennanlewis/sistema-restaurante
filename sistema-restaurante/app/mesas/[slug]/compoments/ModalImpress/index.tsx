@@ -29,7 +29,10 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                     <ul>
                         {waitingOrders.map(item =>
                             <li key={item.orderKey + item.tableID + item.staffUser}>
-                                {item.itemQuantity}x {item.itemID} - {currencyFormater(item.price)}
+                                <span>{item.itemQuantity}x {item.itemID}</span>
+                                <span className={style.dots}></span>
+                                <span className={style.dots}></span>
+                                <span>{currencyFormater(item.price)}</span>
                             </li>
                         )}
                     </ul>
