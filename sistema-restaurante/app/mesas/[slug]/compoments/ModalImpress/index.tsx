@@ -1,7 +1,7 @@
 import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "./modalimpress.module.css"
-import { currencyFormater } from "@/utils/dataFormater"
+import { currencyFormater, showedOrdersFormater } from "@/utils/dataFormater"
 
 type ModalProps = {
     closeModal: () => void
@@ -15,7 +15,7 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
     const [currentTable] = restaurantTables.filter(item => item.name == tableName)
     const filteredOrders = orders
         .filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
-    const waitingOrders = filteredOrders.filter(item => item.isFinished == false)
+    const waitingOrders = showedOrdersFormater(filteredOrders.filter(item => item.isFinished == false))
 
     const printOrders = () => {
         window.print()
