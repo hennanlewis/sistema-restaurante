@@ -3,13 +3,14 @@ export async function searchRestaurantTableData() {
 	const values : RestaurantTableData[] = []
 
 	const addItem = (tableNumber: number) : RestaurantTableData => {
-		const name = String(++tableNumber)
-		const customersQuantity = Math.round(( 3 * Math.random()))
-		const ordersTotalPrice = customersQuantity == 0 ? 0 : Math.round(Math.random() * 50 * tableNumber) + 30
-		const ordersTotalQuantity = customersQuantity == 0 ? 0 : Math.ceil(ordersTotalPrice / (25 + Math.random() * 25))
-		const occupiedAt = customersQuantity == 0 ? null : new Date(Date.now() - Math.round(Math.random() * 600000))
+        const teste : RestaurantTableData = {} as RestaurantTableData
+		teste.name = String(++tableNumber)
+		teste.customersQuantity = Math.round(( 3 * Math.random()))
+		teste.ordersTotalPrice = teste.customersQuantity == 0 ? 0 : Math.round(Math.random() * 50 * tableNumber) + 30
+		teste.ordersTotalQuantity = teste.customersQuantity == 0 ? 0 : Math.ceil(teste.ordersTotalPrice / (25 + Math.random() * 25))
+		teste.occupiedAt = teste.customersQuantity == 0 ? null : new Date(Date.now() - Math.round(Math.random() * 600000))
 
-		return { name, ordersTotalPrice, ordersTotalQuantity, customersQuantity, occupiedAt }
+		return teste
 	}
 
 	for (const item in baseArray) {
