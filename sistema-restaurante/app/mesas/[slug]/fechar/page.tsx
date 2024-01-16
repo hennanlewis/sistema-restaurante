@@ -22,7 +22,8 @@ export default function CloseOrder() {
 					<div className={style.ordersByCustomer}>
 						{ordersByCustomer.map(customer => {
 							const orderByCustomer = orders.filter(item => item.clientNumber == customer)
-							return <OrdersListByCustomer orders={orderByCustomer} label={` Cliente ${customer}`} />
+                            const key = JSON.stringify(customer)
+							return <OrdersListByCustomer key={key} orders={orderByCustomer} label={` Cliente ${customer}`} />
 						}
 						)}
 					</div>
