@@ -53,7 +53,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
                 { ...item, ordersTotalPrice: totalOrderPrice, ordersTotalQuantity: totalOrderItems }
                 : item)
         )
-    }, [updatedProcessedOrders])
+    }, [updatedProcessedOrders, setRestaurantTables])
 
     return (
         <div className={style.orderOptionsContent}>
