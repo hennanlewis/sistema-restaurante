@@ -6,74 +6,69 @@ import psutil
 def open_webview(url):
     return webview.create_window("Restaurante Sabor do Mar", url)
 
-def listar_processos():
-    print("Lista de processos:")
-    for processo in psutil.process_iter(['pid', 'name']):
-        print(processo.info)
+def start_nextjs_server():
+    result = subprocess.run(["run_server.bat"], shell=True, text=True)
+    print(result.stdout)
 
-def start_nextjs():
-    resultado = subprocess.run(["run_server.bat"], shell=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
-    print(resultado.stdout)
-
-def subprocess_cmd():
-    nextjs_thread = threading.Thread(target=start_nextjs)
+def start_server_thread():
+    print("Inicializando servidor Next.js...")
+    nextjs_thread = threading.Thread(target=start_nextjs_server)
     nextjs_thread.start()
 
-def listar_processos():
-    processos = []
-    for processo in psutil.process_iter(['pid', 'name']):
-        processos.append((processo.info['pid'], processo.info['name']))
-    return processos
+def list_processes():
+    print("List of processes:")
+    for process in psutil.process_iter(['pid', 'name']):
+        print(process.info)
 
-def obter_processo_pai(pid):
+def list_processes_info():
+    processes_info = []
+    for process in psutil.process_iter(['pid', 'name']):
+        processes_info.append((process.info['pid'], process.info['name']))
+    return processes_info
+
+def get_parent_process(pid):
     try:
-        processo = psutil.Process(pid)
-        processo_pai = processo.parent()
-        return processo_pai
+        process = psutil.Process(pid)
+        parent_process = process.parent()
+        return parent_process
     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
         return None
 
-def encerrar_processos():
-    print("\nEncerrando processos cujo processo pai é Node...")
-    
-    for processo in psutil.process_iter(['pid', 'name']):
-        process_name = processo.info['name']
-        processo_pai = obter_processo_pai(processo.info['pid'])
-        if processo_pai and processo_pai.name() == 'node.exe':
+def calculate_difference(initial_processes, final_processes):
+    return set(final_processes) - set(initial_processes)
+
+def finish_processes(difference_processes):
+    print("\nTerminating processes whose parent process is Node...")
+
+    for pid, name in difference_processes:
+        parent_process = get_parent_process(pid)
+        if parent_process and parent_process.name() == 'node.exe':
             try:
-                psutil.Process(processo.info['pid']).terminate()
-                print(f"Processo CMD com PID {processo.info['pid']} encerrado.")
+                psutil.Process(pid).terminate()
+                print(f"CMD process with PID {pid} terminated.")
             except psutil.NoSuchProcess as e:
-                print(f"Erro ao encerrar processo CMD com PID {processo.info['pid']}: {e}")
-    
-    print("\nEncerrando processos Node ou WebView...")
-    for processo in psutil.process_iter(['pid', 'name']):
-        process_name = processo.info['name']
-        if process_name in ['node.exe', 'msedgewebview2.exe']:
+                print(f"Error terminating CMD process with PID {pid}: {e}")
+
+    print("\nTerminating Node or WebView processes...")
+    for pid, name in difference_processes:
+        if name in ['node.exe', 'msedgewebview2.exe']:
             try:
-                psutil.Process(processo.info['pid']).terminate()
-                print(f"Processo com PID {processo.info['pid']} de {process_name} encerrado.")
+                psutil.Process(pid).terminate()
+                print(f"Process with PID {pid} of {name} terminated.")
             except psutil.NoSuchProcess as e:
-                print(f"Erro ao encerrar processo com PID {processo.info['pid']}: {e}")
+                print(f"Error terminating process with PID {pid}: {e}")
 
 
 if __name__ == "__main__":
-    # Lista de processos antes da execução do código
-    processos_antes = listar_processos()
+    initial_processes = list_processes_info()
 
-    subprocess_cmd()
+    start_server_thread()
 
     website_url = "http://localhost:3000"
-    window = webview.create_window("Restaurante Sabor do Mar", website_url)
+    window = open_webview(website_url)
     webview.start()
 
-    # Lista de processos depois da execução do código
-    processos_depois = listar_processos()
+    final_processes = list_processes_info()
+    difference_processes = calculate_difference(final_processes, initial_processes)
 
-    # Calcula a diferença entre os conjuntos de PIDs
-    diferenca = set(processos_depois) - set(processos_antes)
-    print("Diferença de processos:")
-    for pid, nome in diferenca:
-        print(f"PID: {pid}, Nome: {nome}")
-
-    encerrar_processos()
+    finish_processes(difference_processes)
