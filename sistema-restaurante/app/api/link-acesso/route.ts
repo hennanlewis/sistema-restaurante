@@ -1,4 +1,4 @@
-import { setHost } from "@/db/db"
+import { getHost, setHost } from "@/db/db"
 import { NextRequest } from "next/server"
 
 export async function PUT(req: NextRequest) {
@@ -9,6 +9,22 @@ export async function PUT(req: NextRequest) {
             return Response.json({ host: `http://${ip}:3000` }, { status: 200 })
 
         throw new Error('Restaurant not found in the result')
+    } catch (error) {
+        return new Response(`Webhook error: ${error}`, {
+            status: 400,
+        })
+    }
+}
+
+export async function POST(req: NextRequest) {
+    try {
+        const { restaurant } = await req.json()
+        const result = await getHost(restaurant)
+        if (result !== null && result.host) {
+            const formattedResult = { host: result.host }
+            return Response.json(formattedResult, { status: 200 })
+        }
+        throw new Error('IP not found in the result')
     } catch (error) {
         return new Response(`Webhook error: ${error}`, {
             status: 400,

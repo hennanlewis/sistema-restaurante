@@ -62,3 +62,14 @@ export async function setHost(ip: string, restaurant: string) {
         await client.close()
     }
 }
+
+export async function getHost(restaurant: string) {
+    try {
+        await client.connect()
+        const response = await client.db(DATABASE_NAME).collection("info")
+            .findOne({ restaurant }, { projection: { host: 1 } })
+        return response
+    } finally {
+        await client.close()
+    }
+}
