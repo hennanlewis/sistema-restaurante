@@ -2,6 +2,7 @@ import webview
 import subprocess
 import threading
 import psutil
+from python import ip
 
 def open_webview(url):
     return webview.create_window("Restaurante Sabor do Mar", url)
@@ -62,9 +63,10 @@ def finish_processes(difference_processes):
 if __name__ == "__main__":
     initial_processes = list_processes_info()
 
-    start_server_thread()
-
-    website_url = "http://localhost:3000"
+    # start_server_thread()
+    ip_adress = ip.get_host_ip()
+    website_url = ip.set_new_ip(ip_adress)
+    print("- Local:", website_url)
     window = open_webview(website_url)
     webview.start()
 
