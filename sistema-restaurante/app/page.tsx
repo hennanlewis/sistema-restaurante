@@ -1,6 +1,13 @@
-import { HomeComponent } from './HomeComponent'
+import { Suspense } from "react"
+import { HomeComponent } from "./components/HomeComponent"
+import { QRCodeComponent } from "./components/QRCode"
+
 
 export default async function Home() {
 
-	return <HomeComponent />
+    return <HomeComponent>
+        <Suspense>
+            <QRCodeComponent />
+        </Suspense>
+    </HomeComponent>
 }
