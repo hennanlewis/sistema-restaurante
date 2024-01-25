@@ -41,3 +41,11 @@ type UserData = {
 	username: string
 	role: string
 }
+
+type DishDBInsertion = {
+    sectionName: string
+    dishName: string
+    servingsCount: number
+    dishPrice: number
+    subtext: string
+}

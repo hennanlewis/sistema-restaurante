@@ -73,3 +73,26 @@ export async function getHost(restaurant: string) {
         await client.close()
     }
 }
+
+export async function insertDish(dish: DishDBInsertion) {
+    const { sectionName, dishName, servingsCount, dishPrice, subtext } = dish
+    try {
+        await client.connect()
+
+        const filter = { name: sectionName }
+        const update = {
+            $push: {
+                options: { dishName, servingsCount, dishPrice, subtext }
+            }
+        }
+
+        const response = await client.db(DATABASE_NAME).collection("menu")
+            .updateOne(filter, update)
+
+        return response
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close()
+    }
+}
