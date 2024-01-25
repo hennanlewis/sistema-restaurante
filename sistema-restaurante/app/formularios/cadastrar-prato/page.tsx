@@ -1,44 +1,66 @@
 "use client"
+import { useEffect, useState } from "react"
 import { IoMdArrowBack } from "react-icons/io"
 import { useRouter } from "next/navigation"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, set, useForm } from "react-hook-form"
 
 import style from "../formularios.module.css"
-type FormData = {
-    sectionName: string
-    dishName: string
-    servingsCount: number
-    dishPrice: number
-    subtext: string
+import { capitalizeFirstLetters } from "@/utils/dataFormater"
+
+type DishCategory = {
+    _id: string
+    name: string
 }
 
 export default function MenuItem() {
-    const { register, handleSubmit } = useForm<FormData>()
+    const { register, handleSubmit, reset } = useForm<DishDBInsertion>()
 
-    const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [categories, setCategories] = useState<DishCategory[]>([])
+    const fetchCategories = async () => {
+        setIsLoading(true)
+        try {
+            const response = await fetch("/api/obter-categorias")
+            if (response.ok) {
+                const data = await response.json()
+                setCategories(data)
+                return console.log("Categorias obtidas com sucesso!")
+            }
+            console.error("Erro ao obter categorias")
+        } catch (error) {
+            console.error("Erro ao realizar a requisição:", error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => { fetchCategories() }, [])
+
+    const onSubmit: SubmitHandler<DishDBInsertion> = async (data) => {
+        setIsLoading(true)
 
         console.log(data)
 
-        // try {
-        //     const response = await fetch("/api/cadastrar-prato", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(data),
-        //     })
+        try {
+            const response = await fetch("/api/cadastrar-prato", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
 
-        //     if (response.ok) {
-        //         console.log("Prato cadastrado com sucesso!")
-        //         // Faça o que precisar após o sucesso (redirecionamento, etc.)
-        //     } else {
-        //         console.error("Erro ao cadastrar o prato")
-        //         // Lidere com o erro de acordo com suas necessidades
-        //     }
-        // } catch (error) {
-        //     console.error("Erro ao enviar a requisição:", error)
-        //     // Lidere com o erro de acordo com suas necessidades
-        // }
+            if (response.ok) {
+                reset()
+                return console.log("Prato cadastrado com sucesso!")
+            }
+
+            console.error("Erro ao cadastrar o prato")
+        } catch (error) {
+            console.error("Erro ao enviar a requisição:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const router = useRouter()
@@ -56,7 +78,13 @@ export default function MenuItem() {
                 <div>
                     <label className={style.labelColHalf}>
                         <span>Nome da seção</span>
-                        <input type="text" {...register("sectionName")} />
+                        <select {...register("sectionName")}>
+                            {categories.sort((a, b) => a.name < b.name ? -1 : 1).map((category) => (
+                                <option key={category._id} value={category.name}>
+                                    {capitalizeFirstLetters(category.name)}
+                                </option>
+                            ))}
+                        </select>
                     </label>
                     <label className={style.labelColHalf}>
                         <span>Nome do prato</span>
@@ -74,7 +102,7 @@ export default function MenuItem() {
                         <span>Descrição</span>
                         <input type="text" {...register("subtext")} placeholder="Separe os itens por vírgula" />
                     </label>
-                    <button className={style.buttonOptions} type="submit">
+                    <button className={isLoading ? style.buttonLoading : style.buttonOptions} type="submit">
                         Adicionar Prato
                     </button>
                 </div>
