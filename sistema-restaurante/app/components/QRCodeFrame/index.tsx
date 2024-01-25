@@ -10,6 +10,5 @@ export function QRCodeFrame({ host }: { host: string }) {
         <div className={style.qrFrame}>
             <QRCode value={host} size={400} />
         </div>
-        <p>Desenvolvido por <a href="https://hennan.dev">Hennan Lewis</a></p>
     </div>
 }

@@ -14,7 +14,8 @@ export default function Dashboard() {
 		{ keyNumber: 2, label: "Relatórios", url: "/relatorios", permission: true },
 		{ keyNumber: 3, label: "Cadastrar mesa", url: "/formularios/cadastrar-mesa", permission: true },
 		{ keyNumber: 4, label: "Cadastrar funcionário", url: "/formularios/cadastrar-acesso", permission: true },
-		// { keyNumber: 4, label: "Editar funcionário", url: "/formularios/editar-funcionario", permission: true },
+		{ keyNumber: 5, label: "Editar funcionário", url: "/formularios/editar-funcionario", permission: true },
+		{ keyNumber: 6, label: "Cadastrar item ao menu", url: "/formularios/menu-item", permission: true },
 	]
 
 	return (

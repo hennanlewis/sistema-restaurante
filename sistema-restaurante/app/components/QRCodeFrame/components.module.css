@@ -11,7 +11,3 @@
 .qrFrame canvas {
     @apply max-w-full object-contain;
 }
-
-.qrFrame p {
-    @apply text-xs;
-}
