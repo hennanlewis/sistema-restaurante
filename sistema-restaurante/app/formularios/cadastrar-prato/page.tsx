@@ -16,30 +16,29 @@ export default function MenuItem() {
     const { register, handleSubmit } = useForm<FormData>()
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        // e.preventDefault() // Evita o recarregamento da página
 
         console.log(data)
 
-        try {
-            const response = await fetch("/api/cadastrar-prato", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
+        // try {
+        //     const response = await fetch("/api/cadastrar-prato", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify(data),
+        //     })
 
-            if (response.ok) {
-                console.log("Prato cadastrado com sucesso!")
-                // Faça o que precisar após o sucesso (redirecionamento, etc.)
-            } else {
-                console.error("Erro ao cadastrar o prato")
-                // Lidere com o erro de acordo com suas necessidades
-            }
-        } catch (error) {
-            console.error("Erro ao enviar a requisição:", error)
-            // Lidere com o erro de acordo com suas necessidades
-        }
+        //     if (response.ok) {
+        //         console.log("Prato cadastrado com sucesso!")
+        //         // Faça o que precisar após o sucesso (redirecionamento, etc.)
+        //     } else {
+        //         console.error("Erro ao cadastrar o prato")
+        //         // Lidere com o erro de acordo com suas necessidades
+        //     }
+        // } catch (error) {
+        //     console.error("Erro ao enviar a requisição:", error)
+        //     // Lidere com o erro de acordo com suas necessidades
+        // }
     }
 
     const router = useRouter()
