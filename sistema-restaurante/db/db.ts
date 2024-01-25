@@ -74,6 +74,21 @@ export async function getHost(restaurant: string) {
     }
 }
 
+export async function getDishCategories() {
+    try {
+        await client.connect()
+
+        const cursor = client.db(DATABASE_NAME).collection("menu").find()
+        const response = await cursor.toArray()
+
+        return response
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close()
+    }
+}
+
 export async function insertDish(dish: DishDBInsertion) {
     const { sectionName, dishName, servingsCount, dishPrice, subtext } = dish
     try {
