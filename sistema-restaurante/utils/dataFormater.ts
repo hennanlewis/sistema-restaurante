@@ -5,12 +5,12 @@ export const currencyFormater = (value: number) =>
 	}).format(value)
 
 export const listFormater = (string: string[]) =>
-	capFirst(new Intl.ListFormat("pt-BR", {
+	capitalizeFirstLetters(new Intl.ListFormat("pt-BR", {
 		style: "long",
 		type: "conjunction",
 	}).format(string))
 
-export const capFirst = (string: string) => {
+export const capitalizeFirstLetters = (string: string) => {
 	if (string.length == 0) return string
 	return string.charAt(0).toUpperCase() + string.slice(1)
 }
