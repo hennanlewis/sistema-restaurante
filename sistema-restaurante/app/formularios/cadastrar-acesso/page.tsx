@@ -18,6 +18,7 @@ export default function RecordInfo() {
     })
 
     const [formError, setFormError] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     const errorPass = formData.confirmPass != "" && formData.confirmPass != formData.password ?
         "Senhas não conferem" : ""
@@ -30,6 +31,7 @@ export default function RecordInfo() {
 
     const submitData = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        setIsLoading(true)
         const { name, username, password, confirmPass, role } = formData
         if (name == "" && username == "" && password == "" && confirmPass == "" && role == "")
             return setFormError("Preencha todos os campos")
@@ -51,9 +53,11 @@ export default function RecordInfo() {
                 confirmPass: "",
                 role: "atendente",
             })
+            setIsLoading(false)
             return
         }
         setFormError("Ocorreu algum erro")
+        setIsLoading(false)
     }
 
     const removeSpace = (str: string) => str.replace(" ", "")
@@ -91,7 +95,9 @@ export default function RecordInfo() {
                             <option value="caixa">Caixa</option>
                         </select>
                     </label>
-                    <button className={style.buttonOptions} type="submit">Adicionar funcionário</button>
+                    <button className={isLoading ? style.buttonLoading : style.buttonOptions} type="submit">
+                        Adicionar funcionário
+                    </button>
                     {formError}
                 </div>
             </form>
