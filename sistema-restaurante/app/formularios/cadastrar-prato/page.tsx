@@ -16,19 +16,31 @@ export default function MenuItem() {
     const { register, handleSubmit, reset } = useForm<DishDBInsertion>()
 
     const [isLoading, setIsLoading] = useState(false)
+    const [message, setMessage] = useState("")
     const [categories, setCategories] = useState<DishCategory[]>([])
+
+    const temporaryMessage = (text: string) => {
+        setMessage(text)
+        setTimeout(() => setMessage(""), 3000)
+    }
+
     const fetchCategories = async () => {
         setIsLoading(true)
+        setMessage("Obtendo categorias...")
         try {
             const response = await fetch("/api/obter-categorias")
             if (response.ok) {
                 const data = await response.json()
                 setCategories(data)
-                return console.log("Categorias obtidas com sucesso!")
+                console.log("Categorias obtidas com sucesso!")
+                temporaryMessage("Categorias obtidas com sucesso!")
+                return
             }
             console.error("Erro ao obter categorias")
+            temporaryMessage("Erro ao obter categorias")
         } catch (error) {
             console.error("Erro ao realizar a requisição:", error)
+            temporaryMessage("Erro ao obter categorias. Tente outra vez.")
         } finally {
             setIsLoading(false)
         }
@@ -38,8 +50,6 @@ export default function MenuItem() {
 
     const onSubmit: SubmitHandler<DishDBInsertion> = async (data) => {
         setIsLoading(true)
-
-        console.log(data)
 
         try {
             const response = await fetch("/api/cadastrar-prato", {
@@ -51,13 +61,16 @@ export default function MenuItem() {
             })
 
             if (response.ok) {
-                reset()
-                return console.log("Prato cadastrado com sucesso!")
+                console.log(`${data.dishName} cadastrado com sucesso!`)
+                temporaryMessage(`${data.dishName} cadastrado com sucesso!`)
+                return reset()
             }
 
             console.error("Erro ao cadastrar o prato")
+            temporaryMessage("Erro ao cadastrar o prato")
         } catch (error) {
             console.error("Erro ao enviar a requisição:", error)
+            temporaryMessage("Erro ao tentar inserir o produto. Tente outra vez.")
         } finally {
             setIsLoading(false)
         }
@@ -106,6 +119,7 @@ export default function MenuItem() {
                         Adicionar Prato
                     </button>
                 </div>
+                {message}
             </form>
         </main>
     )
