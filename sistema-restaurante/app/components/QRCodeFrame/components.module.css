@@ -9,5 +9,5 @@
 }
 
 .qrFrame canvas {
-    @apply max-w-full object-contain;
+    @apply p-4 max-w-full object-contain;
 }

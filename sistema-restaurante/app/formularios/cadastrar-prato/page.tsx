@@ -57,13 +57,13 @@ export default function MenuItem() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify({...data, dishPrice: Number(data.dishPrice)}),
             })
 
             if (response.ok) {
                 console.log(`${data.dishName} cadastrado com sucesso!`)
-                temporaryMessage(`${data.dishName} cadastrado com sucesso!`)
-                return reset()
+                setMessage(`${capitalizeFirstLetters(data.dishName)} P${data.servingsCount} cadastrado com sucesso!`)
+                return
             }
 
             console.error("Erro ao cadastrar o prato")
@@ -105,7 +105,7 @@ export default function MenuItem() {
                     </label>
                     <label className={style.labelColHalf}>
                         <span>Pessoas servidas</span>
-                        <input type="number" {...register("servingsCount")} min={1} />
+                        <input type="text" {...register("servingsCount")} />
                     </label>
                     <label className={style.labelColHalf}>
                         <span>Preço</span>

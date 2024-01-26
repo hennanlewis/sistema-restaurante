@@ -45,7 +45,7 @@ type UserData = {
 type DishDBInsertion = {
     sectionName: string
     dishName: string
-    servingsCount: number
+    servingsCount: string
     dishPrice: number
     subtext: string
 }
