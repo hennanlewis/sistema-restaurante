@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { MongoClient, WithId } from "mongodb"
 
 const DATABASE_URI = process.env.DATABASE_URI || ""
@@ -89,15 +90,43 @@ export async function getDishCategories() {
     }
 }
 
+export async function getDishes() {
+    try {
+        await client.connect()
+
+        const cursor = client.db(DATABASE_NAME).collection("menu")
+            .find()
+
+        const response = await cursor.toArray()
+
+        return response
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close()
+    }
+
+}
+
 export async function insertDish(dish: DishDBInsertion) {
     const { sectionName, dishName, servingsCount, dishPrice, subtext } = dish
+
     try {
         await client.connect()
 
         const filter = { name: sectionName }
+
+        const newDish = {
+            _id: new ObjectId(),
+            dishName,
+            servingsCount,
+            dishPrice,
+            subtext
+        }
+
         const update = {
             $push: {
-                options: { dishName, servingsCount, dishPrice, subtext }
+                options: newDish
             }
         }
 
