@@ -1,2 +1,5 @@
-export const hasAdminPermission = (valueToCheck: string) => valueToCheck == "gerente"
-export const hasCashierPermission = (valueToCheck: string) => valueToCheck == "gerente" || valueToCheck == "caixa"
+const adminRole = ["admin", "gerente"]
+export const hasAdminPermission = (valueToCheck: string) => adminRole.includes(valueToCheck)
+
+const allowedRoles = ["admin", "gerente", "caixa"]
+export const hasCashierPermission = (valueToCheck: string) => allowedRoles.includes(valueToCheck)
