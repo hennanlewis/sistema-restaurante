@@ -49,6 +49,10 @@
 	text-shadow: 1px 1px 2px #0008;
 }
 
+.buttonOptions:disabled, .buttonLoading:disabled {
+    @apply bg-gray-500 text-gray-300 border-gray-500;
+}
+
 .buttonLoading::after {
     content: "";
     @apply absolute right-4 w-6 aspect-square border-white border-4 border-l-transparent

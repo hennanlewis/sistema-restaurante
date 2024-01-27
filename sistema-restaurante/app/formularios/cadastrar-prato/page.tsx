@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { IoMdArrowBack } from "react-icons/io"
 import { useRouter } from "next/navigation"
-import { SubmitHandler, set, useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 
 import style from "../formularios.module.css"
 import { capitalizeFirstLetters } from "@/utils/dataFormater"
@@ -13,7 +13,7 @@ type DishCategory = {
 }
 
 export default function MenuItem() {
-    const { register, handleSubmit, reset } = useForm<DishDBInsertion>()
+    const { register, handleSubmit} = useForm<DishDBInsertion>()
 
     const [isLoading, setIsLoading] = useState(false)
     const [message, setMessage] = useState("")

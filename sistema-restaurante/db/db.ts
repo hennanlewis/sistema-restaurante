@@ -6,12 +6,81 @@ const client = new MongoClient(DATABASE_URI, {})
 
 const DATABASE_NAME = process.env.DATABASE_NAME || ""
 
-export async function getUser(username: string, password: string) {
+export async function login(username: string, password: string) {
     try {
         await client.connect()
         const user = await client.db(DATABASE_NAME).collection("users")
             .findOne<UserData>({ username, password }, { projection: { _id: 0, password: 0 } })
         return user
+    } finally {
+        await client.close()
+    }
+}
+
+export async function getUserById(id: string) {
+    try {
+        await client.connect()
+
+        const filter = { _id: new ObjectId(id), role: { $ne: "admin" } }
+        const projection = { projection: { password: 0 } }
+        const users = await client.db(DATABASE_NAME).collection("users")
+            .find(filter, projection)
+            .toArray()
+
+        return users
+    } finally {
+        await client.close()
+    }
+}
+
+export async function getUsers() {
+    try {
+        await client.connect()
+
+        const users = await client.db(DATABASE_NAME).collection("users")
+            .find({ role: { $ne: "admin" }, deletedAt: { $exists: false }  }, { projection: { _id: 1, name: 1 } })
+            .toArray()
+
+        return users
+    } finally {
+        await client.close()
+    }
+}
+
+export async function insertUser(data: UserData) {
+    try {
+        await client.connect()
+        const response = await client.db(DATABASE_NAME).collection("users").insertOne(data)
+        return response
+    } finally {
+        await client.close()
+    }
+}
+
+export async function updateUser(data: UserDataFull & { status: string }) {
+    const { id, status, ...rest } = data
+    try {
+        await client.connect()
+        let response = null
+        console.log(rest, status)
+
+        if (status === "desligado") {
+            response = await client
+                .db(DATABASE_NAME)
+                .collection("users")
+                .updateOne({ _id: new ObjectId(id), deletedAt: { $exists: false } }, { $set: { ...rest, deletedAt: new Date() } })
+        }
+
+
+        if (status === "desligado") {
+            response = await client
+                .db(DATABASE_NAME)
+                .collection("users")
+                .updateOne({ _id: new ObjectId(id) }, { $set: { ...rest, deletedAt: new Date() } })
+        }
+
+        if(response && response.matchedCount === 1) return data
+        return null
     } finally {
         await client.close()
     }
@@ -23,16 +92,6 @@ export async function getRestaurantTables() {
         const cursor = client.db(DATABASE_NAME).collection("tables").find()
         const tables = await cursor.toArray()
         return tables
-    } finally {
-        await client.close()
-    }
-}
-
-export async function insertUser(data: UserData) {
-    try {
-        await client.connect()
-        const response = await client.db(DATABASE_NAME).collection("users").insertOne(data)
-        return response
     } finally {
         await client.close()
     }
