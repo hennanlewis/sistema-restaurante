@@ -42,6 +42,12 @@ type UserData = {
 	role: string
 }
 
+type UserDataFull = UserData & {
+    password: string
+    id: string
+    deletedAt?: Date
+}
+
 type DishDBInsertion = {
     sectionName: string
     dishName: string
