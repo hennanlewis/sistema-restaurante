@@ -4,10 +4,14 @@ import { IoMdArrowBack } from "react-icons/io"
 import { useRouter } from "next/navigation"
 
 import style from "../formularios.module.css"
+import { useBaseContext } from "@/contexts/MainContext"
+import { hasAdminPermission } from "@/utils/testPermissions"
 
 export default function RecordInfo() {
+    const {user} = useBaseContext()
     const router = useRouter()
     const routerBack = () => router.replace("/dashboard")
+    if (hasAdminPermission(user?.role!)) routerBack()
 
     const [formData, setFormData] = useState({
         name: "",
@@ -98,7 +102,7 @@ export default function RecordInfo() {
                     <button className={isLoading ? style.buttonLoading : style.buttonOptions} type="submit">
                         Adicionar funcionário
                     </button>
-                    {formError}
+                    <span className={style.labelCol}>{formError}</span>
                 </div>
             </form>
         </main >
