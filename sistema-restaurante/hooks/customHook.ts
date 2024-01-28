@@ -3,20 +3,27 @@ import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export const useCustomHook = () => {
-	const [user, setUser] = useState()
-	const pathname = usePathname()
-	const router = useRouter()
+    const [user, setUser] = useState()
+    const pathname = usePathname()
+    const router = useRouter()
 
-	useEffect(() => {
-		const loginData = JSON.parse(localStorage.getItem("user")!) || {}
+    useEffect(() => {
+        const loginDataString = localStorage.getItem("user")
 
-		if(loginData) setUser(loginData)
+        if (!loginDataString)
+            return router.replace("/") 
 
-		const { username } = loginData
-		if (username && pathname == "/") {
-			router.push("/dashboard")
-		}
-	}, [router, pathname])
+        const loginData = JSON.parse(loginDataString)
 
-	return user
+        if (!loginData || !loginData.username) {
+            return router.replace("/")
+        }
+
+        if (!loginData && !loginData.username && pathname !== "/") {
+            return router.replace("/")
+        }
+
+    }, [router, pathname])
+
+    return user
 }
