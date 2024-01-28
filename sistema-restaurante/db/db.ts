@@ -38,7 +38,7 @@ export async function getUsers() {
         await client.connect()
 
         const users = await client.db(DATABASE_NAME).collection("users")
-            .find({ role: { $ne: "admin" }, deletedAt: { $exists: false }  }, { projection: { _id: 1, name: 1 } })
+            .find({ role: { $ne: "admin" }, deletedAt: { $exists: false } }, { projection: { _id: 1, name: 1 } })
             .toArray()
 
         return users
@@ -79,7 +79,7 @@ export async function updateUser(data: UserDataFull & { status: string }) {
                 .updateOne({ _id: new ObjectId(id) }, { $set: { ...rest, deletedAt: new Date() } })
         }
 
-        if(response && response.matchedCount === 1) return data
+        if (response && response.matchedCount === 1) return data
         return null
     } finally {
         await client.close()
