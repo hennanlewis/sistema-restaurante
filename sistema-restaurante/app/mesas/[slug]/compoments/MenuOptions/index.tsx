@@ -13,7 +13,7 @@ export function MenuOptions({ menuSections, table }: MenuOptionsProps) {
         <div className={style.content}>
             {menuSections.map(item =>
                 <MenuSection
-                    key={item.name}
+                    key={item._id}
                     tableID={table.name}
                     sectionName={item.name}
                     options={item.options}
