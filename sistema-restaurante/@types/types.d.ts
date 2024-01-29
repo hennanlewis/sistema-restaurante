@@ -26,14 +26,16 @@ type MenuSection = {
 
 type OrderData = {
 	_id?: string
-	orderKey: string
+    itemID: string
 	tableID: string
-	itemID: string
 	itemQuantity: number
-	price: number
+    dishName: string
+	dishPrice: number
+    servingsCount: string
+    sectionName: string
 	clientNumber: number
 	isFinished: boolean
-	staffUser: string
+	employeer: string
 	isClosed?: Date
 }
 
