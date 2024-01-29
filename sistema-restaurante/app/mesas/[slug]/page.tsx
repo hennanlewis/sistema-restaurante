@@ -6,7 +6,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     }
 }
 
-export default function Mesas({ params }: { params: { slug: string } }) {
+const getMenuData = async () => {
+    const url = `${process.env.VERCEL_URL}/api/menu`
+    const response = await fetch(url, { next: { revalidate: 10 } })
+    return response.json()
+}
 
-    return <MainComponent params={params} />
+export default async function Mesas({ params }: { params: { slug: string } }) {
+    const menuData: MenuSection[] = await getMenuData()
+
+    return <MainComponent itemsMenu={menuData} params={params} />
 }

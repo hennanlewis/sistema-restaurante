@@ -9,7 +9,7 @@ import { ShowOrders } from "./ShowOrders"
 import { MenuTableOptions } from "./MenuTableOptions"
 import { MenuOptions } from "./MenuOptions"
 
-export function MainComponent({ params }: { params: { slug: string } }) {
+export function MainComponent({ itemsMenu, params }: { itemsMenu: MenuSection[], params: { slug: string } }) {
     const { orders, restaurantTables } = useBaseContext()
 
     const [currentTable] = restaurantTables.filter(item => str2Slug(item.name) == params.slug)
@@ -29,7 +29,7 @@ export function MainComponent({ params }: { params: { slug: string } }) {
                 {currentTable.occupiedAt && processedOrders.length > 0 &&
                     <ShowOrders label="Pedidos realizados" orders={processedOrders} />}
                 {currentTable.occupiedAt &&
-                    <MenuOptions menuSections={menuSections} table={currentTable} />
+                    <MenuOptions menuSections={itemsMenu} table={currentTable} />
                 }
             </div>
         </main >
