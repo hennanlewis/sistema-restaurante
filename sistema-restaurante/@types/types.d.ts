@@ -8,17 +8,18 @@ type RestaurantTableData = {
 }
 
 type SizeItemMenu = {
-	type: string
-	price: number
 }
 
 type MenuItem = {
-	optionName: string
-	subtext?: string[]
-	size: SizeItemMenu[]
+    _id?: string
+	dishName: string
+    subtext: string[]
+    servingsCount: string
+    dishPrice: number
 }
 
 type MenuSection = {
+    _id?: string
 	name: string
 	options: MenuItem[]
 }
