@@ -15,6 +15,19 @@ export const capitalizeFirstLetters = (string: string) => {
 	return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
+
+export const writeCategory = (sectionName: string) => {
+    const is600mlBeer = sectionName === "cervejas 600ml"
+    return is600mlBeer ? " (600ml) " : " "
+}
+
+export const formatOrderText = (
+        itemQuantity: number,
+        dishName: string,
+        sectionName: string,
+        dishPrice: number
+    ) => `${itemQuantity}x ${dishName}${writeCategory(sectionName)}- ${currencyFormater(itemQuantity * dishPrice)}`
+
 export const sumArrayValues = (array: number[]) => 
 	array.reduce((sum, itemValue) => sum += itemValue, 0)
 
