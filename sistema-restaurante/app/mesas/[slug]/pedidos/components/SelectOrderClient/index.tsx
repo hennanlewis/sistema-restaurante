@@ -1,4 +1,4 @@
-import { currencyFormater, showedOrdersFormater } from "@/utils/dataFormater"
+import { currencyFormater, formatOrderText, showedOrdersFormater } from "@/utils/dataFormater"
 
 import style from "./selectorderclient.module.css"
 import { ClientSelection } from "../ClientSelection"
@@ -17,9 +17,14 @@ export function SelectOrderClient({ orders, label, numberOfClients }: SelectOrde
 			<div className={style.selection}>
 				{orders.length > 0 && orders
 					.map(item =>
-						<div key={item.orderKey}>
-							<ClientSelection numberOfClients={numberOfClients} orderKey={item.orderKey} />
-							<span>{item.itemQuantity}x {item.itemID} - {currencyFormater(item.price)}</span>
+						<div key={item.itemID + item.sectionName + item.clientNumber + item.tableID}>
+							<ClientSelection numberOfClients={numberOfClients} orderKey={item.itemID + item.sectionName + item.clientNumber + item.tableID} />
+                            <span>{formatOrderText(
+                                item.itemQuantity,
+                                item.dishName,
+                                item.sectionName,
+                                item.dishPrice
+                            )}</span>
 						</div>
 					)
 				}

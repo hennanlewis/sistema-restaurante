@@ -1,7 +1,7 @@
 import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "./modalimpress.module.css"
-import { currencyFormater, showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
+import { currencyFormater, formatOrderText, showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
 
 type ModalProps = {
     closeModal: () => void
@@ -28,18 +28,23 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                     <h3>Pedidos - Mesa {tableName}</h3>
                     <ul>
                         {waitingOrders.map(item =>
-                            <li key={item.orderKey + item.tableID + item.staffUser}>
-                                <span>{item.itemQuantity}x {item.itemID}</span>
+                            <li key={item.itemID + item.sectionName + item.clientNumber + item.tableID}>
+                                <span>{formatOrderText(
+                                    item.itemQuantity,
+                                    item.dishName,
+                                    item.sectionName,
+                                    item.dishPrice
+                                )}</span>
                                 <span className={style.dots}></span>
                                 <span className={style.dots}></span>
-                                <span>{currencyFormater(item.price*item.itemQuantity)}</span>
+                                <span>{currencyFormater(item.dishPrice * item.itemQuantity)}</span>
                             </li>
                         )}
                         <li>
                             <span>Total</span>
                             <span className={style.dots}></span>
                             <span className={style.dots}></span>
-                            <span>{currencyFormater(sumArrayValues(waitingOrders.map(item => item.price * item.itemQuantity)))}</span>
+                            <span>{currencyFormater(sumArrayValues(waitingOrders.map(item => item.dishPrice * item.itemQuantity)))}</span>
                         </li>
                     </ul>
                 </div>
