@@ -16,6 +16,7 @@ type ContextProps = {
     setUser: Dispatch<SetStateAction<UserData | null>>
     orders: OrderData[]
     ordersWithID: OrderData[]
+    incrementalHexNumber: () => string
     setOrders: Dispatch<SetStateAction<OrderData[]>>
     notOrderedStack: OrderData[]
     setNotOrderedStack: Dispatch<SetStateAction<OrderData[]>>
@@ -32,12 +33,18 @@ export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     const [restaurantTables, setRestaurantTables] = useState<RestaurantTableData[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
-    const ordersWithID = orders.filter(order => order._id)
+    const ordersWithID = orders.filter(order => order.keyOrderID)
     if (ordersWithID.length > 0) console.log("Pedidos com ID", ordersWithID)
 
     const router = useRouter()
     const pathname = usePathname()
     const customHook = useCustomHook()
+
+    let incrementalValue = 0
+    const incrementalHexNumber = () => {
+        incrementalValue++
+        return incrementalValue.toString(16)
+    }
 
     useEffect(() => {
         setIsLoading(true)
@@ -52,6 +59,7 @@ export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ childr
             user, setUser,
             ordersWithID,
             orders, setOrders,
+            incrementalHexNumber,
             notOrderedStack,
             setNotOrderedStack,
             restaurantTables, setRestaurantTables

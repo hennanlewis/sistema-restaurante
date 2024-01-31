@@ -12,8 +12,8 @@ const getMenuData = async () => {
     return response.json()
 }
 
-export default async function Mesas({ params }: { params: { slug: string } }) {
+export default async function Mesas() {
     const menuData: MenuSection[] = await getMenuData()
 
-    return <MainComponent itemsMenu={menuData} params={params} />
+    return <MainComponent itemsMenu={menuData} />
 }

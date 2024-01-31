@@ -62,7 +62,6 @@ export async function updateUser(data: UserDataFull & { status: string }) {
     try {
         await client.connect()
         let response = null
-        console.log(rest, status)
 
         if (status === "desligado") {
             response = await client
@@ -156,9 +155,19 @@ export async function getDishes() {
         const cursor = client.db(DATABASE_NAME).collection("menu")
             .find()
 
-        const response = await cursor.toArray()
+        const response: MenuSection[] = await cursor.toArray() as any[]
+        const dishes = response.map((section) => {
+            return {
+                menuSectionId: String(section._id),
+                name: section.name,
+                options: section.options.map(dish => {
+                    const { _id, ...rest } = dish
+                    return { ...rest, dishId: _id }
+                })
+            }
+        })
 
-        return response
+        return dishes
     } catch (error) {
         console.log(error)
     } finally {

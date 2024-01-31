@@ -27,7 +27,7 @@ export function HomeComponent({ children }: { children: React.ReactNode }) {
         })
 
         const user = await response.json()
-        console.log(user)
+
         if (user) {
             localStorage.setItem("user", JSON.stringify(user))
             setUser(user)

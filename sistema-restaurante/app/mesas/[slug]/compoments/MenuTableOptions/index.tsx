@@ -45,7 +45,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
 
     useEffect(() => {
         const object: OrderData[] = JSON.parse(updatedProcessedOrders)
-        const totalOrderPrice = sumArrayValues(object.map(item => item.price))
+        const totalOrderPrice = sumArrayValues(object.map(item => item.dishPrice))
         const totalOrderItems = sumArrayValues(object.map(item => item.itemQuantity))
 
         setRestaurantTables(currentValues => currentValues
@@ -64,7 +64,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
                 }
                 {table.occupiedAt && <>
                     <button onClick={openModal}>Imprimir pedidos</button>
-                    <Link href={`/mesas/${table.name}/pedidos`}>
+                    <Link href={`/mesas/${table.name}/separar-cliente`}>
                         Separar por cliente
                     </Link>
                     <Link href={`/mesas/${table.name}/transferir`}>

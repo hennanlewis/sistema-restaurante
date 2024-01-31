@@ -12,6 +12,7 @@ type SizeItemMenu = {
 
 type MenuItem = {
     _id?: string
+    dishId: string
 	dishName: string
     subtext: string[]
     servingsCount: string
@@ -20,12 +21,13 @@ type MenuItem = {
 
 type MenuSection = {
     _id?: string
+    menuSectionId: string
 	name: string
 	options: MenuItem[]
 }
 
 type OrderData = {
-	_id?: string
+	keyOrderID: string
     itemID: string
 	tableID: string
 	itemQuantity: number

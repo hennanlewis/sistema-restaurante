@@ -4,24 +4,25 @@ import { currencyFormater } from "@/utils/dataFormater"
 import style from "./itemoption.module.css"
 import { useBaseContext } from "@/contexts/MainContext"
 
-type MenuItemProps = MenuItem & { sectionName: string, tableID: string }
+type MenuItemProps = MenuItem & {
+    menuSectionId: string
+    sectionName: string
+    tableID: string
+}
 
 export function ItemOption(props: MenuItemProps) {
-    const { orders, setOrders, user } = useBaseContext()
-    const { _id, dishName, dishPrice, servingsCount, tableID, sectionName } = props
-    const currentID = _id
-    const itemQuantity = orders
-        .filter((item) =>
-            currentID == item.itemID &&
-            item.tableID === tableID &&
-            item.isFinished == false
-        ).length
+    const { orders, setOrders, user, incrementalHexNumber } = useBaseContext()
+    const { menuSectionId, dishName, dishId, dishPrice, servingsCount, tableID, sectionName } = props
+
+    const itemQuantity = orders.filter((item) =>
+        item.tableID === tableID &&
+        item.isFinished == false
+    ).length
 
     const updateDecrease = () => {
         const itemIndex = orders
             .findIndex((item) =>
                 item.tableID === tableID &&
-                item.itemID === currentID &&
                 item.isFinished == false
             )
 
@@ -33,9 +34,11 @@ export function ItemOption(props: MenuItemProps) {
     }
 
     const updateIncrease = () => {
+        const keyOrderID = incrementalHexNumber() + menuSectionId + dishId
         const itemToAdd: OrderData = {
+            keyOrderID: keyOrderID,
             tableID,
-            itemID: currentID!,
+            itemID: dishId,
             itemQuantity: 1,
             clientNumber: 1,
             isFinished: false,

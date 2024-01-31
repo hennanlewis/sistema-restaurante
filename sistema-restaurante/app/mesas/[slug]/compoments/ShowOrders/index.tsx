@@ -1,4 +1,4 @@
-import { capitalizeFirstLetters, currencyFormater, formatOrderText, showedOrdersFormater } from "@/utils/dataFormater"
+import { formatOrderText, showedOrdersFormater } from "@/utils/dataFormater"
 
 import style from "../../mesas.module.css"
 
