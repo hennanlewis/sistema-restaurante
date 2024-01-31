@@ -19,7 +19,7 @@ export function MenuSection({ sectionName, options, tableID }: MenuSectionProps)
         if (isOpened) event.currentTarget.blur()
         setIsOpened(!isOpened)
     }
-    (options.map(item => item))
+
     return (
         <div className={`${signika.className} ${style.optionsDetails}`}>
             <button
