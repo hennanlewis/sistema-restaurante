@@ -10,10 +10,11 @@ import { MenuTableOptions } from "./MenuTableOptions"
 import { MenuOptions } from "./MenuOptions"
 
 export function MainComponent({ itemsMenu, params }: { itemsMenu: MenuSection[], params: { slug: string } }) {
-    const { orders, restaurantTables } = useBaseContext()
+    const { ordersWithID, restaurantTables } = useBaseContext()
+    console.log(ordersWithID)
 
     const [currentTable] = restaurantTables.filter(item => str2Slug(item.name) == params.slug)
-    const filteredOrders = orders
+    const filteredOrders = ordersWithID
         .filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
     const processedOrders = filteredOrders.filter(item => item.isFinished == true)
     const waitingOrders = filteredOrders.filter(item => item.isFinished == false)
