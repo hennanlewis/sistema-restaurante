@@ -12,13 +12,13 @@ export function ClientSelection({ numberOfClients, orderKey }: ClientSelectionPr
 	const { orders, setOrders } = useBaseContext()
 
 	const clientsNumber = Array.from({ length: numberOfClients }, (_, index) => ++index)
-	const [selectedOrder] = orders.filter(order => order.orderKey == orderKey)
+    const [selectedOrder] = orders.filter(order => order.itemID + order.sectionName + order.clientNumber + order.tableID == orderKey)
 
 	const seletOrderClient = (event: ChangeEvent<HTMLSelectElement>) => {
 		const selectedClientOption = Number(event.currentTarget.value)
 		selectedOrder.clientNumber = selectedClientOption
 		setOrders(currentValues => currentValues
-			.map(item => item.orderKey == orderKey ? { ...item, clientNumber: selectedClientOption } : item)
+            .map(item => item.itemID + item.sectionName + item.clientNumber + item.tableID == orderKey ? { ...item, clientNumber: selectedClientOption } : item)
 		)
 	}
 
