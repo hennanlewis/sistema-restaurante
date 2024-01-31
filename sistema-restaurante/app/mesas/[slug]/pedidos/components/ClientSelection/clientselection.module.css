@@ -1,7 +1,0 @@
-.select {
-	@apply px-2 bg-white/20 text-white border rounded;
-}
-
-.select option {
-	@apply text-black;
-}
