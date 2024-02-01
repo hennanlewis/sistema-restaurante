@@ -6,7 +6,10 @@ async function getHost() {
         method: "POST",
         body: JSON.stringify({ restaurant: "Restaurante Sabor do Mar" }),
     })
-    return response.json()
+
+    if (response.ok) return await response.json()
+
+    return { host: process.env.VERCEL_URL }
 }
 
 export async function QRCodeComponent() {

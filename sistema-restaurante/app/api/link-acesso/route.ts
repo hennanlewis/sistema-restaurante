@@ -8,7 +8,7 @@ export async function PUT(req: NextRequest) {
         if (result && result.matchedCount == 1)
             return Response.json({ host: `http://${ip}:3000` }, { status: 200 })
 
-        throw new Error('Restaurant not found in the result')
+        return Response.json({ host: process.env.VERCEL_URL }, { status: 200 })
     } catch (error) {
         return new Response(`Webhook error: ${error}`, {
             status: 400,

@@ -4,6 +4,7 @@ import { MouseEvent, useState } from "react"
 
 import { ItemOption } from "../ItemOption"
 import style from "./menusection.module.css"
+import { useBaseContext } from "@/contexts/MainContext"
 
 const signika = Signika({ subsets: ["latin"], variable: "--font-signika" })
 
@@ -21,6 +22,8 @@ export function MenuSection({ sectionName, options, tableID, menuSectionId }: Me
         setIsOpened(!isOpened)
     }
 
+    const { incrementalHexNumber } = useBaseContext()
+
     return (
         <div className={`${signika.className} ${style.optionsDetails}`}>
             <button
@@ -28,9 +31,11 @@ export function MenuSection({ sectionName, options, tableID, menuSectionId }: Me
                 onClick={focusedOption}>{sectionName}
             </button>
             <div className={style.optionsGrid}>
-                {options.map(menuItem =>
-                    <ItemOption
-                        key={menuSectionId + String(menuItem.dishId)}
+                {options.map(menuItem => {
+                    const keyOrderID = incrementalHexNumber() + menuSectionId + menuItem.dishId
+
+                    return <ItemOption
+                        key={keyOrderID}
                         tableID={tableID}
                         menuSectionId={menuSectionId}
                         dishId={menuItem.dishId}
@@ -39,8 +44,8 @@ export function MenuSection({ sectionName, options, tableID, menuSectionId }: Me
                         servingsCount={menuItem.servingsCount}
                         subtext={menuItem.subtext}
                         sectionName={sectionName}
-                    />)
-                }
+                    />
+                })}
             </div>
         </div>
     )
