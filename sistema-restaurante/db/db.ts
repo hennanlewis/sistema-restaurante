@@ -70,7 +70,6 @@ export async function updateUser(data: UserDataFull & { status: string }) {
                 .updateOne({ _id: new ObjectId(id), deletedAt: { $exists: false } }, { $set: { ...rest, deletedAt: new Date() } })
         }
 
-
         if (status === "desligado") {
             response = await client
                 .db(DATABASE_NAME)
@@ -101,6 +100,23 @@ export async function insertTable(data: UserData) {
         await client.connect()
         const response = await client.db(DATABASE_NAME).collection("tables").insertOne(data)
         return response
+    } finally {
+        await client.close()
+    }
+}
+
+export async function occupyTable(tableId: string) {
+    try {
+        await client.connect()
+        const occupiedAt = new Date()
+        console.log(tableId, occupiedAt)
+        const filter = { _id: new ObjectId(tableId) }
+        const update = { $set: { occupiedAt } }
+        const response = await client.db(DATABASE_NAME)
+            .collection("tables").updateOne(filter, update)
+
+        if (response && response.matchedCount === 1) return occupiedAt
+        return null
     } finally {
         await client.close()
     }

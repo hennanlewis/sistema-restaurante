@@ -12,20 +12,33 @@ type MenuTableOptionsProps = {
 }
 
 export function MenuTableOptions({ table }: MenuTableOptionsProps) {
-    const { orders, setOrders, setRestaurantTables } = useBaseContext()
+    const { orders, setOrders, restaurantTables, setRestaurantTables } = useBaseContext()
     const [showModal, setShowModal] = useState(false)
     const updatedProcessedOrders = JSON.stringify(orders
         .filter(item => item.isFinished == true && table.name == item.tableID))
 
-    const startTable = () => {
-        setRestaurantTables(currentValues => {
-            const newValues = currentValues.map(values =>
-                values.name == table.name ?
-                    { ...values, occupiedAt: new Date(), customersQuantity: 1 }
-                    :
-                    values)
-            return newValues
+    const startTable = async () => {
+        let updatedRestaurantTables = restaurantTables
+            .map(item => item.name == table.name ?
+                { ...item, customersQuantity: 1 } : item)
+
+        const [{ _id: tableId }] = updatedRestaurantTables.filter(item => item.name == table.name)
+
+        const result = await fetch("/api/mesas", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tableId }),
         })
+
+        if (result.ok) {
+            const occupiedAt = await result.json()
+            updatedRestaurantTables = updatedRestaurantTables
+                .map(item => item.name == table.name ?
+                    { ...item, occupiedAt } : item)
+            setRestaurantTables(updatedRestaurantTables)
+            return console.log("Mesa ocupada com sucesso!")
+        }
+        console.log("Erro ao ocupar mesa!")
     }
 
     const openModal = () => setShowModal(true)

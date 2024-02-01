@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         if (result !== null) {
             return Response.json(result, { status: 200 })
         }
-        throw new Error('Dish section not found in the result')
+        throw new Error("Dish section not found in the result")
     } catch (error) {
         return new Response(`Webhook error: ${error}`, {
             status: 400,

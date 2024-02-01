@@ -7,7 +7,7 @@ export async function GET() {
         if (result !== null) {
             return Response.json(result, { status: 200 })
         }
-        return new Response("Dish section not found in the result", {
+        return new Response("Menu category not found in the result", {
             status: 404,
         })
     } catch (error) {
