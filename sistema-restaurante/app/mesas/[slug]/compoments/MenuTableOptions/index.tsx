@@ -15,7 +15,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
     const { orders, setOrders, restaurantTables, setRestaurantTables } = useBaseContext()
     const [showModal, setShowModal] = useState(false)
     const updatedProcessedOrders = JSON.stringify(orders
-        .filter(item => item.isFinished == true && table.name == item.tableID))
+        .filter(item => item.isPlaced == true && table.name == item.tableID))
 
     const startTable = async () => {
         let updatedRestaurantTables = restaurantTables
@@ -44,14 +44,19 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
     const openModal = () => setShowModal(true)
     const closeModal = () => { setShowModal(false) }
 
-    const processOrders = () => {
-        setOrders(currentValues => currentValues
-            .map(item => item.tableID == table.name ?
-                { ...item, isFinished: true }
-                :
-                item
-            )
-        )
+    const processOrders = async () => {
+        const ordersToProcess = orders
+            .filter(item => item.tableID == table.name && item.isPlaced == false)
+            .map(item => ({ ...item, isPlaced: true }))
+        console.log(ordersToProcess)
+        const response = await fetch("/api/pedidos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(ordersToProcess)
+        })
+
+        const processedOrders = await response.json()
+        setOrders(processedOrders)
 
         closeModal()
     }
@@ -65,6 +70,10 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
             .map(item => item.name == table.name ?
                 { ...item, ordersTotalPrice: totalOrderPrice, ordersTotalQuantity: totalOrderItems }
                 : item)
+        )
+
+        setOrders(currentValues => currentValues
+            .map(order => ({ ...order, keyOrderID: order._id != "" ? order._id : order.keyOrderID  }))
         )
     }, [updatedProcessedOrders, setRestaurantTables])
 

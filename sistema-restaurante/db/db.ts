@@ -239,3 +239,22 @@ export async function getOrders() {
         await client.close()
     }
 }
+
+export async function insertOrders(orders: OrderData[]) {
+    try {
+        await client.connect()
+        const filteredOrders = orders.map(order => {
+            return { ...order, _id: new ObjectId() }
+        })
+        const response = await client.db(DATABASE_NAME).collection("orders").insertMany(filteredOrders)
+        if (response.insertedCount === orders.length) {
+            const placedOrders = await getOrders()
+            return placedOrders
+        }
+        return []
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close()
+    }
+}

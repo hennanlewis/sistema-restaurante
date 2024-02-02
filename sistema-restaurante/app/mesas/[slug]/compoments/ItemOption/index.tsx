@@ -11,20 +11,20 @@ type MenuItemProps = MenuItem & {
 }
 
 export function ItemOption(props: MenuItemProps) {
-    const { orders, setOrders, user } = useBaseContext()
+    const { orders, setOrders, user, incrementalHexNumber } = useBaseContext()
     const { menuSectionId, dishName, dishId, dishPrice, servingsCount, tableID, sectionName } = props
 
     const itemQuantity = orders.filter((item) =>
-        dishId == item.itemID &&
+        dishId == item.dishID &&
         item.tableID === tableID &&
-        item.isFinished == false
+        item.isPlaced == false
     ).length
 
     const updateDecrease = () => {
         const itemIndex = orders
             .findIndex((item) =>
                 item.tableID === tableID &&
-                item.isFinished == false
+                item.isPlaced == false
             )
 
         if (itemIndex != -1) {
@@ -35,13 +35,15 @@ export function ItemOption(props: MenuItemProps) {
     }
 
     const updateIncrease = () => {
+        const keyOrderID = dishId + tableID + incrementalHexNumber()
         const itemToAdd: OrderData = {
-            keyOrderID: dishId,
+            _id: "",
+            keyOrderID: keyOrderID,
             tableID,
-            itemID: dishId,
+            dishID: dishId,
             itemQuantity: 1,
             clientNumber: 1,
-            isFinished: false,
+            isPlaced: false,
             employeer: user?.username!,
             dishName,
             dishPrice,

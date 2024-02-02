@@ -22,7 +22,7 @@ export default function TopInfo({ hideCloseOrder = false }: TopInfoProps) {
 	const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
 	const filteredOrders = orders
 		.filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
-	const processedOrders = filteredOrders.filter(item => item.isFinished == true)
+	const processedOrders = filteredOrders.filter(item => item.isPlaced == true)
 
 	const orderTotalPrice = sumArrayValues(processedOrders.map(item => item.itemQuantity * item.dishPrice))
 	const formatedOrderTotalPrice = currencyFormater(orderTotalPrice)

@@ -15,7 +15,7 @@ export function ShowOrders({ orders, label }: ShowOrdersProps) {
         <div className={style.content}><ul>
             {filteredOrders.length > 0 && filteredOrders
                 .map(item =>
-                    <li key={item.itemID + item.sectionName + item.clientNumber + item.tableID}>
+                    <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID}>
                         {formatOrderText(
                             item.itemQuantity,
                             item.dishName,

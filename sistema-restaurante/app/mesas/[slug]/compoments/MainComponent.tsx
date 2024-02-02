@@ -15,8 +15,8 @@ export function MainComponent({ itemsMenu }: { itemsMenu: MenuSection[]}) {
     const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
     const filteredOrders = orders
         .filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
-    const processedOrders = filteredOrders.filter(item => item.isFinished == true)
-    const waitingOrders = filteredOrders.filter(item => item.isFinished == false)
+    const processedOrders = filteredOrders.filter(item => item.isPlaced == true)
+    const waitingOrders = filteredOrders.filter(item => item.isPlaced == false)
 
     return (
         <main className={style.main}>

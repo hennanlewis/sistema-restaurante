@@ -36,8 +36,8 @@ export const str2Slug = (input: string) => input.toLocaleLowerCase().replace(" "
 export const showedOrdersFormater = (orders: OrderData[]) => {
 	const filteredOrders: OrderData[] = []
 	for (const order of orders) {
-		const itemTotalQuantity = orders.filter(item => item.itemID == order.itemID).length
-		const isOnFilteredOrders = filteredOrders.some(item => item.itemID == order.itemID)
+		const itemTotalQuantity = orders.filter(item => item.dishID == order.dishID).length
+		const isOnFilteredOrders = filteredOrders.some(item => item.dishID == order.dishID)
 		if (!isOnFilteredOrders) {
 			filteredOrders.push({ ...order, itemQuantity: itemTotalQuantity })
 		}

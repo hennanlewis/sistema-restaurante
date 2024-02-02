@@ -27,8 +27,9 @@ type MenuSection = {
 }
 
 type OrderData = {
+    _id: string
 	keyOrderID: string
-    itemID: string
+    dishID: string
 	tableID: string
 	itemQuantity: number
     dishName: string
@@ -36,7 +37,7 @@ type OrderData = {
     servingsCount: string
     sectionName: string
 	clientNumber: number
-	isFinished: boolean
+	isPlaced: boolean
 	employeer: string
 	isClosed?: Date
 }

@@ -15,7 +15,7 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
     const [currentTable] = restaurantTables.filter(item => item.name == tableName)
     const filteredOrders = orders
         .filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
-    const waitingOrders = showedOrdersFormater(filteredOrders.filter(item => item.isFinished == false))
+    const waitingOrders = showedOrdersFormater(filteredOrders.filter(item => item.isPlaced == false))
 
     const printOrders = () => {
         window.print()
@@ -28,7 +28,7 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                     <h3>Pedidos - Mesa {tableName}</h3>
                     <ul>
                         {waitingOrders.map(item =>
-                            <li key={item.itemID + item.sectionName + item.clientNumber + item.tableID}>
+                            <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID}>
                                 <span>{formatOrderText(
                                     item.itemQuantity,
                                     item.dishName,
