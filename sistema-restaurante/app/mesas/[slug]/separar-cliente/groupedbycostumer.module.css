@@ -4,7 +4,7 @@
 
 .infoCards,
 .container {
-    @apply grid gap-2 p-4 bg-black/50 text-xs text-gray-100 font-medium rounded-sm shadow-md shadow-black;
+    @apply grid gap-2 p-4 bg-black/50 text-gray-100 font-medium rounded-sm shadow-md shadow-black;
 }
 
 .contentTitle {
@@ -30,4 +30,17 @@
     content: "";
     @apply absolute right-4 w-6 aspect-square border-white border-4 border-l-transparent
     rounded-full animate-spin;
+}
+
+.selectCustomer {
+    @apply flex gap-x-2 items-baseline;
+}
+
+.selectCustomer select {
+    @apply py-1 px-2 bg-white/20 text-white rounded border shadow shadow-black;
+    text-shadow: 1px 1px 2px #0008;
+}
+
+.selectCustomer select option {
+    @apply text-black;
 }

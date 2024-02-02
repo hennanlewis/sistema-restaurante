@@ -34,7 +34,6 @@ export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     const [isLoading, setIsLoading] = useState(true)
 
     const ordersWithID = orders.filter(order => order.keyOrderID)
-    if (ordersWithID.length > 0) console.log("Pedidos com ID", ordersWithID)
 
     const router = useRouter()
     const pathname = usePathname()

@@ -258,3 +258,17 @@ export async function insertOrders(orders: OrderData[]) {
         await client.close()
     }
 }
+
+export async function updateOrder(order: OrderData) {
+    try {
+        await client.connect()
+        const filter = { _id: new ObjectId(order._id) }
+        const {_id, ...rest} = order
+        const response = await client.db(DATABASE_NAME).collection("orders").updateOne(filter, { $set: rest })
+        return response
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close()
+    }
+}

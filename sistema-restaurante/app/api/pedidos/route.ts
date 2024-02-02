@@ -1,4 +1,4 @@
-import { getOrders, insertOrders } from "@/db/db"
+import { getOrders, insertOrders, updateOrder } from "@/db/db"
 import { ObjectId } from "mongodb"
 import { NextRequest } from "next/server"
 
@@ -17,6 +17,18 @@ export async function POST(request: NextRequest) {
     try {
         const orders = await request.json()
         const insertionData = await insertOrders(orders)
+        return Response.json(insertionData, { status: 200 })
+    } catch (error) {
+        return new Response(`Webhook error: ${error}`, {
+            status: 400,
+        })
+    }
+}
+
+export async function PUT(request: NextRequest) {
+    try {
+        const order = await request.json()
+        const insertionData = await updateOrder(order)
         return Response.json(insertionData, { status: 200 })
     } catch (error) {
         return new Response(`Webhook error: ${error}`, {
