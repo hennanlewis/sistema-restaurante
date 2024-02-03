@@ -224,3 +224,18 @@ export async function insertDish(dish: DishDBInsertion) {
         await client.close()
     }
 }
+
+export async function getOrders() {
+    try {
+        await client.connect()
+
+        const cursor = client.db(DATABASE_NAME).collection("orders").find()
+        const response = await cursor.toArray()
+
+        return response
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close()
+    }
+}

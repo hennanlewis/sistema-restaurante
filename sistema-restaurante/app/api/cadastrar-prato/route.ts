@@ -2,7 +2,6 @@ import { insertDish } from "@/db/db"
 import { NextRequest } from "next/server"
 
 export async function POST(req: NextRequest) {
-
     try {
         const dish: DishDBInsertion = await req.json()
         const result = await insertDish(dish)
