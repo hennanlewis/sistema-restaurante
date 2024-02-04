@@ -4,7 +4,7 @@ import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "../close.module.css"
 import TopInfo from "../../compoments/TopInfo"
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
 import { OrdersByClientToImpress } from "./OrdersByClientToImpress"
 import { AdditionalCharges } from "./AdditionalCharges"
@@ -22,6 +22,14 @@ export function MainComponent() {
 
     const [selectedClient, setSelectedClient] = useState(0)
     const [discount, setDiscount] = useState(0)
+    const [paymentMethod, setPaymentMethod] = useState("pix")
+    const [paymentData, setPaymentData] = useState({
+        orderIds: [],
+        paymentMethod: "pix",
+        discount: 0,
+        serviceFee: 0,
+        tableID: "",
+    })
 
     const handleSelectedClient = (clientNumber: number) => {
         setSelectedClient(clientNumber)
@@ -29,7 +37,7 @@ export function MainComponent() {
 
     const selectedClientOrders = showedOrdersFormater(orders)
         .filter(order => order.tableID == currentTable.name && order.clientNumber == selectedClient && order.isPlaced)
-    const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice*order.itemQuantity))
+    const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice * order.itemQuantity))
 
     const additionalCharges: AdditionalChargeData[] = [
         {
@@ -47,6 +55,45 @@ export function MainComponent() {
     const handleGive20Percent = () => {
         const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice))
         setDiscount((totalOrdersValue + totalOrdersValue * 0.1) * 0.2)
+    }
+
+    const handleFinishOrders = async () => {
+        const ordersToProcess = orders
+            .filter(item => item.tableID == currentTable.name)
+
+        const response = await fetch("/api/finalizar", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(ordersToProcess)
+        })
+
+        if (response.ok) {
+            setOrders(orders.filter(item => item.tableID != currentTable.name))
+        }
+    }
+    const handleSendPaymentData = async () => {
+        const ordersToProcess = orders
+            .filter(item => item.tableID === currentTable.name && item.clientNumber === selectedClient)
+
+        const dataToSend = {
+            orderIds: ordersToProcess.map(order => order._id),
+            paymentMethod: paymentMethod,
+            discount: discount,
+            serviceFee: totalOrdersValue * 0.1,
+            tableID: currentTable.name,
+        }
+
+        const response = await fetch("/api/finalizar", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dataToSend),
+        })
+
+        if (response.ok) {
+            setOrders(orders.filter(item => item.tableID !== currentTable.name))
+            setSelectedClient(0)
+            setDiscount(0)
+        }
     }
 
     return (
@@ -89,6 +136,27 @@ export function MainComponent() {
                         <AdditionalCharges
                             additionalCharges={additionalCharges}
                         />
+                    </div>
+                </div>
+            }
+            {selectedClient > 0 &&
+                <div className={style.container}>
+                    <div className={style.content}>
+                        <label className={style.inputLabel}>
+                            Método de Pagamento:
+                            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+                                <option value="pix">PIX</option>
+                                <option value="dinheiro">Dinheiro</option>
+                                <option value="cartao">Cartão</option>
+                            </select>
+                        </label>
+                        <button
+                            className={style.buttonOptionsHalf}
+                            onClick={handleSendPaymentData}
+                        >
+                            FINALIZAR PEDIDOS
+                        </button>
+                        <button className={style.buttonOptionsHalf} onClick={handleFinishOrders}>FECHAR MESA</button>
                     </div>
                 </div>
             }

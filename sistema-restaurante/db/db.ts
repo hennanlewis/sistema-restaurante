@@ -125,7 +125,7 @@ export async function occupyTable(tableId: string) {
 export async function updateTable(table: RestaurantTableData) {
     try {
         await client.connect()
-        const {_id, ...rest} = table
+        const { _id, ...rest } = table
         const filter = { _id: new ObjectId(table._id) }
         const update = { $set: rest }
         const response = await client.db(DATABASE_NAME)
@@ -279,11 +279,33 @@ export async function updateOrder(order: OrderData) {
     try {
         await client.connect()
         const filter = { _id: new ObjectId(order._id) }
-        const {_id, ...rest} = order
+        const { _id, ...rest } = order
         const response = await client.db(DATABASE_NAME).collection("orders").updateOne(filter, { $set: rest })
         return response
     } catch (error) {
         console.log(error)
+    } finally {
+        await client.close()
+    }
+}
+export async function finishOrders(orders: OrderData[]) {
+    try {
+        await client.connect()
+
+        const bulkOperations = orders.map(order => ({
+            updateOne: {
+                filter: { _id: new ObjectId(order._id) },
+                update: {
+                    $set: { finishedAt: new Date() }
+                }
+            }
+        }))
+
+        const bulkResult = await client.db(DATABASE_NAME).collection("orders").bulkWrite(bulkOperations)
+
+        return orders
+    } catch (error) {
+        console.error(error)
     } finally {
         await client.close()
     }

@@ -50,6 +50,14 @@
     @apply flex flex-col gap-y-1;
 }
 
-.inputLabel input {
+.inputLabel input, .inputLabel select {
     @apply py-1 px-2 bg-white/20 text-white rounded border shadow shadow-black;
+}
+
+.inputLabel select {
+    @apply col-span-2
+}
+
+.inputLabel option {
+    @apply text-black;
 }
