@@ -26,7 +26,7 @@ export const formatOrderText = (
         dishName: string,
         sectionName: string,
         dishPrice: number
-    ) => `${itemQuantity}x ${dishName}${writeCategory(sectionName)}- ${currencyFormater(itemQuantity * dishPrice)}`
+    ) => `${itemQuantity}x ${dishName}${writeCategory(sectionName)}`
 
 export const sumArrayValues = (array: number[]) => 
 	array.reduce((sum, itemValue) => sum += itemValue, 0)

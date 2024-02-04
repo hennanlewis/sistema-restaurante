@@ -1,6 +1,7 @@
 .infoCards {
 	@apply grid gap-2 p-4 bg-black/50 text-xs text-gray-100
-	font-medium rounded-sm shadow-md shadow-black;
+	font-medium rounded-sm shadow-md shadow-black print:hidden print:gap-0
+    print:h-0 print:m-0 print:p-0 print:shadow-none;
 }
 
 .topOptions {

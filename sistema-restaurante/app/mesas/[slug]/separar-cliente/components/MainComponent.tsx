@@ -70,32 +70,37 @@ export function MainComponent() {
             <TopInfo />
 
             <div className={style.container}>
-                <button className={style.buttonOptions} onClick={handleDecreaseCustomers}>
-                    Diminuir número de clientes
-                </button>
-                <button className={style.buttonOptions} onClick={handleIncreaseCustomers}>
-                    Aumentar número de clientes
-                </button>
+                <div className={style.content}>
+                    <button className={style.buttonOptions} onClick={handleDecreaseCustomers}>
+                        Diminuir número de clientes
+                    </button>
+                    <button className={style.buttonOptions} onClick={handleIncreaseCustomers}>
+                        Aumentar número de clientes
+                    </button>
+                </div>
             </div>
 
             <div className={style.container}>
-                {filteredOrders.map(order =>
-                    <div className={style.selectCustomer} key={order.keyOrderID}>
-                        <select
-                            value={order.clientNumber}
-                            onChange={(event) => handleCustomerChange(order.keyOrderID, event)}
-                        >
-                            {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index)
-                                .map((_, index) => (
-                                    <option key={index} value={index + 1}>
-                                        Cliente {index + 1}
-                                    </option>
-                                ))}
-                        </select>
-                        {formatOrderText(order.itemQuantity, order.dishName, order.sectionName, order.dishPrice)}
-                    </div>
-                )}
+                <div className={style.content}>
+                    {filteredOrders.map(order =>
+                        <div className={style.selectCustomer} key={order.keyOrderID}>
+                            <select
+                                value={order.clientNumber}
+                                onChange={(event) => handleCustomerChange(order.keyOrderID, event)}
+                            >
+                                {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index)
+                                    .map((_, index) => (
+                                        <option key={index} value={index + 1}>
+                                            Cliente {index + 1}
+                                        </option>
+                                    ))}
+                            </select>
+                            {formatOrderText(order.itemQuantity, order.dishName, order.sectionName, order.dishPrice)}
+                        </div>
+                    )}
+                </div>
             </div>
+
         </main >
     )
 }

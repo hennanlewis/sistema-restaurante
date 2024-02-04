@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { IoMdArrowBack } from "react-icons/io"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import { hasAdminPermission } from "@/utils/testPermissions"
 import { currencyFormater, sumArrayValues } from "@/utils/dataFormater"
 import { ElapsedTimer } from "@/app/mesas/components/ElapserTime"
@@ -18,6 +18,7 @@ export default function TopInfo({ hideCloseOrder = false }: TopInfoProps) {
 	const { orders, restaurantTables, user } = useBaseContext()
 	const router = useRouter()
 	const params = useParams()
+    const pathname = usePathname()
 
 	const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
 	const filteredOrders = orders
@@ -55,7 +56,7 @@ export default function TopInfo({ hideCloseOrder = false }: TopInfoProps) {
 		<div className={style.infoCards}>
 			<div className={style.topOptions}>
 				<button onClick={routerBack}><IoMdArrowBack /><span>Voltar</span></button>
-				{ showCloseOrder() &&
+				{ showCloseOrder() && pathname != `/mesas/${currentTable.name}/fechar` &&
 					<Link href={`/mesas/${currentTable.name}/fechar`}>Fechar conta</Link>
 				}
 			</div>

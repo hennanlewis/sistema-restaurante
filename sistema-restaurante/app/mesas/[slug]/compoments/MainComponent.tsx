@@ -1,4 +1,5 @@
 "use client"
+import { useParams } from "next/navigation"
 import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "../mesas.module.css"
@@ -6,7 +7,6 @@ import { ShowOrders } from "./ShowOrders"
 import { MenuTableOptions } from "./MenuTableOptions"
 import { MenuOptions } from "./MenuOptions"
 import TopInfo from "./TopInfo"
-import { useParams } from "next/navigation"
 
 export function MainComponent({ itemsMenu }: { itemsMenu: MenuSection[]}) {
     const params = useParams()
