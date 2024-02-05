@@ -78,7 +78,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
     }, [updatedProcessedOrders, setRestaurantTables])
 
     return (
-        <div className={style.orderOptionsContent}>
+        <div className={style.orderOptionsContent + "print:bg-white"}>
             <h2 className={style.contentTitle}>Mesa</h2>
             <div className={style.buttonOptions}>
                 {!table.occupiedAt &&

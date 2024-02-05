@@ -5,7 +5,7 @@ import style from "../groupedbycostumer.module.css"
 import { useParams } from "next/navigation"
 import TopInfo from "../../compoments/TopInfo"
 import { formatOrderText } from "@/utils/dataFormater"
-import { ChangeEvent } from "react"
+import { ChangeEvent, useRef } from "react"
 
 export function MainComponent() {
     const params = useParams()
@@ -13,7 +13,7 @@ export function MainComponent() {
 
     const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
     const filteredOrders = orders
-        .filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
+        .filter(item => item.tableID == currentTable.name)
         .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
 
     const handleDecreaseCustomers = () => {
@@ -51,25 +51,19 @@ export function MainComponent() {
 
     }
 
-    const handleCustomerChange = async (keyOrderID: string, event: ChangeEvent<HTMLSelectElement>) => {
+    const handleCustomerChange = async (ID: string, event: ChangeEvent<HTMLSelectElement>) => {
         const clientNumber = Number(event.target.value)
-        const [filteredOrder] = orders.filter(order => order.keyOrderID == keyOrderID)
+        const [selectOrder] = filteredOrders.filter(order => order._id == ID)
             .map(order => ({ ...order, clientNumber }))
         const response = await fetch("/api/pedidos", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(filteredOrder)
+            body: JSON.stringify(selectOrder)
         })
 
         if (response.ok) {
-            const updatedOrders = orders.map(order => {
-                return {
-                    ...order,
-                    clientNumber: order.keyOrderID == keyOrderID ?
-                        clientNumber :
-                        order.clientNumber
-                }
-            })
+            const updatedOrders = orders.map(order => order._id == selectOrder._id ?
+                selectOrder : order)
             setOrders(updatedOrders)
         }
 
@@ -77,7 +71,7 @@ export function MainComponent() {
 
     return (
         <main className={style.main}>
-            <TopInfo />
+            <TopInfo hideCloseOrder={filteredOrders.some(order => order.clientNumber == 0)} />
 
             <div className={style.container}>
                 <div className={style.content}>
@@ -95,12 +89,13 @@ export function MainComponent() {
                     {filteredOrders.map(order =>
                         <div className={style.selectCustomer} key={order.keyOrderID}>
                             <select
+                                onChange={(event) => handleCustomerChange(order._id, event)}
                                 value={order.clientNumber}
-                                onChange={(event) => handleCustomerChange(order.keyOrderID, event)}
                             >
+                                {order.clientNumber == 0 && <option value={0}> </option>}
                                 {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index)
                                     .map((_, index) => (
-                                        <option key={index} value={index + 1}>
+                                        <option key={index} value={index + 1} onClick={() => console.log(index + 1)}>
                                             Cliente {index + 1}
                                         </option>
                                     ))}

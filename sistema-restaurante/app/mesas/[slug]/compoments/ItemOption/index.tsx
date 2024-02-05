@@ -12,7 +12,7 @@ type MenuItemProps = MenuItem & {
 
 export function ItemOption(props: MenuItemProps) {
     const { orders, setOrders, user, incrementalHexNumber } = useBaseContext()
-    const { menuSectionId, dishName, dishId, dishPrice, servingsCount, tableID, sectionName } = props
+    const { _id, menuSectionId, dishName, dishId, dishPrice, servingsCount, tableID, sectionName } = props
 
     const itemQuantity = orders.filter((item) =>
         dishId == item.dishID &&
@@ -37,12 +37,12 @@ export function ItemOption(props: MenuItemProps) {
     const updateIncrease = () => {
         const keyOrderID = dishId + tableID + incrementalHexNumber()
         const itemToAdd: OrderData = {
-            _id: "",
+            _id: _id ?? "",
             keyOrderID: keyOrderID,
             tableID,
             dishID: dishId,
             itemQuantity: 1,
-            clientNumber: 1,
+            clientNumber: 0,
             isPlaced: false,
             employeer: user?.username!,
             dishName,
@@ -60,7 +60,7 @@ export function ItemOption(props: MenuItemProps) {
                 <button onClick={updateDecrease}><ImMinus /></button>
                 <button onClick={updateIncrease}><ImPlus /></button>
             </span>
-            <span>{itemQuantity}x {dishName} {servingsCount} {currencyFormater(dishPrice)}</span>
+            <span onClick={updateIncrease}>{itemQuantity}x {dishName} {servingsCount} {currencyFormater(dishPrice)}</span>
         </div>
     )
 }

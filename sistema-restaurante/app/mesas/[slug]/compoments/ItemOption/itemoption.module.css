@@ -1,5 +1,5 @@
 .orderItem {
-	@apply flex items-center gap-x-2 w-full text-base font-bold leading-none;
+	@apply flex items-center gap-x-2 w-full text-lg font-bold leading-none sm:text-base;
 }
 
 .orderItem .buttons {
