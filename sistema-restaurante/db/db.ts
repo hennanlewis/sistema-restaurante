@@ -122,6 +122,22 @@ export async function occupyTable(tableId: string) {
     }
 }
 
+export async function updateTable(table: RestaurantTableData) {
+    try {
+        await client.connect()
+        const {_id, ...rest} = table
+        const filter = { _id: new ObjectId(table._id) }
+        const update = { $set: rest }
+        const response = await client.db(DATABASE_NAME)
+            .collection("tables").updateOne(filter, update)
+
+        if (response && response.matchedCount === 1) return table
+        return null
+    } finally {
+        await client.close()
+    }
+}
+
 export async function setHost(ip: string, restaurant: string) {
     try {
         await client.connect()

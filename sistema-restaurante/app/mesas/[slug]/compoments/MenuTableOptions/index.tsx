@@ -25,7 +25,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
         const [{ _id: tableId }] = updatedRestaurantTables.filter(item => item.name == table.name)
 
         const result = await fetch("/api/mesas", {
-            method: "PUT",
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ tableId }),
         })

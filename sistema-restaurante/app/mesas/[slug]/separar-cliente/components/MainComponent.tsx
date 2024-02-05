@@ -28,7 +28,7 @@ export function MainComponent() {
         setRestaurantTables(updatedTable)
     }
 
-    const handleIncreaseCustomers = () => {
+    const handleIncreaseCustomers = async () => {
         const updatedTable = restaurantTables
             .map(table => {
                 return {
@@ -38,7 +38,17 @@ export function MainComponent() {
                         table.customersQuantity
                 }
             })
-        setRestaurantTables(updatedTable)
+
+        const [selectedTable] = updatedTable.filter(table => table.name == params.slug)
+        const response = await fetch("/api/mesas", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(selectedTable)
+        })
+
+        if (response.ok)
+            setRestaurantTables(updatedTable)
+
     }
 
     const handleCustomerChange = async (keyOrderID: string, event: ChangeEvent<HTMLSelectElement>) => {
