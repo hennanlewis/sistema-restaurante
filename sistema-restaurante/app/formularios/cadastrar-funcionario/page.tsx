@@ -10,7 +10,7 @@ import { hasAdminPermission } from "@/utils/testPermissions"
 export default function RecordInfo() {
     const {user} = useBaseContext()
     const router = useRouter()
-    const routerBack = () => router.replace("/dashboard")
+    const routerBack = () => router.back()
 
     const [formData, setFormData] = useState({
         name: "",

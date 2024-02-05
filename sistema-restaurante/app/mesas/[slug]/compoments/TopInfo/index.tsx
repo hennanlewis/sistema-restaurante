@@ -56,7 +56,7 @@ export default function TopInfo({ hideCloseOrder = false }: TopInfoProps) {
 		<div className={style.infoCards}>
 			<div className={style.topOptions}>
 				<button onClick={routerBack}><IoMdArrowBack /><span>Voltar</span></button>
-				{ showCloseOrder() && pathname != `/mesas/${currentTable.name}/fechar` &&
+				{ showCloseOrder() &&
 					<Link href={`/mesas/${currentTable.name}/fechar`}>Fechar conta</Link>
 				}
 			</div>
