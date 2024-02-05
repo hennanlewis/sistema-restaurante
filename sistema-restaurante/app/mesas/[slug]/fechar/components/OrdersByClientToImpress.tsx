@@ -6,10 +6,10 @@ type OrderByClientToImpressProps = {
     selectedClientOrders: OrderData[]
     selectedClient: number
     text: string
-    hideButton?: boolean
 }
 
-export function OrdersByClientToImpress({ selectedClientOrders, selectedClient, text, hideButton = false }: OrderByClientToImpressProps) {
+export function OrdersByClientToImpress({ selectedClientOrders, selectedClient, text }: OrderByClientToImpressProps) {
+
     return (
         <>
             <ul>
@@ -28,14 +28,6 @@ export function OrdersByClientToImpress({ selectedClientOrders, selectedClient, 
                     </li>
                 )}
             </ul>
-            {!hideButton &&
-                <button
-                    className={style.buttonOptions}
-                    onClick={() => window.print()}
-                >
-                    Imprimir pedidos
-                </button>
-            }
         </>
     )
 }

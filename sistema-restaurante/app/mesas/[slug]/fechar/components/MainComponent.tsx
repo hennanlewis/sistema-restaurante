@@ -4,7 +4,7 @@ import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "../close.module.css"
 import TopInfo from "../../compoments/TopInfo"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
 import { OrdersByClientToImpress } from "./OrdersByClientToImpress"
 import { AdditionalCharges } from "./AdditionalCharges"
@@ -16,7 +16,7 @@ type AdditionalChargeData = {
 
 export function MainComponent() {
     const params = useParams()
-    const { orders, setOrders, restaurantTables, setRestaurantTables, incrementalHexNumber } = useBaseContext()
+    const { orders, setOrders, restaurantTables } = useBaseContext()
 
     const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
 
@@ -35,9 +35,11 @@ export function MainComponent() {
         setSelectedClient(clientNumber)
     }
 
-    const selectedClientOrders = showedOrdersFormater(orders)
+    const selectedClientOrders = orders
         .filter(order => order.tableID == currentTable.name && order.clientNumber == selectedClient && order.isPlaced)
+        .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
     const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice * order.itemQuantity))
+    console.log(showedOrdersFormater(selectedClientOrders))
 
     const additionalCharges: AdditionalChargeData[] = [
         {
@@ -54,7 +56,8 @@ export function MainComponent() {
 
     const handleGive20Percent = () => {
         const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice))
-        setDiscount((totalOrdersValue + totalOrdersValue * 0.1) * 0.2)
+        const normalizedDiscount = ((totalOrdersValue + totalOrdersValue * 0.1) * 0.2).toFixed(2)
+        setDiscount(Number(normalizedDiscount))
     }
 
     const handleFinishOrders = async () => {
@@ -96,6 +99,8 @@ export function MainComponent() {
         }
     }
 
+    useEffect(() => { handleGive20Percent() }, [selectedClient])
+
     return (
         <main className={style.main}>
             <TopInfo hideCloseOrder />
@@ -114,24 +119,26 @@ export function MainComponent() {
                 </div>
             </div>
 
-            <div className={style.container}>
-                <div className={style.content}>
-                    <label className={style.inputLabel}>
-                        Desconto:
-                        <input type="number" onChange={handleDiscount} value={Number(discount)} min={0} />
-                    </label>
-                    <button className={style.buttonOptionsHalf} onClick={handleGive20Percent}>Calcular 20%</button>
-                </div>
-            </div>
 
             {selectedClient > 0 &&
                 <div className={style.container}>
+                    <div className={style.content}>
+                        <label className={style.inputLabel}>
+                            Desconto:
+                            <input type="number" onChange={handleDiscount} value={Number(discount)} min={0} />
+                        </label>
+                        <button className={style.buttonOptions} onClick={handleGive20Percent}>Calcular 20%</button>
+                    </div>
+                </div>
+            }
+
+            {selectedClient > 0 &&
+                <div className={style.containerPrint}>
                     <div className={style.contentPrint}>
                         <OrdersByClientToImpress
-                            selectedClientOrders={selectedClientOrders}
+                            selectedClientOrders={showedOrdersFormater(selectedClientOrders)}
                             selectedClient={selectedClient}
                             text="Restaurante Sabor do Mar"
-                            hideButton
                         />
                         <AdditionalCharges
                             additionalCharges={additionalCharges}
@@ -151,12 +158,15 @@ export function MainComponent() {
                             </select>
                         </label>
                         <button
-                            className={style.buttonOptionsHalf}
+                            className={style.buttonOptions}
                             onClick={handleSendPaymentData}
                         >
-                            FINALIZAR PEDIDOS
+                            FINALIZAR PEDIDO (Cliente {selectedClient})
                         </button>
-                        <button className={style.buttonOptionsHalf} onClick={handleFinishOrders}>FECHAR MESA</button>
+                    </div>
+
+                    <div className={style.content}>
+                        <button className={style.buttonOptions} onClick={handleFinishOrders}>FECHAR MESA</button>
                     </div>
                 </div>
             }

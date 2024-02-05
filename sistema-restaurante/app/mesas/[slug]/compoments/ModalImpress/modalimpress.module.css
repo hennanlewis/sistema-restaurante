@@ -17,12 +17,12 @@
 }
 
 @media print {
-    .modalContent {
-        @apply my-0 py-2 border border-black shadow-none;
+    .modal, .modalContent {
+        @apply w-full my-0 py-0 shadow-none;
     }
     
     .orders {
-        @apply w-full text-black text-[0.8em];
+        @apply w-full m-0 p-2 text-black text-[0.8em];
     }
 }
 

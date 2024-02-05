@@ -32,8 +32,4 @@ body {
     @page {
         margin: 0;
     }
-    main {
-        height: 0;
-        overflow: hidden;
-    }
 }

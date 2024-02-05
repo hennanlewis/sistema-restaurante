@@ -30,7 +30,7 @@ export function AdditionalCharges({ additionalCharges, hideButton = false }: Ord
                     className={style.buttonOptions}
                     onClick={() => window.print()}
                 >
-                    Imprimir pedidos
+                    Imprimir nota
                 </button>
             }
         </>

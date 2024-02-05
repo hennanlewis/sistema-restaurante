@@ -1,29 +1,31 @@
 .main {
-    @apply flex flex-col w-[40rem] max-w-[95vw] gap-y-4 m-auto sm:px-4
-    print:h-full print:mx-2 print:my-0 print:p-0 print:gap-y-0;
+    @apply flex flex-col w-[40rem] max-w-[95vw] gap-y-4 m-auto sm:px-4;
 }
 
-.container {
+.container, .containerPrint {
     @apply grid gap-2 p-4 bg-black/50 text-gray-100 font-medium rounded-sm
-    shadow-md shadow-black print:shadow-none print:m-0 print:p-0;
+    shadow-md shadow-black;
 }
 
 .contentTitle {
-    @apply text-2xl font-bold print:m-0 print:p-0;
+    @apply text-2xl font-bold;
 }
 
 .content, .contentPrint {
     @apply grid grid-cols-2 gap-x-6 gap-y-2 p-4 bg-black/50 text-base rounded-sm shadow-md
-    shadow-black print:hidden print:h-0 print:shadow-none print:text-left print:m-0
-    print:p-0;
+    shadow-black;
 }
 
 .contentPrint {
-    @apply flex flex-col print:block print:text-black print:h-full print:m-0 print:p-0;
+    @apply flex flex-col;
+}
+
+.contentPrint ul {
+    @apply m-0 p-0;
 }
 
 .contentPrint ul li {
-    @apply flex flex-wrap list-none print:leading-normal print:text-xs;
+    @apply flex flex-wrap list-none;
 }
 
 .contentPrint span {
@@ -32,13 +34,13 @@
 
 .dots {
     @apply flex-1 min-w-[8px] h-0 border-b border-dotted border-white
-    translate-y-4 print:translate-y-3 print:border-black;
+    translate-y-4;
 }
 
 .buttonOptions, .buttonOptionsHalf {
-    @apply relative col-span-2 p-2 bg-sky-800 text-sm font-bold
+    @apply col-span-2 p-2 bg-sky-800 text-sm font-bold
     hover:bg-emerald-600 rounded-3xl border border-black/20 shadow-md
-    shadow-black duration-300 print:hidden;
+    shadow-black duration-300;
     text-shadow: 1px 1px 2px #0008;
 }
 
@@ -47,7 +49,7 @@
 }
 
 .inputLabel {
-    @apply flex flex-col gap-y-1;
+    @apply col-span-2 flex flex-col gap-y-1;
 }
 
 .inputLabel input, .inputLabel select {
@@ -60,4 +62,30 @@
 
 .inputLabel option {
     @apply text-black;
+}
+
+@media print {
+    .main {
+        @apply m-0 -mt-10 p-0 gap-0 shadow-none;
+    }
+
+    .main > \*, .containerPrint > \*, .contentPrint > \* {
+        @apply bg-white text-black shadow-none;
+    }
+
+    .container, .content, .contentTitle, .buttonOptions, .inputLabel {
+        @apply hidden max-h-0 m-0 p-0 shadow-none;
+    }
+
+    .containerPrint .contentPrint {
+        @apply absolute m-0 p-4 left-0 top-0 right-0 text-black shadow-none;
+    }
+
+    .contentPrint span {
+        @apply leading-normal text-xs;
+    }
+
+    .dots {
+        @apply translate-y-3 border-black;
+    }
 }
