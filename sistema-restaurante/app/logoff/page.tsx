@@ -1,11 +1,11 @@
 "use client"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 import style from "../components/components.module.css"
 import { useBaseContext } from "@/contexts/MainContext"
 
-export default function HomeComponent({ children }: { children: React.ReactNode }) {
+export default function HomeComponent() {
     const { setUser } = useBaseContext()
     const router = useRouter()
 
@@ -21,7 +21,6 @@ export default function HomeComponent({ children }: { children: React.ReactNode 
                 <h1 className="text-4xl font-black">Desfazendo login</h1>
             </div>
 
-            {children}
         </main>
     )
 }

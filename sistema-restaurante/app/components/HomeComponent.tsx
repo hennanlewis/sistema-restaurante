@@ -1,5 +1,5 @@
 "use client"
-import React, { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 
 import style from "./components.module.css"
 import { useBaseContext } from "@/contexts/MainContext"
