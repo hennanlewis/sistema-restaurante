@@ -48,7 +48,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
         const ordersToProcess = orders
             .filter(item => item.tableID == table.name && item.isPlaced == false)
             .map(item => ({ ...item, isPlaced: true }))
-        console.log(ordersToProcess)
+
         const response = await fetch("/api/pedidos", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

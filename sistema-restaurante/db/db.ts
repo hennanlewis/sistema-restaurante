@@ -109,7 +109,7 @@ export async function occupyTable(tableId: string) {
     try {
         await client.connect()
         const occupiedAt = new Date()
-        console.log(tableId, occupiedAt)
+
         const filter = { _id: new ObjectId(tableId) }
         const update = { $set: { occupiedAt } }
         const response = await client.db(DATABASE_NAME)
