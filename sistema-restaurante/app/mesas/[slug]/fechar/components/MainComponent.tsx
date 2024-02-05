@@ -98,7 +98,7 @@ export function MainComponent() {
 
     return (
         <main className={style.main}>
-            <TopInfo />
+            <TopInfo hideCloseOrder />
 
             <div className={style.container}>
                 <div className={style.content}>
