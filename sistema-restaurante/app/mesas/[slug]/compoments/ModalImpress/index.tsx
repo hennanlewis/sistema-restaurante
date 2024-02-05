@@ -29,23 +29,20 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                     <ul>
                         {waitingOrders.map(item =>
                             <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID}>
-                                <span>{formatOrderText(
-                                    item.itemQuantity,
-                                    item.dishName,
-                                    item.sectionName,
-                                    item.dishPrice
-                                )}</span>
+                                <span className={style.orderInfo}>
+                                    {formatOrderText(
+                                        item.itemQuantity,
+                                        item.dishName,
+                                        item.sectionName,
+                                        item.dishPrice
+                                    )}
+                                </span>
                                 <span className={style.dots}></span>
-                                <span className={style.dots}></span>
-                                <span>{currencyFormater(item.dishPrice * item.itemQuantity)}</span>
+                                <span className={style.price}>
+                                    {currencyFormater(item.dishPrice * item.itemQuantity)}
+                                </span>
                             </li>
                         )}
-                        <li>
-                            <span>Total</span>
-                            <span className={style.dots}></span>
-                            <span className={style.dots}></span>
-                            <span>{currencyFormater(sumArrayValues(waitingOrders.map(item => item.dishPrice * item.itemQuantity)))}</span>
-                        </li>
                     </ul>
                 </div>
                 <button onClick={printOrders}>Imprimir pedido</button>

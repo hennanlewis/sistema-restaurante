@@ -1,6 +1,6 @@
 .modal {
     @apply fixed w-auto min-h-full top-0 left-0 right-0 bottom-0 flex flex-col
-    gap-y-4 bg-black/90 z-10 overflow-auto print:absolute print:shadow-transparent;
+    gap-y-4 bg-black/90 z-10 overflow-auto print:shadow-none;
 }
 
 .modal::-webkit-scrollbar {
@@ -13,7 +13,17 @@
 }
 
 .orders {
-    @apply flex flex-col mb-auto print:text-black print:text-[.8em];
+    @apply flex flex-col mb-auto w-[20rem];
+}
+
+@media print {
+    .modalContent {
+        @apply my-0 py-2 border border-black shadow-none;
+    }
+    
+    .orders {
+        @apply w-full text-black text-[0.8em];
+    }
 }
 
 .orders > h3 {
@@ -21,17 +31,26 @@
 }
 
 .orders ul li {
-    @apply flex flex-wrap leading-[1.4];
+    @apply flex flex-wrap leading-[1.4] text-justify;
 }
 
-.orders span {
-    @apply flex-shrink-0;
+.orderInfo, .price {
+    @apply flex leading-[1.4];
 }
 
 .dots {
-    @apply flex-1 min-w-[8px] h-0 border-b border-dotted border-white
-    translate-y-4 print:translate-y-3 print:border-black;
- }
+    @apply flex flex-1 border-dotted;
+}
+
+.dots::before, .price::before {
+    content: "";
+    @apply h-0 border-b w-full border-dotted border-white
+    translate-y-4 print:translate-y-3 print:border-black
+}
+
+.price {
+    @apply flex-1;
+}
 
 .modalContent button {
     @apply flex justify-center p-2 bg-sky-800 text-base font-bold
