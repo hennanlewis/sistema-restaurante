@@ -28,13 +28,13 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                     <h3>Pedidos - Mesa {tableName}</h3>
                     <ul>
                         {waitingOrders.map(item =>
-                            <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID}>
+                            <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID + item.info}>
                                 <span className={style.orderInfo}>
                                     {formatOrderText(
                                         item.itemQuantity,
                                         item.dishName,
                                         item.sectionName,
-                                        item.dishPrice
+                                        item.info
                                     )}
                                 </span>
                                 <span className={style.dots}></span>

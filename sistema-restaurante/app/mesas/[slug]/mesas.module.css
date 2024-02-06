@@ -14,3 +14,22 @@
 .content {
 	@apply flex flex-col gap-2 p-4 bg-black/50 text-base rounded-sm shadow-md shadow-black;
 }
+
+.content li {
+    @apply flex flex-col;
+}
+
+.content li span {
+    @apply flex items-baseline gap-1;
+}
+
+.content input {
+    @apply py-1 px-2 bg-white/20 text-white rounded border shadow shadow-black;
+}
+
+.buttonOptions {
+	@apply p-2 bg-sky-800 text-base font-bold hover:bg-emerald-600
+	rounded-3xl border border-black/20 shadow-md shadow-black
+	duration-300;
+	text-shadow: 1px 1px 2px #0008;
+}

@@ -39,7 +39,6 @@ export function MainComponent() {
         .filter(order => order.tableID == currentTable.name && order.clientNumber == selectedClient && order.isPlaced)
         .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
     const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice * order.itemQuantity))
-    console.log(showedOrdersFormater(selectedClientOrders))
 
     const additionalCharges: AdditionalChargeData[] = [
         {
@@ -75,11 +74,13 @@ export function MainComponent() {
         }
     }
     const handleSendPaymentData = async () => {
-        const ordersToProcess = orders
+        const filteredOrders = orders
             .filter(item => item.tableID === currentTable.name && item.clientNumber === selectedClient)
+        const ordersToProcess = showedOrdersFormater(filteredOrders)
 
+        console.log(ordersToProcess)
         const dataToSend = {
-            orderIds: ordersToProcess.map(order => order._id),
+            orderIds: ordersToProcess,
             paymentMethod: paymentMethod,
             discount: discount,
             serviceFee: totalOrdersValue * 0.1,
@@ -92,11 +93,11 @@ export function MainComponent() {
             body: JSON.stringify(dataToSend),
         })
 
-        if (response.ok) {
-            setOrders(orders.filter(item => item.tableID !== currentTable.name))
-            setSelectedClient(0)
-            setDiscount(0)
-        }
+        // if (response.ok) {
+        //     setOrders(orders.filter(item => item.tableID !== currentTable.name))
+        //     setSelectedClient(0)
+        //     setDiscount(0)
+        // }
     }
 
     useEffect(() => { handleGive20Percent() }, [selectedClient])

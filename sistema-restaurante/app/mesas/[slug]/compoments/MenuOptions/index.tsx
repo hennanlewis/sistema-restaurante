@@ -11,9 +11,9 @@ export function MenuOptions({ menuSections, table }: MenuOptionsProps) {
     return <>
         <h2 className={style.contentTitle}>Menu</h2>
         <div className={style.content}>
-            {menuSections.map(item =>
+            {menuSections.map((item, index) =>
                 <MenuSection
-                    key={item.menuSectionId}
+                    key={item.menuSectionId + index}
                     tableID={table.name}
                     sectionName={item.name}
                     menuSectionId={item.menuSectionId}

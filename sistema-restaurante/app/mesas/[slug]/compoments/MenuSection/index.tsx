@@ -32,7 +32,7 @@ export function MenuSection({ sectionName, options, tableID, menuSectionId }: Me
             </button>
             <div className={style.optionsGrid}>
                 {options.map(menuItem => {
-                    const keyOrderID = incrementalHexNumber() + menuSectionId + menuItem.dishId
+                    const keyOrderID = incrementalHexNumber() + menuItem.dishId
 
                     return <ItemOption
                         key={keyOrderID}

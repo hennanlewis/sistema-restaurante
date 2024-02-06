@@ -20,7 +20,7 @@ export function OrdersByClientToImpress({ selectedClientOrders, selectedClient, 
                             order.itemQuantity,
                             order.dishName,
                             order.sectionName,
-                            order.dishPrice
+                            order.info
                         )}</span>
                         <span className={style.dots}></span>
                         <span className={style.dots}></span>

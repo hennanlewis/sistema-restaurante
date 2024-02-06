@@ -39,10 +39,9 @@ export const TableContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     const pathname = usePathname()
     const customHook = useCustomHook()
 
-    let incrementalValue = 0
     const incrementalHexNumber = () => {
-        incrementalValue++
-        return incrementalValue.toString(16)
+        const value = Math.floor(Math.random() * 65536)
+        return value.toString(16)
     }
 
     useEffect(() => {

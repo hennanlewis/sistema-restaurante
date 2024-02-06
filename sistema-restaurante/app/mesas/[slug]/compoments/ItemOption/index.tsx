@@ -37,7 +37,7 @@ export function ItemOption(props: MenuItemProps) {
     const updateIncrease = () => {
         const keyOrderID = dishId + tableID + incrementalHexNumber()
         const itemToAdd: OrderData = {
-            _id: _id ?? "",
+            _id: _id ? String(_id) : "",
             keyOrderID: keyOrderID,
             tableID,
             dishID: dishId,
@@ -48,7 +48,8 @@ export function ItemOption(props: MenuItemProps) {
             dishName,
             dishPrice,
             servingsCount,
-            sectionName
+            sectionName,
+            info: ""
         }
 
         setOrders(currentValues => [...currentValues, itemToAdd])

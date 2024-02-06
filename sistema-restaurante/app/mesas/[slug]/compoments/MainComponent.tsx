@@ -25,7 +25,7 @@ export function MainComponent({ itemsMenu }: { itemsMenu: MenuSection[]}) {
             <div className={style.container}>
                 <MenuTableOptions table={currentTable} />
                 {currentTable.occupiedAt && waitingOrders.length > 0 &&
-                    <ShowOrders label="Pedidos pendentes" orders={waitingOrders} />}
+                    <ShowOrders label="Pedidos pendentes" orders={waitingOrders} showAddInfo />}
                 {currentTable.occupiedAt && processedOrders.length > 0 &&
                     <ShowOrders label="Pedidos realizados" orders={processedOrders} />}
 

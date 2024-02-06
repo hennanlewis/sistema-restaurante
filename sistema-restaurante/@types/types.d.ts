@@ -40,6 +40,7 @@ type OrderData = {
 	isPlaced: boolean
 	employeer: string
 	isClosed?: Date
+    info: string
 }
 
 type UserData = {
