@@ -37,11 +37,20 @@ export const showedOrdersFormater = (orders: OrderData[]) => {
     const filteredOrders: OrderData[] = []
     for (const order of orders) {
         const itemTotalQuantity = orders.filter(item => item.dishID == order.dishID && item.info == order.info).length
+        const totalReducedPrice = sumArrayValues(orders
+            .filter(item => item.dishID == order.dishID && item.info == order.info)
+            .map(item => item.reducedPrice || 0))
         const isOnFilteredOrders = filteredOrders
             .some(item => item.dishID == order.dishID && item.info == order.info)
         if (!isOnFilteredOrders) {
-            filteredOrders.push({ ...order, itemQuantity: itemTotalQuantity, info: order.info })
+            filteredOrders.push({
+                ...order,
+                itemQuantity: itemTotalQuantity,
+                info: order.info,
+                reducedPrice: totalReducedPrice
+            })
         }
     }
+    console.log("check price", filteredOrders)
     return filteredOrders
 }

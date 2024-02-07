@@ -61,6 +61,16 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
         closeModal()
     }
 
+    const updateOrders = async () => {
+
+        const response = await fetch("/api/pedidos")
+        if(response.ok) {
+            const updatedOrders = await response.json()
+            setOrders(updatedOrders)
+        }
+
+    }
+
     useEffect(() => {
         const object: OrderData[] = JSON.parse(updatedProcessedOrders)
         const totalOrderPrice = sumArrayValues(object.map(item => item.dishPrice))
@@ -92,6 +102,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
                     <Link href={`/mesas/${table.name}/transferir`}>
                         Mudar mesa
                     </Link>
+                    <button onClick={updateOrders}>Atualizar pedidos</button>
                 </>}
             </div>
             {showModal &&

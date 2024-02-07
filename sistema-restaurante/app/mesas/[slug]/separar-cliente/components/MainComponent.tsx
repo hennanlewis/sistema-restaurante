@@ -17,15 +17,22 @@ export function MainComponent() {
         .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
 
     const handleDecreaseCustomers = () => {
+        let maxClientNumber = 0
+
         const updatedTable = restaurantTables.map(table => {
+            maxClientNumber = Math.max(maxClientNumber, table.customersQuantity - 1)
             return {
                 ...table,
                 customersQuantity: table.name == params.slug ?
-                    Math.max(1, table.customersQuantity - 1) :
-                    table.customersQuantity
+                Math.max(1, table.customersQuantity - 1) :
+                table.customersQuantity
             }
         })
         setRestaurantTables(updatedTable)
+
+        const updatedOrders = orders.map(order => order.clientNumber > maxClientNumber ?
+            {...order, clientNumber: 0} : order)
+        setOrders(updatedOrders)
     }
 
     const handleIncreaseCustomers = async () => {
@@ -53,17 +60,17 @@ export function MainComponent() {
 
     const handleCustomerChange = async (ID: string, event: ChangeEvent<HTMLSelectElement>) => {
         const clientNumber = Number(event.target.value)
-        const [selectOrder] = filteredOrders.filter(order => order._id == ID)
+        const [selectedOrder] = filteredOrders.filter(order => order._id == ID)
             .map(order => ({ ...order, clientNumber }))
         const response = await fetch("/api/pedidos", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(selectOrder)
+            body: JSON.stringify(selectedOrder)
         })
 
         if (response.ok) {
-            const updatedOrders = orders.map(order => order._id == selectOrder._id ?
-                selectOrder : order)
+            const updatedOrders = orders.map(order => order._id == selectedOrder._id ?
+                selectedOrder : order)
             setOrders(updatedOrders)
         }
 
@@ -92,15 +99,15 @@ export function MainComponent() {
                                 onChange={(event) => handleCustomerChange(order._id, event)}
                                 value={order.clientNumber}
                             >
-                                {order.clientNumber == 0 && <option value={0}> </option>}
+                                <option value={0}> </option>
                                 {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index)
                                     .map((_, index) => (
-                                        <option key={index} value={index + 1} onClick={() => console.log(index + 1)}>
+                                        <option key={index} value={index + 1}>
                                             Cliente {index + 1}
                                         </option>
                                     ))}
                             </select>
-                            {formatOrderText(order.itemQuantity, order.dishName, order.sectionName, order.dishPrice)}
+                            {formatOrderText(order.itemQuantity, order.dishName, order.sectionName, order.info)}
                         </div>
                     )}
                 </div>

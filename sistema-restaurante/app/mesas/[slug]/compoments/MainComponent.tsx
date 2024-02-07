@@ -14,20 +14,20 @@ export function MainComponent({ itemsMenu }: { itemsMenu: MenuSection[]}) {
 
     const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
     const filteredOrders = orders
-        .filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
+        .filter(item => item.tableID == currentTable.name)
     const processedOrders = filteredOrders.filter(item => item.isPlaced == true)
     const waitingOrders = filteredOrders.filter(item => item.isPlaced == false)
 
     return (
         <main className={style.main}>
-            <TopInfo />
+            <TopInfo hideCloseOrder />
 
             <div className={style.container}>
                 <MenuTableOptions table={currentTable} />
                 {currentTable.occupiedAt && waitingOrders.length > 0 &&
                     <ShowOrders label="Pedidos pendentes" orders={waitingOrders} showAddInfo />}
                 {currentTable.occupiedAt && processedOrders.length > 0 &&
-                    <ShowOrders label="Pedidos realizados" orders={processedOrders} />}
+                    <ShowOrders label="Pedidos realizados" orders={processedOrders} showAddInfo />}
 
                 {currentTable.occupiedAt &&
                     <MenuOptions menuSections={itemsMenu} table={currentTable} />

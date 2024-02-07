@@ -39,8 +39,9 @@ type OrderData = {
 	clientNumber: number
 	isPlaced: boolean
 	employeer: string
-	isClosed?: Date
     info: string
+	isClosed?: Date
+    reducedPrice?: number
 }
 
 type UserData = {

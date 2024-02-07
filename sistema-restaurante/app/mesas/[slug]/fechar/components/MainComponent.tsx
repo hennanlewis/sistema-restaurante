@@ -5,7 +5,7 @@ import { useBaseContext } from "@/contexts/MainContext"
 import style from "../close.module.css"
 import TopInfo from "../../compoments/TopInfo"
 import { ChangeEvent, useEffect, useState } from "react"
-import { showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
+import { currencyFormater, formatOrderText, showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
 import { OrdersByClientToImpress } from "./OrdersByClientToImpress"
 import { AdditionalCharges } from "./AdditionalCharges"
 
@@ -16,7 +16,7 @@ type AdditionalChargeData = {
 
 export function MainComponent() {
     const params = useParams()
-    const { orders, setOrders, restaurantTables } = useBaseContext()
+    const { orders, setOrders, restaurantTables, setRestaurantTables } = useBaseContext()
 
     const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
 
@@ -24,12 +24,14 @@ export function MainComponent() {
     const [discount, setDiscount] = useState(0)
     const [paymentMethod, setPaymentMethod] = useState("pix")
     const [paymentData, setPaymentData] = useState({
-        orderIds: [],
+        orders: [] as OrderData[],
         paymentMethod: "pix",
         discount: 0,
         serviceFee: 0,
         tableID: "",
     })
+    const [selectedReducedPriceId, setSelectedReducedPriceId] = useState("")
+    const [selectedReducedPrice, setSelectedReducedPrice] = useState(0)
 
     const handleSelectedClient = (clientNumber: number) => {
         setSelectedClient(clientNumber)
@@ -38,7 +40,9 @@ export function MainComponent() {
     const selectedClientOrders = orders
         .filter(order => order.tableID == currentTable.name && order.clientNumber == selectedClient && order.isPlaced)
         .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
-    const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice * order.itemQuantity))
+        .map(order => ({ ...order, dishPrice: order.dishPrice }))
+    const totalOrdersValue = sumArrayValues(selectedClientOrders
+        .map(order => (order.dishPrice - (order.reducedPrice || 0)) * order.itemQuantity))
 
     const additionalCharges: AdditionalChargeData[] = [
         {
@@ -60,44 +64,66 @@ export function MainComponent() {
     }
 
     const handleFinishOrders = async () => {
-        const ordersToProcess = orders
-            .filter(item => item.tableID == currentTable.name)
+        let [table] = restaurantTables.filter(item => item.name == params.slug)
+        table = {
+            ...table,
+            ordersTotalPrice: 0,
+            ordersTotalQuantity: 0,
+            customersQuantity: 0,
+            occupiedAt: null
+        }
 
-        const response = await fetch("/api/finalizar", {
+        const response = await fetch("/api/mesas", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(ordersToProcess)
+            body: JSON.stringify(table)
         })
 
         if (response.ok) {
-            setOrders(orders.filter(item => item.tableID != currentTable.name))
+            const updatedTables = restaurantTables
+                .map(item => item.name == table.name ? table : item)
+            setRestaurantTables(updatedTables)
         }
     }
+
+    const handleReducePrice = () => {
+        const updatedOrders = orders.map(order => order._id == selectedReducedPriceId ?
+            { ...order, reducedPrice: selectedReducedPrice } : order)
+        setOrders(updatedOrders)
+    }
+
     const handleSendPaymentData = async () => {
         const filteredOrders = orders
             .filter(item => item.tableID === currentTable.name && item.clientNumber === selectedClient)
+        const filteredIds = filteredOrders.map(order => order._id)
         const ordersToProcess = showedOrdersFormater(filteredOrders)
 
-        console.log(ordersToProcess)
-        const dataToSend = {
-            orderIds: ordersToProcess,
+        const tagData = {
+            orders: ordersToProcess,
             paymentMethod: paymentMethod,
             discount: discount,
-            serviceFee: totalOrdersValue * 0.1,
+            serviceFee: Number((totalOrdersValue * 0.1).toFixed(2)),
             tableID: currentTable.name,
         }
 
         const response = await fetch("/api/finalizar", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(filteredIds),
         })
 
-        // if (response.ok) {
-        //     setOrders(orders.filter(item => item.tableID !== currentTable.name))
-        //     setSelectedClient(0)
-        //     setDiscount(0)
-        // }
+        if (response.ok) {
+            setPaymentData(tagData)
+            setOrders(orders.filter(item => !filteredIds.includes(item._id)))
+            setSelectedClient(0)
+
+            const response = await fetch("/api/finalizar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(tagData),
+            })
+
+        }
     }
 
     useEffect(() => { handleGive20Percent() }, [selectedClient])
@@ -120,12 +146,48 @@ export function MainComponent() {
                 </div>
             </div>
 
-
             {selectedClient > 0 &&
-                <div className={style.container}>
-                    <div className={style.content}>
+                <div className={style.containerPrint}>
+                    <div className={style.contentPrint}>
+                        <OrdersByClientToImpress
+                            selectedClientOrders={selectedClientOrders}
+                            selectedClient={selectedClient}
+                            text="Abater valores"
+                            type="reduced price"
+                        />
+
                         <label className={style.inputLabel}>
-                            Desconto:
+                            <select onChange={(e) => setSelectedReducedPriceId(e.target.value)}>
+                                <option value=""> </option>
+                                {selectedClientOrders.map(order =>
+                                    <option key={order._id + "reducePrice"} value={order._id}>
+                                        {formatOrderText(
+                                            order.itemQuantity,
+                                            order.dishName,
+                                            order.sectionName,
+                                            order.info
+                                        )} {currencyFormater(order.reducedPrice || 0)}
+                                    </option>
+                                )}
+                            </select>
+                        </label>
+
+                        {selectedReducedPriceId != "" &&
+                            <label className={style.inputLabel}>
+                                <input type="number" value={selectedReducedPrice}
+                                    onChange={(e) => setSelectedReducedPrice(Number(e.target.value))} min={0}
+                                />
+                            </label>
+                        }
+
+                        {selectedReducedPriceId != "" &&
+                            <button className={style.buttonOptions} onClick={handleReducePrice}>
+                                Atualizar abatimento
+                            </button>
+                        }
+
+                        <label className={style.inputLabel}>
+                            Desconto final:
                             <input type="number" onChange={handleDiscount} value={Number(discount)} min={0} />
                         </label>
                         <button className={style.buttonOptions} onClick={handleGive20Percent}>Calcular 20%</button>
@@ -140,6 +202,7 @@ export function MainComponent() {
                             selectedClientOrders={showedOrdersFormater(selectedClientOrders)}
                             selectedClient={selectedClient}
                             text="Restaurante Sabor do Mar"
+                            type="final price"
                         />
                         <AdditionalCharges
                             additionalCharges={additionalCharges}
@@ -147,6 +210,7 @@ export function MainComponent() {
                     </div>
                 </div>
             }
+
             {selectedClient > 0 &&
                 <div className={style.container}>
                     <div className={style.content}>

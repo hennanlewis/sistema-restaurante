@@ -245,7 +245,7 @@ export async function getOrders() {
     try {
         await client.connect()
 
-        const cursor = client.db(DATABASE_NAME).collection("orders").find()
+        const cursor = client.db(DATABASE_NAME).collection("orders").find({ finishedAt: { $exists: false} })
         const response = await cursor.toArray()
 
         return response
@@ -288,13 +288,14 @@ export async function updateOrder(order: OrderData) {
         await client.close()
     }
 }
-export async function finishOrders(orders: OrderData[]) {
+
+export async function finishOrders(orderIds: string[]) {
     try {
         await client.connect()
 
-        const bulkOperations = orders.map(order => ({
+        const bulkOperations = orderIds.map(ids => ({
             updateOne: {
-                filter: { _id: new ObjectId(order._id) },
+                filter: { _id: new ObjectId(ids) },
                 update: {
                     $set: { finishedAt: new Date() }
                 }
@@ -303,7 +304,22 @@ export async function finishOrders(orders: OrderData[]) {
 
         const bulkResult = await client.db(DATABASE_NAME).collection("orders").bulkWrite(bulkOperations)
 
-        return orders
+        return orderIds
+    } catch (error) {
+        console.error(error)
+    } finally {
+        await client.close()
+    }
+}
+
+export async function insertTag(finishedData: string[]) {
+    try {
+        await client.connect()
+
+        const bulkResult = await client.db(DATABASE_NAME).collection("tags").insertOne(finishedData)
+        console.log(bulkResult)
+
+        return finishedData
     } catch (error) {
         console.error(error)
     } finally {

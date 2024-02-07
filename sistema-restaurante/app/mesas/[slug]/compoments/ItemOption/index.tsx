@@ -34,7 +34,7 @@ export function ItemOption(props: MenuItemProps) {
         }
     }
 
-    const updateIncrease = () => {
+    const updateIncrease = async () => {
         const keyOrderID = dishId + tableID + incrementalHexNumber()
         const itemToAdd: OrderData = {
             _id: _id ? String(_id) : "",

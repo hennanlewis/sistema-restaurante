@@ -6,9 +6,15 @@ type OrderByClientToImpressProps = {
     selectedClientOrders: OrderData[]
     selectedClient: number
     text: string
+    type?: "price" | "reduced price" | "final price"
 }
 
-export function OrdersByClientToImpress({ selectedClientOrders, selectedClient, text }: OrderByClientToImpressProps) {
+export function OrdersByClientToImpress({
+    selectedClientOrders,
+    selectedClient,
+    text,
+    type = "price"
+}: OrderByClientToImpressProps) {
 
     return (
         <>
@@ -24,7 +30,15 @@ export function OrdersByClientToImpress({ selectedClientOrders, selectedClient, 
                         )}</span>
                         <span className={style.dots}></span>
                         <span className={style.dots}></span>
-                        <span>{currencyFormater(order.dishPrice * order.itemQuantity)}</span>
+                        {type == "price" && <span>{currencyFormater(order.dishPrice * order.itemQuantity)}</span>}
+                        {type == "reduced price" &&
+                            <span>{currencyFormater((order.reducedPrice || 0) * order.itemQuantity)}</span>
+                        }
+                        {type == "final price" &&
+                            <span>
+                                {currencyFormater((order.dishPrice) * order.itemQuantity - (order.reducedPrice || 0))}
+                            </span>
+                        }
                     </li>
                 )}
             </ul>
