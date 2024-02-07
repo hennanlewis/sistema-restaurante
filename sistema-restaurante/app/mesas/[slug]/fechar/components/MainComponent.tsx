@@ -1,5 +1,5 @@
 "use client"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "../close.module.css"
@@ -16,6 +16,7 @@ type AdditionalChargeData = {
 
 export function MainComponent() {
     const params = useParams()
+    const router = useRouter()
     const { orders, setOrders, restaurantTables, setRestaurantTables } = useBaseContext()
 
     const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
@@ -107,7 +108,10 @@ export function MainComponent() {
             const updatedTables = restaurantTables
                 .map(item => item.name == table.name ? table : item)
             setRestaurantTables(updatedTables)
+            console.log("Mesa fechada com sucesso")
+            router.push("/mesas")
         }
+
     }
 
     const handleReducePrice = () => {
