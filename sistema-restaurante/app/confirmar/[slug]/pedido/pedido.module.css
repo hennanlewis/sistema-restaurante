@@ -2,6 +2,10 @@
     @apply w-[72mm] min-h-screen p-0 bg-white ;
 }
 
+.main div {
+    @apply m-0 pb-4;
+}
+
 .ordersKitchen, .ordersBar {
     @apply flex flex-col m-0 w-full;
 }
@@ -16,7 +20,7 @@
 }
 
 .ordersBar {
-    @apply mt-10;
+    @apply my-10;
 }
 
 .main .ordersKitchen h3, .main .ordersBar h3 {

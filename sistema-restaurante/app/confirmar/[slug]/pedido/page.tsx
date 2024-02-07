@@ -28,14 +28,6 @@ export default function ConfirmarPedido() {
             ["drinks", "long neck", "cervejas 600ml"].includes(item.sectionName)
         ))
 
-    const capturePageImage = () => {
-        if (mainRef.current)
-            html2canvas(mainRef.current).then(canvas => {
-                const image = canvas.toDataURL("image/bmp")
-                sendImageToServer(image)
-            })
-    }
-
     const sendImageToServer = async (imageData: string) => {
         try {
             await fetch("/api/image", {
@@ -49,6 +41,14 @@ export default function ConfirmarPedido() {
         }
     }
 
+    const capturePageImage = () => {
+        if (mainRef.current)
+            html2canvas(mainRef.current).then(canvas => {
+                const image = canvas.toDataURL("image/bmp")
+                sendImageToServer(image)
+            })
+    }
+
     useEffect(() => {
         if (montcounter.current == 0) capturePageImage()
         console.log('Componente montado', montcounter.current++)
@@ -57,69 +57,69 @@ export default function ConfirmarPedido() {
         }
     }, [])
 
-    return <main className={style.main} ref={mainRef}>
-        <div className={style.ordersKitchen}>
-            <h3>Cozinha - Mesa {params.slug}</h3>
-            <ul>
-                {kicthen.map(item =>
-                    <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID + item.info}>
-                        <span className={style.orderInfo}>
-                            {formatOrderText(
-                                item.itemQuantity,
-                                item.dishName,
-                                item.sectionName,
-                                item.info
-                            )}
+    return <main className={style.main}>
+        <div ref={mainRef}>
+            <div className={style.ordersKitchen}>
+                <h3>Cozinha - Mesa {params.slug}</h3>
+                <ul>
+                    {kicthen.map(item =>
+                        <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID + item.info}>
+                            <span className={style.orderInfo}>
+                                {formatOrderText(
+                                    item.itemQuantity,
+                                    item.dishName,
+                                    item.sectionName,
+                                    item.info
+                                )}
+                            </span>
+                        </li>
+                    )}
+                    <li className={style.date}>
+                        <span>Data: </span>
+                        <span>
+                            {new Intl.DateTimeFormat("pt-BR", {}).format(Date.now())}
+                        </span>
+                        <span>
+                            {new Intl.DateTimeFormat("pt-BR", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric"
+                            }).format(Date.now())}
                         </span>
                     </li>
-                )}
+                </ul>
+            </div>
+            <div className={style.ordersBar}>
+                <h3>Bar - Mesa {params.slug}</h3>
+                <ul>
+                    {bar.map(item =>
+                        <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID + item.info}>
+                            <span className={style.orderInfo}>
+                                {formatOrderText(
+                                    item.itemQuantity,
+                                    item.dishName,
+                                    item.sectionName,
+                                    item.info
+                                )}
+                            </span>
+                        </li>
+                    )}
 
-                <li className={style.date}>
-                    <span>Data: </span>
-                    <span>
-                        {new Intl.DateTimeFormat("pt-BR", {}).format(Date.now())}
-                    </span>
-                    <span>
-                        {new Intl.DateTimeFormat("pt-BR", {
-                            hour: "numeric",
-                            minute: "numeric",
-                            second: "numeric"
-                        }).format(Date.now())}
-                    </span>
-                </li>
-            </ul>
-        </div>
-
-        <div className={style.ordersBar}>
-            <h3>Bar - Mesa {params.slug}</h3>
-            <ul>
-                {bar.map(item =>
-                    <li key={item.dishID + item.sectionName + item.clientNumber + item.tableID + item.info}>
-                        <span className={style.orderInfo}>
-                            {formatOrderText(
-                                item.itemQuantity,
-                                item.dishName,
-                                item.sectionName,
-                                item.info
-                            )}
+                    <li className={style.date}>
+                        <span>Data: </span>
+                        <span>
+                            {new Intl.DateTimeFormat("pt-BR", {}).format(Date.now())}
+                        </span>
+                        <span>
+                            {new Intl.DateTimeFormat("pt-BR", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric"
+                            }).format(Date.now())}
                         </span>
                     </li>
-                )}
-
-                <li className={style.date}>
-                    <span>Data: </span>
-                    <span>
-                        {new Intl.DateTimeFormat("pt-BR", {}).format(Date.now())}
-                    </span>
-                    <span>
-                        {new Intl.DateTimeFormat("pt-BR", {
-                            hour: "numeric",
-                            minute: "numeric",
-                            second: "numeric"
-                        }).format(Date.now())}
-                    </span>
-                </li>
-            </ul>
+                </ul>
+            </div>
         </div>
     </main>
 }
