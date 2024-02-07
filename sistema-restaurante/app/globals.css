@@ -30,6 +30,7 @@ body {
 
 @media print {
     @page {
+        size: 72mm 297mm;
         margin: 0;
     }
 }
