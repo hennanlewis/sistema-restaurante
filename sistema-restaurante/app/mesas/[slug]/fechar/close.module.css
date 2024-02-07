@@ -126,8 +126,12 @@
         @apply justify-between pb-0 mb-2;
     }
 
+    .list .paymentMethod {
+        @apply mt-4 pb-1 border-y border-dashed border-black;
+    }
+
     .list .date {
-        @apply flex justify-end gap-1 mt-4 pb-1 w-full text-xs border-y border-dashed
+        @apply flex justify-end gap-1 pb-1 w-full text-xs border-y border-dashed
         border-black leading-none;
     }
 

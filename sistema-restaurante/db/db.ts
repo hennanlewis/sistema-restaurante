@@ -245,7 +245,7 @@ export async function getOrders() {
     try {
         await client.connect()
 
-        const cursor = client.db(DATABASE_NAME).collection("orders").find({ finishedAt: { $exists: false} })
+        const cursor = client.db(DATABASE_NAME).collection("orders").find({ finishedAt: { $exists: false } })
         const response = await cursor.toArray()
 
         return response
@@ -281,6 +281,19 @@ export async function updateOrder(order: OrderData) {
         const filter = { keyOrderId: order.keyOrderID }
         const { _id, ...rest } = order
         const response = await client.db(DATABASE_NAME).collection("orders").updateOne(filter, { $set: rest })
+        return response
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close()
+    }
+}
+
+export async function deleteOrder(id: string) {
+    try {
+        await client.connect()
+        const response = await client.db(DATABASE_NAME).collection("orders")
+            .deleteOne({ _id: new ObjectId(id) })
         return response
     } catch (error) {
         console.log(error)

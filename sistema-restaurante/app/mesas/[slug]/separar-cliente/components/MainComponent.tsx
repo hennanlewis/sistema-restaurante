@@ -78,7 +78,7 @@ export function MainComponent() {
 
     return (
         <main className={style.main}>
-            <TopInfo hideCloseOrder={filteredOrders.some(order => order.clientNumber == 0)} />
+            <TopInfo />
 
             <div className={style.container}>
                 <div className={style.content}>

@@ -27,34 +27,36 @@ export function ShowOrders({ orders, label, showAddInfo = false }: ShowOrdersPro
 
     return <>
         <h2 className={style.contentTitle}>{label}</h2>
-        <div className={style.content}><ul>
-            {filteredOrders.length > 0 && filteredOrders
-                .map(order => {
-                    const handleShowInfo = () => {
-                        setShowInfoInput(true)
-                        setSelectedInfoInput(order.keyOrderID)
-                    }
-
-                    return <li key={order.keyOrderID + "show order"}>
-                        <span>
-                            {formatOrderText(
-                                order.itemQuantity,
-                                order.dishName,
-                                order.sectionName,
-                                order.info
-                            )}
-                            {showAddInfo && <button onClick={handleShowInfo}><ImInfo /></button>}
-                        </span>
-                        {showInfoInput && selectedInfoInput == order.keyOrderID &&
-                            <input type="text"
-                                onChange={(event) => addOrderInfo(event, order.keyOrderID)}
-                                value={order.info}
-                            />
+        <div className={style.content}>
+            <ul>
+                {filteredOrders.length > 0 && filteredOrders
+                    .map(order => {
+                        const handleShowInfo = () => {
+                            setShowInfoInput(true)
+                            setSelectedInfoInput(order.keyOrderID)
                         }
-                    </li>
-                })
-            }
-        </ul>
+
+                        return <li key={order.keyOrderID + "show order"}>
+                            <span>
+                                {formatOrderText(
+                                    order.itemQuantity,
+                                    order.dishName,
+                                    order.sectionName,
+                                    order.info
+                                )}
+                                {showAddInfo && <button onClick={handleShowInfo}><ImInfo /></button>}
+                            </span>
+                            {showInfoInput && selectedInfoInput == order.keyOrderID &&
+                                <input type="text"
+                                    onChange={(event) => addOrderInfo(event, order.keyOrderID)}
+                                    value={order.info}
+                                />
+                            }
+                        </li>
+                    })
+                }
+            </ul>
+            <label></label>
             {showInfoInput &&
                 <button onClick={() => setShowInfoInput(false)} className={style.buttonOptions}>
                     Fechar adição de Observação

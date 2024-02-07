@@ -51,6 +51,6 @@ export const showedOrdersFormater = (orders: OrderData[]) => {
             })
         }
     }
-    console.log("check price", filteredOrders)
+
     return filteredOrders
 }

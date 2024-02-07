@@ -197,6 +197,23 @@ export function MainComponent() {
 
             {selectedClient > 0 &&
                 <div className={style.containerPrint}>
+                    <div className={style.content}>
+                        <label className={style.inputLabel}>
+                            Método de Pagamento:
+                            <select
+                                value={paymentMethod}
+                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                required
+                            >
+                                <option value=""> </option>
+                                <option value="pix">PIX</option>
+                                <option value="dinheiro">Dinheiro</option>
+                                <option value="cartão de crédito">Cartão de crédito</option>
+                                <option value="cartão de débito">Cartão de débito</option>
+                            </select>
+                        </label>
+                    </div>
+
                     <div className={style.contentPrint}>
                         <OrdersByClientToImpress
                             selectedClientOrders={showedOrdersFormater(selectedClientOrders)}
@@ -207,6 +224,7 @@ export function MainComponent() {
                         />
                         <AdditionalCharges
                             additionalCharges={additionalCharges}
+                            paymentMethod={paymentMethod}
                             hasDate={true}
                         />
                     </div>
@@ -216,24 +234,12 @@ export function MainComponent() {
             {selectedClient > 0 &&
                 <div className={style.container}>
                     <div className={style.content}>
-                        <label className={style.inputLabel}>
-                            Método de Pagamento:
-                            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-                                <option value="pix">PIX</option>
-                                <option value="dinheiro">Dinheiro</option>
-                                <option value="crédito">Cartão de crédito</option>
-                                <option value="débito">Cartão de débito</option>
-                            </select>
-                        </label>
                         <button
                             className={style.buttonOptions}
                             onClick={handleSendPaymentData}
                         >
                             FINALIZAR PEDIDO (Cliente {selectedClient})
                         </button>
-                    </div>
-
-                    <div className={style.content}>
                         <button className={style.buttonOptions} onClick={handleFinishOrders}>FECHAR MESA</button>
                     </div>
                 </div>

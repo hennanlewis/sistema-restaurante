@@ -36,6 +36,7 @@ export function MenuSection({ sectionName, options, tableID, menuSectionId }: Me
 
                     return <ItemOption
                         key={keyOrderID}
+                        keyOrderID={keyOrderID}
                         tableID={tableID}
                         menuSectionId={menuSectionId}
                         dishId={menuItem.dishId}

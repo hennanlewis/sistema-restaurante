@@ -1,4 +1,4 @@
-import { currencyFormater, formatOrderText } from "@/utils/dataFormater"
+import { capitalizeFirstLetters, currencyFormater, formatOrderText } from "@/utils/dataFormater"
 
 import style from "../close.module.css"
 
@@ -11,12 +11,14 @@ type OrderByClientToImpressProps = {
     additionalCharges: additionalCharge[]
     hideButton?: boolean
     hasDate?: boolean
+    paymentMethod: string
 }
 
 export function AdditionalCharges({
     additionalCharges,
     hideButton = false,
-    hasDate = false
+    hasDate = false,
+    paymentMethod
 }: OrderByClientToImpressProps) {
 
     return (
@@ -30,6 +32,12 @@ export function AdditionalCharges({
                         <span>{currencyFormater(charge.value)}</span>
                     </li>
                 )}
+                <li className={style.paymentMethod}>
+                    <span>Método de pagamento</span>
+                    <span className={style.dots}></span>
+                    <span className={style.dots}></span>
+                    <span>{capitalizeFirstLetters(paymentMethod)}</span>
+                </li>
                 {hasDate && <>
                     <li className={style.date}>
                         <span>Data: </span>

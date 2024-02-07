@@ -11,6 +11,14 @@
 	@apply text-2xl font-bold;
 }
 
+.container select {
+    @apply py-1 px-2 bg-white/20 text-white rounded border shadow shadow-black;
+}
+
+.container select option {
+    @apply text-black;
+}
+
 .content {
 	@apply flex flex-col gap-2 p-4 bg-black/50 text-base rounded-sm shadow-md shadow-black;
 }
