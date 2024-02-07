@@ -26,6 +26,7 @@ export function OrdersByClientToImpress({
                 <li className={style.logoImg}>
                     <img src="/logo.png" alt="" /></li>
                 <li className={style.listTitle}>{text}</li>
+
                 {cupom && <>
                     <li className={style.listItemCenter}>Avenida Beira Mar, 0</li>
                     <li className={style.listItemCenter}>Vila Preá, Cruz/CE</li>
@@ -35,6 +36,7 @@ export function OrdersByClientToImpress({
                         <span>Valor</span>
                     </li>
                 </>}
+
                 {selectedClientOrders.map(order =>
                     <li key={"fechar client" + selectedClient + order._id}>
                         <span>{formatOrderText(

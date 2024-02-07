@@ -42,7 +42,7 @@ export function MainComponent({ itemsMenu }: { itemsMenu: MenuSection[] }) {
 
     return (
         <main className={style.main}>
-            <TopInfo hideCloseOrder />
+            <TopInfo />
 
             <div className={style.container}>
                 <MenuTableOptions table={currentTable} />

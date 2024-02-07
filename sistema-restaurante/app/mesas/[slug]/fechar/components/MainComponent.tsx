@@ -41,10 +41,28 @@ export function MainComponent() {
         .filter(order => order.tableID == currentTable.name && order.clientNumber == selectedClient && order.isPlaced)
         .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
         .map(order => ({ ...order, dishPrice: order.dishPrice }))
-    const totalOrdersValue = sumArrayValues(selectedClientOrders
+
+    const totalOrdersValueByClient = sumArrayValues(selectedClientOrders
         .map(order => (order.dishPrice - (order.reducedPrice || 0)) * order.itemQuantity))
 
     const additionalCharges: AdditionalChargeData[] = [
+        {
+            text: "Taxa de serviço",
+            value: totalOrdersValueByClient * 0.1
+        },
+        { text: "Desconto", value: - discount },
+        { text: "Total", value: 1.1 * totalOrdersValueByClient - discount }
+    ]
+
+    const allClientsOrders = orders
+        .filter(order => order.tableID == currentTable.name && order.isPlaced)
+        .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
+        .map(order => ({ ...order, dishPrice: order.dishPrice }))
+
+    const totalOrdersValue = sumArrayValues(allClientsOrders
+        .map(order => (order.dishPrice - (order.reducedPrice || 0)) * order.itemQuantity))
+
+    const allAdditionalCharges: AdditionalChargeData[] = [
         {
             text: "Taxa de serviço",
             value: totalOrdersValue * 0.1
@@ -58,8 +76,14 @@ export function MainComponent() {
     }
 
     const handleGive20Percent = () => {
-        const totalOrdersValue = sumArrayValues(selectedClientOrders.map(order => order.dishPrice))
-        const normalizedDiscount = ((totalOrdersValue + totalOrdersValue * 0.1) * 0.2).toFixed(2)
+        if(selectedClient == 0) {
+            const totalOrdersValue = sumArrayValues(allClientsOrders.map(order => order.dishPrice))
+            const normalizedDiscount = ((totalOrdersValue + totalOrdersValue * 0.1) * 0.2).toFixed(2)
+            setDiscount(Number(normalizedDiscount))
+            return 
+        }
+        const totalOrdersValueByClient = sumArrayValues(selectedClientOrders.map(order => order.dishPrice))
+        const normalizedDiscount = ((totalOrdersValueByClient + totalOrdersValueByClient * 0.1) * 0.2).toFixed(2)
         setDiscount(Number(normalizedDiscount))
     }
 
@@ -102,7 +126,7 @@ export function MainComponent() {
             orders: ordersToProcess,
             paymentMethod: paymentMethod,
             discount: discount,
-            serviceFee: Number((totalOrdersValue * 0.1).toFixed(2)),
+            serviceFee: Number((totalOrdersValueByClient * 0.1).toFixed(2)),
             tableID: currentTable.name,
         }
 
@@ -134,6 +158,13 @@ export function MainComponent() {
 
             <div className={style.container}>
                 <div className={style.content}>
+                    <button
+                        className={style.buttonOptions}
+                        onClick={() => handleSelectedClient(0)}
+                    >
+                        Mesa completa
+                    </button>
+
                     {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index).map((_, index) =>
                         <button
                             key={currentTable._id + index}
@@ -145,6 +176,105 @@ export function MainComponent() {
                     )}
                 </div>
             </div>
+
+            {selectedClient == 0 &&
+                <div className={style.container}>
+                    <div className={style.contentPrint}>
+                        <OrdersByClientToImpress
+                            selectedClientOrders={allClientsOrders}
+                            selectedClient={selectedClient}
+                            text="Abater valores"
+                            type="reduced price"
+                        />
+
+                        <label className={style.inputLabel}>
+                            <select onChange={(e) => setSelectedReducedPriceId(e.target.value)}>
+                                <option value=""> </option>
+                                {allClientsOrders.map(order =>
+                                    <option key={order._id + "reducePrice"} value={order._id}>
+                                        {formatOrderText(
+                                            order.itemQuantity,
+                                            order.dishName,
+                                            order.sectionName,
+                                            order.info
+                                        )} {currencyFormater(order.reducedPrice || 0)}
+                                    </option>
+                                )}
+                            </select>
+                        </label>
+
+                        {selectedReducedPriceId != "" &&
+                            <label className={style.inputLabel}>
+                                <input type="number" value={selectedReducedPrice}
+                                    onChange={(e) => setSelectedReducedPrice(Number(e.target.value))} min={0}
+                                />
+                            </label>
+                        }
+
+                        {selectedReducedPriceId != "" &&
+                            <button className={style.buttonOptions} onClick={handleReducePrice}>
+                                Atualizar abatimento
+                            </button>
+                        }
+
+                        <label className={style.inputLabel}>
+                            Desconto final:
+                            <input type="number" onChange={handleDiscount} value={Number(discount)} min={0} />
+                        </label>
+                        <button className={style.buttonOptions} onClick={handleGive20Percent}>Calcular 20%</button>
+                    </div>
+                </div>
+            }
+
+            {selectedClient == 0 &&
+                <div className={style.containerPrint}>
+                    <div className={style.content}>
+                        <label className={style.inputLabel}>
+                            Método de Pagamento:
+                            <select
+                                value={paymentMethod}
+                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                required
+                            >
+                                <option value=""> </option>
+                                <option value="pix">PIX</option>
+                                <option value="dinheiro">Dinheiro</option>
+                                <option value="cartão de crédito">Cartão de crédito</option>
+                                <option value="cartão de débito">Cartão de débito</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div className={style.contentPrint}>
+                        <OrdersByClientToImpress
+                            selectedClientOrders={showedOrdersFormater(allClientsOrders)}
+                            selectedClient={selectedClient}
+                            text="Restaurante Sabor do Mar"
+                            type="final price"
+                            cupom={true}
+                        />
+                        <AdditionalCharges
+                            additionalCharges={allAdditionalCharges}
+                            paymentMethod={paymentMethod}
+                            hasDate={true}
+                        />
+                    </div>
+                </div>
+            }
+
+            {selectedClient == 0 &&
+                <div className={style.container}>
+                    <div className={style.content}>
+                        <button
+                            className={style.buttonOptions}
+                            onClick={handleSendPaymentData}
+                        >
+                            FINALIZAR PEDIDO (Cliente {selectedClient})
+                        </button>
+                        <button className={style.buttonOptions} onClick={handleFinishOrders}>FECHAR MESA</button>
+                    </div>
+                </div>
+            }
 
             {selectedClient > 0 &&
                 <div className={style.container}>
