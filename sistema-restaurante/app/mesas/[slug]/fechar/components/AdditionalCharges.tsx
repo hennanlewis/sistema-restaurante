@@ -10,20 +10,41 @@ type additionalCharge = {
 type OrderByClientToImpressProps = {
     additionalCharges: additionalCharge[]
     hideButton?: boolean
+    hasDate?: boolean
 }
 
-export function AdditionalCharges({ additionalCharges, hideButton = false }: OrderByClientToImpressProps) {
+export function AdditionalCharges({
+    additionalCharges,
+    hideButton = false,
+    hasDate = false
+}: OrderByClientToImpressProps) {
+
     return (
         <>
-            <ul>
+            <ul className={style.list}>
                 {additionalCharges.map((charge, index) =>
-                <li key={"taxas-adicionais"+index}>
-                    <span>{charge.text}</span>
-                    <span className={style.dots}></span>
-                    <span className={style.dots}></span>
-                    <span>{currencyFormater(charge.value)}</span>
-                </li>
+                    <li key={"taxas-adicionais" + index}>
+                        <span>{charge.text}</span>
+                        <span className={style.dots}></span>
+                        <span className={style.dots}></span>
+                        <span>{currencyFormater(charge.value)}</span>
+                    </li>
                 )}
+                {hasDate && <>
+                    <li className={style.date}>
+                        <span>Data: </span>
+                        <span>
+                            {new Intl.DateTimeFormat("pt-BR", {}).format(Date.now())}
+                        </span>
+                        <span>
+                            {new Intl.DateTimeFormat("pt-BR", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric"
+                            }).format(Date.now())}
+                        </span>
+                    </li>
+                </>}
             </ul>
             {!hideButton &&
                 <button

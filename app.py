@@ -63,7 +63,7 @@ def finish_processes(difference_processes):
 if __name__ == "__main__":
     initial_processes = list_processes_info()
 
-    # start_server_thread()
+    start_server_thread()
     ip_adress = ip.get_host_ip()
     website_url = ip.set_new_ip(ip_adress)
     print("- Local:", website_url)

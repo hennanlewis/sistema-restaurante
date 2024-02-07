@@ -17,7 +17,7 @@ export default function AddTable() {
     })
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
-    const routerBack = () => router.replace("/dashboard")
+    const routerBack = () => router.back()
 
     const changeData = (event: ChangeEvent<HTMLInputElement>) => {
         const inputName = event.currentTarget.name

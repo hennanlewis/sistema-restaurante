@@ -37,12 +37,25 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                                         item.info
                                     )}
                                 </span>
-                                <span className={style.dots}></span>
+                                {/* <span className={style.dots}></span>
                                 <span className={style.price}>
                                     {currencyFormater(item.dishPrice * item.itemQuantity)}
-                                </span>
+                                </span> */}
                             </li>
                         )}
+                        <li className={style.date}>
+                            <span>Data: </span>
+                            <span>
+                                {new Intl.DateTimeFormat("pt-BR", {}).format(Date.now())}
+                            </span>
+                            <span>
+                                {new Intl.DateTimeFormat("pt-BR", {
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                    second: "numeric"
+                                }).format(Date.now())}
+                            </span>
+                        </li>
                     </ul>
                 </div>
                 <button onClick={printOrders}>Imprimir pedido</button>

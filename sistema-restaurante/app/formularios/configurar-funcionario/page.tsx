@@ -31,7 +31,7 @@ const defaultFormData: FormData = {
 export default function RecordInfo() {
     const { user } = useBaseContext()
     const router = useRouter()
-    const routerBack = () => router.replace("/dashboard")
+    const routerBack = () => router.back()
 
     const { handleSubmit, register, setValue } = useForm<FormData>()
 
@@ -128,8 +128,6 @@ export default function RecordInfo() {
         setMessage("Ocorreu algum erro")
         setIsLoading(false)
     }
-
-    const removeSpace = (str: string) => str.replace(" ", "")
 
     useEffect(() => {
         if (!hasAdminPermission(user?.role!)) routerBack()

@@ -147,7 +147,7 @@ export function MainComponent() {
             </div>
 
             {selectedClient > 0 &&
-                <div className={style.containerPrint}>
+                <div className={style.container}>
                     <div className={style.contentPrint}>
                         <OrdersByClientToImpress
                             selectedClientOrders={selectedClientOrders}
@@ -203,9 +203,11 @@ export function MainComponent() {
                             selectedClient={selectedClient}
                             text="Restaurante Sabor do Mar"
                             type="final price"
+                            cupom={true}
                         />
                         <AdditionalCharges
                             additionalCharges={additionalCharges}
+                            hasDate={true}
                         />
                     </div>
                 </div>
@@ -219,7 +221,8 @@ export function MainComponent() {
                             <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
                                 <option value="pix">PIX</option>
                                 <option value="dinheiro">Dinheiro</option>
-                                <option value="cartao">Cartão</option>
+                                <option value="crédito">Cartão de crédito</option>
+                                <option value="débito">Cartão de débito</option>
                             </select>
                         </label>
                         <button

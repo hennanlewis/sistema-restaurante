@@ -16,13 +16,25 @@
     @apply flex flex-col mb-auto w-[20rem];
 }
 
+.orders .date {
+    @apply hidden;
+}
+
 @media print {
     .modal, .modalContent {
-        @apply w-full my-0 py-0 shadow-none;
+        @apply w-full m-0 p-0 shadow-none;
     }
     
     .orders {
-        @apply w-full m-0 p-2 text-black text-[0.8em];
+        @apply w-full m-0 p-0 pr-8 text-black text-xl leading-normal;
+    }
+
+    .modalContent .orders h3 {
+        @apply text-2xl font-bold;
+    }
+
+    .orders .date {
+        @apply flex gap-1 justify-center text-lg;
     }
 }
 

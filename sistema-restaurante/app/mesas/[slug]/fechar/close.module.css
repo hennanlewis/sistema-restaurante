@@ -12,8 +12,8 @@
 }
 
 .content, .contentPrint {
-    @apply grid grid-cols-2 gap-x-6 gap-y-2 p-4 bg-black/50 text-base rounded-sm shadow-md
-    shadow-black;
+    @apply grid grid-cols-2 gap-x-6 gap-y-2 p-4 bg-black/50 text-base rounded-sm
+    shadow-md shadow-black;
 }
 
 .contentPrint {
@@ -64,6 +64,18 @@
     @apply text-black;
 }
 
+.listTitle {
+    @apply col-span-2 text-xl font-bold;
+}
+
+.list .listItemCenter,
+.list .splitterDash,
+.list .splitterHeader,
+.list .logoImg,
+.list .date {
+    @apply hidden;
+}
+
 @media print {
     .main {
         @apply m-0 -mt-10 p-0 gap-0 shadow-none;
@@ -78,7 +90,7 @@
     }
 
     .containerPrint .contentPrint {
-        @apply absolute m-0 p-4 left-0 top-0 right-0 text-black shadow-none;
+        @apply absolute m-0 pl-0 pr-8 left-0 top-0 right-0 text-black shadow-none;
     }
 
     .contentPrint span {
@@ -88,4 +100,35 @@
     .dots {
         @apply translate-y-3 border-black;
     }
+
+    .listTitle {
+        @apply leading-none;
+    }
+
+    .list .logoImg {
+        @apply flex justify-center;
+    }
+
+    .list .logoImg img {
+        @apply w-20;
+    }
+
+    .list .listItemCenter, .list .splitterDash {
+        @apply block col-span-2 w-full text-center leading-none;
+    }
+
+    .list .splitterDash, .list .splitterHeader {
+        @apply flex justify-center pb-1 text-center border-b border-dashed
+        border-black;
+    }
+
+    .list .splitterHeader {
+        @apply justify-between pb-0 mb-2;
+    }
+
+    .list .date {
+        @apply flex justify-end gap-1 mt-4 pb-1 w-full text-xs border-y border-dashed
+        border-black leading-none;
+    }
+
 }

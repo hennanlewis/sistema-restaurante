@@ -77,7 +77,7 @@ export default function MenuItem() {
     }
 
     const router = useRouter()
-    const routerBack = () => router.replace("/dashboard")
+    const routerBack = () => router.back()
 
     return (
         <main className={style.main}>
