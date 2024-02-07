@@ -76,11 +76,11 @@ export function MainComponent() {
     }
 
     const handleGive20Percent = () => {
-        if(selectedClient == 0) {
+        if (selectedClient == 0) {
             const totalOrdersValue = sumArrayValues(allClientsOrders.map(order => order.dishPrice))
             const normalizedDiscount = ((totalOrdersValue + totalOrdersValue * 0.1) * 0.2).toFixed(2)
             setDiscount(Number(normalizedDiscount))
-            return 
+            return
         }
         const totalOrdersValueByClient = sumArrayValues(selectedClientOrders.map(order => order.dishPrice))
         const normalizedDiscount = ((totalOrdersValueByClient + totalOrdersValueByClient * 0.1) * 0.2).toFixed(2)
@@ -117,8 +117,12 @@ export function MainComponent() {
     }
 
     const handleSendPaymentData = async () => {
-        const filteredOrders = orders
-            .filter(item => item.tableID === currentTable.name && item.clientNumber === selectedClient)
+        const filteredOrders = selectedClient == 0 ?
+            orders
+                .filter(item => item.tableID === currentTable.name)
+            :
+            orders
+                .filter(item => item.tableID === currentTable.name && item.clientNumber === selectedClient)
         const filteredIds = filteredOrders.map(order => order._id)
         const ordersToProcess = showedOrdersFormater(filteredOrders)
 
