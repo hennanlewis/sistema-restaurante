@@ -21,11 +21,14 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding: 3rem 0;
     background: linear-gradient(150deg, var(--bg-primary), var(--bg-secondary), var(--bg-secondary), hsl(37, 46%, 57%));
     color: #FFF;
     letter-spacing: -0.04em;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+main {
+    padding: 3rem 0;
 }
 
 @media print {

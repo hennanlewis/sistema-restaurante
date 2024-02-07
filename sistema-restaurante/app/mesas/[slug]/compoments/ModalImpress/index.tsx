@@ -1,7 +1,8 @@
 import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "./modalimpress.module.css"
-import { currencyFormater, formatOrderText, showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
+import { formatOrderText, showedOrdersFormater } from "@/utils/dataFormater"
+import { useRouter } from "next/navigation"
 
 type ModalProps = {
     closeModal: () => void
@@ -11,6 +12,7 @@ type ModalProps = {
 
 export function ModalImpress({ closeModal, processOrders, tableName }: ModalProps) {
     const { orders, restaurantTables } = useBaseContext()
+    const router = useRouter()
 
     const [currentTable] = restaurantTables.filter(item => item.name == tableName)
     const filteredOrders = orders
@@ -18,7 +20,8 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
     const waitingOrders = showedOrdersFormater(filteredOrders.filter(item => item.isPlaced == false))
 
     const printOrders = () => {
-        window.print()
+        localStorage.setItem("confirmOrders", JSON.stringify(waitingOrders))
+        router.push(`/confirmar/${tableName}/pedido`)
     }
 
     return (

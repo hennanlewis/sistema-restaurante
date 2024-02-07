@@ -1,0 +1,53 @@
+.main {
+    @apply w-[72mm] min-h-screen p-0 bg-white ;
+}
+
+.ordersKitchen, .ordersBar {
+    @apply flex flex-col m-0 w-full;
+}
+
+.modal,
+.modalContent {
+    @apply w-[72mm] m-0 p-0 shadow-none;
+}
+
+.ordersKitchen, .ordersBar {
+    @apply w-full m-0 p-0 pr-8 text-black text-xl leading-normal;
+}
+
+.ordersBar {
+    @apply mt-10;
+}
+
+.main .ordersKitchen h3, .main .ordersBar h3 {
+    @apply text-2xl font-bold;
+}
+
+.ordersKitchen .date, .ordersBar .date {
+    @apply flex gap-1 justify-center text-lg;
+}
+
+.ordersKitchen h3, .ordersBar h3 {
+    @apply text-lg font-bold;
+}
+
+.ordersKitchen ul li, .ordersBar ul li {
+    @apply flex flex-wrap leading-[1.4] text-justify;
+}
+
+.orderInfo, .price {
+    @apply flex leading-[1.4];
+}
+
+.dots {
+    @apply flex flex-1 border-dotted;
+}
+
+.dots::before, .price::before {
+    content: "";
+    @apply h-0 border-b w-full border-dotted border-white translate-y-4;
+}
+
+.price {
+    @apply flex-1;
+}

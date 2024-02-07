@@ -339,3 +339,22 @@ export async function insertTag(finishedData: string[]) {
         await client.close()
     }
 }
+
+export async function insertImage(imageData: string) {
+    try {
+        await client.connect()
+        const existingImage = await client.db(DATABASE_NAME).collection("images").findOne({ imageData })
+        if (existingImage) {
+            console.log("Image already exists:", existingImage)
+            return null
+        }
+        const response = await client.db(DATABASE_NAME).collection("images").insertOne({ imageData })
+        console.log("Image inserted:", response)
+        return response;
+
+    } catch (error) {
+        console.error(error)
+    } finally {
+        await client.close()
+    }
+}

@@ -25,19 +25,15 @@ export function AdditionalCharges({
         <>
             <ul className={style.list}>
                 {additionalCharges.map((charge, index) =>
-                    <li key={"taxas-adicionais" + index}>
-                        <span>{charge.text}</span>
-                        <span className={style.dots}></span>
-                        <span className={style.dots}></span>
-                        <span>{currencyFormater(charge.value)}</span>
-                    </li>
+                    charge.text == "Desconto" && charge.value == 0 ? "" :
+                        <li key={"taxas-adicionais" + index}>
+                            <span>{charge.text}</span>
+                            <span className={style.dots}></span>
+                            <span className={style.dots}></span>
+                            <span>{currencyFormater(charge.value)}</span>
+                        </li>
                 )}
-                <li className={style.paymentMethod}>
-                    <span>Método de pagamento</span>
-                    <span className={style.dots}></span>
-                    <span className={style.dots}></span>
-                    <span>{capitalizeFirstLetters(paymentMethod)}</span>
-                </li>
+
                 {hasDate && <>
                     <li className={style.date}>
                         <span>Data: </span>
