@@ -1,0 +1,83 @@
+.main {
+    @apply h-screen mt-0 pr-4 bg-white text-black text-[2rem];
+}
+
+.main div {
+    @apply m-0 pb-4 w-[144mm];
+}
+
+.list {
+    @apply flex flex-col pr-4;
+}
+
+.list li {
+    @apply flex flex-wrap list-none;
+}
+
+.list .logoImg {
+    @apply flex justify-center;
+}
+
+.list .logoImg img {
+    @apply w-40;
+}
+
+.listTitle,
+.list .listItemCenter {
+    @apply flex justify-center w-full text-[2.25rem] text-center font-medium leading-none;
+}
+
+.listTitle {
+    @apply text-[2.5rem] font-bold;
+}
+
+.list .splitterDashTop,
+.list .splitterDashBottom {
+    @apply max-h-0 border-b-[3px] border-dashed border-black;
+}
+
+.list .splitterDashTop {
+    @apply mt-4 -mb-1;
+}
+
+.list .splitterDashBottom {
+    @apply mb-0 mt-1;
+}
+
+.list .splitterHeader {
+    @apply relative flex justify-center items-center text-center font-medium;
+}
+
+.list .splitterHeader {
+    @apply justify-between pb-0 mb-1;
+}
+
+.list span {
+    @apply flex-shrink-0 max-w-full font-medium;
+}
+
+ .dots {
+    @apply flex-1 min-w-[8px] border-b-4 border-dotted border-black;
+}
+
+.list .date {
+    @apply flex justify-end gap-1 w-full;
+}
+
+.buttonOptions, .buttonLoading {
+	@apply relative flex flex-col p-2 gap-2;
+}
+
+.buttonOptions button,
+.buttonLoading button {
+	@apply p-2 bg-sky-800 text-base text-white font-bold hover:bg-emerald-600
+	rounded-3xl border-2 border-black/20 shadow-md shadow-black duration-300
+    print:hidden;
+	text-shadow: 1px 1px 2px #0008;
+}
+
+.buttonLoading button:nth-child(1)::after {
+    content: "";
+    @apply absolute right-4 w-6 aspect-square border-white border-4 border-l-transparent
+    rounded-full animate-spin print:hidden;
+}

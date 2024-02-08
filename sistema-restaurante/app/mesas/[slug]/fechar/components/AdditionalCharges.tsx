@@ -1,6 +1,7 @@
 import { capitalizeFirstLetters, currencyFormater, formatOrderText } from "@/utils/dataFormater"
 
 import style from "../close.module.css"
+import { useParams, useRouter } from "next/navigation"
 
 type additionalCharge = {
     text: string
@@ -12,14 +13,25 @@ type OrderByClientToImpressProps = {
     hideButton?: boolean
     hasDate?: boolean
     paymentMethod: string
+    selectedClient: number
 }
 
 export function AdditionalCharges({
     additionalCharges,
     hideButton = false,
     hasDate = false,
+    selectedClient,
     paymentMethod
 }: OrderByClientToImpressProps) {
+    const params = useParams()
+    const router = useRouter()
+
+    const printNotes = () => {
+        if (selectedClient == 0)
+            return router.push(`/confirmar/${params.slug}/fim?discount=${additionalCharges[1].value}`)
+
+        router.push(`/confirmar/${params.slug}/fim/${selectedClient}`)
+    }
 
     return (
         <>
@@ -53,7 +65,7 @@ export function AdditionalCharges({
             {!hideButton &&
                 <button
                     className={style.buttonOptions}
-                    onClick={() => window.print()}
+                    onClick={printNotes}
                 >
                     Imprimir nota
                 </button>

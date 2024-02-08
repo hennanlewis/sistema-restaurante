@@ -68,7 +68,7 @@ export function MainComponent() {
             text: "Taxa de serviço",
             value: totalOrdersValue * 0.1
         },
-        { text: "Desconto", value: -discount },
+        { text: "Desconto", value: - discount },
         { text: "Total", value: 1.1 * totalOrdersValue - discount }
     ]
 
@@ -164,27 +164,6 @@ export function MainComponent() {
         <main className={style.main}>
             <TopInfo hideCloseOrder />
 
-            <div className={style.container}>
-                <div className={style.content}>
-                    <button
-                        className={style.buttonOptions}
-                        onClick={() => handleSelectedClient(0)}
-                    >
-                        Mesa completa
-                    </button>
-
-                    {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index).map((_, index) =>
-                        <button
-                            key={currentTable._id + index}
-                            className={style.buttonOptionsHalf}
-                            onClick={() => handleSelectedClient(index + 1)}
-                        >
-                            Cliente {index + 1}
-                        </button>
-                    )}
-                </div>
-            </div>
-
             {selectedClient == 0 &&
                 <div className={style.container}>
                     <div className={style.contentPrint}>
@@ -237,6 +216,25 @@ export function MainComponent() {
             {selectedClient == 0 &&
                 <div className={style.containerPrint}>
                     <div className={style.content}>
+                        <button
+                            className={style.buttonOptions}
+                            onClick={() => handleSelectedClient(0)}
+                        >
+                            Selecionar mesa completa
+                        </button>
+
+                        {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index).map((_, index) =>
+                            <button
+                                key={currentTable._id + index}
+                                className={style.buttonOptionsHalf}
+                                onClick={() => handleSelectedClient(index + 1)}
+                            >
+                                Cliente {index + 1}
+                            </button>
+                        )}
+                    </div>
+
+                    <div className={style.content}>
                         <label className={style.inputLabel}>
                             Método de Pagamento:
                             <select
@@ -263,6 +261,7 @@ export function MainComponent() {
                         />
                         <AdditionalCharges
                             additionalCharges={allAdditionalCharges}
+                            selectedClient={selectedClient}
                             paymentMethod={paymentMethod}
                             hasDate={true}
                         />
@@ -362,6 +361,7 @@ export function MainComponent() {
                         />
                         <AdditionalCharges
                             additionalCharges={additionalCharges}
+                            selectedClient={selectedClient}
                             paymentMethod={paymentMethod}
                             hasDate={true}
                         />

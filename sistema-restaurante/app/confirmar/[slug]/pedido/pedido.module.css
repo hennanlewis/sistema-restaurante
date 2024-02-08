@@ -1,5 +1,5 @@
 .main {
-    @apply w-[72mm] min-h-screen p-0 bg-white ;
+    @apply w-[144mm] min-h-screen p-0 bg-white ;
 }
 
 .main div {
@@ -12,11 +12,11 @@
 
 .modal,
 .modalContent {
-    @apply w-[72mm] m-0 p-0 shadow-none;
+    @apply w-[144mm] m-0 p-0 shadow-none;
 }
 
 .ordersKitchen, .ordersBar {
-    @apply w-full m-0 p-0 pr-8 text-black text-xl leading-normal;
+    @apply w-full m-0 p-0 pr-8 text-black text-[2.5rem] font-medium leading-normal;
 }
 
 .ordersBar {
@@ -24,11 +24,11 @@
 }
 
 .main .ordersKitchen h3, .main .ordersBar h3 {
-    @apply text-2xl font-bold;
+    @apply text-[3rem] font-bold leading-none;
 }
 
 .ordersKitchen .date, .ordersBar .date {
-    @apply flex gap-1 justify-center text-lg;
+    @apply flex gap-1 justify-end text-[2rem];
 }
 
 .ordersKitchen h3, .ordersBar h3 {
