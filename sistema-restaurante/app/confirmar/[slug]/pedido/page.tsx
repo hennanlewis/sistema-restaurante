@@ -1,17 +1,19 @@
 "use client"
 import { useBaseContext } from "@/contexts/MainContext"
 import { formatOrderText, showedOrdersFormater } from "@/utils/dataFormater"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 import style from "./pedido.module.css"
-import { useEffect, useRef } from "react"
+import { MutableRefObject, useRef } from "react"
 import html2canvas from "html2canvas"
 
-export default function ConfirmarPedido() {
+export default function ConfirmOrders() {
     const { orders, restaurantTables } = useBaseContext()
     const params = useParams()
-    const mainRef = useRef(null)
-    const montcounter = useRef(0)
+    const refKitchen = useRef(null)
+    const refBar = useRef(null)
+    const router = useRouter()
+    const routerBack = () => router.back()
 
     const [currentTable] = restaurantTables.filter(item => item.name == params.slug)
     const filteredOrders = orders
@@ -30,7 +32,7 @@ export default function ConfirmarPedido() {
 
     const sendImageToServer = async (imageData: string) => {
         try {
-            await fetch("/api/image", {
+            await fetch("/api/imagem", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(imageData),
@@ -41,25 +43,23 @@ export default function ConfirmarPedido() {
         }
     }
 
-    const capturePageImage = () => {
-        if (mainRef.current)
-            html2canvas(mainRef.current).then(canvas => {
+    const capturePageImage = (local: MutableRefObject<null>) => {
+        if (local.current) {
+            html2canvas(local.current).then(canvas => {
                 const image = canvas.toDataURL("image/bmp")
                 sendImageToServer(image)
             })
+        }
     }
 
-    useEffect(() => {
-        if (montcounter.current == 0) capturePageImage()
-        console.log('Componente montado', montcounter.current++)
-        return () => {
-            console.log('Componente desmontado')
-        }
-    }, [])
+    const printOrders = () => {
+        if(kicthen.length > 0) capturePageImage(refKitchen)
+        if (bar.length > 0) capturePageImage(refBar)
+    }
 
     return <main className={style.main}>
-        <div ref={mainRef}>
-            <div className={style.ordersKitchen}>
+        <div>
+            {kicthen.length > 0 && <div className={style.ordersKitchen} ref={refKitchen}>
                 <h3>Cozinha - Mesa {params.slug}</h3>
                 <ul>
                     {kicthen.map(item =>
@@ -88,8 +88,9 @@ export default function ConfirmarPedido() {
                         </span>
                     </li>
                 </ul>
-            </div>
-            <div className={style.ordersBar}>
+            </div>}
+
+            {bar.length > 0 && <div className={style.ordersBar} ref={refBar}>
                 <h3>Bar - Mesa {params.slug}</h3>
                 <ul>
                     {bar.map(item =>
@@ -119,6 +120,10 @@ export default function ConfirmarPedido() {
                         </span>
                     </li>
                 </ul>
+            </div>}
+            <div className={style.buttonOptions}>
+                <button onClick={printOrders}>Imprimir pedidos</button>
+                <button onClick={routerBack}>Voltar</button>
             </div>
         </div>
     </main>

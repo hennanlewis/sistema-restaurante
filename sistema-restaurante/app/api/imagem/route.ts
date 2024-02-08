@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
         const base64Data = imageData.replace(/^data:image\/\w+;base64,/, "")
         const buffer = Buffer.from(base64Data, "base64")
 
-        const filename = Date.now() + ".jpg"
+        const filename = Date.now() + ".bmp"
 
         await writeFile(
             path.join(process.cwd(), "public/uploaded-images", filename),
