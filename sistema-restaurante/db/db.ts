@@ -13,7 +13,7 @@ export async function login(username: string, password: string) {
             .findOne<UserData>({ username, password }, { projection: { _id: 0, password: 0 } })
         return user
     } finally {
-        await client.close()
+        console.log("Closing Login connection")
     }
 }
 
@@ -29,7 +29,7 @@ export async function getUserById(id: string) {
 
         return users
     } finally {
-        await client.close()
+        console.log("Closing getUserById connection")
     }
 }
 
@@ -43,7 +43,7 @@ export async function getUsers() {
 
         return users
     } finally {
-        await client.close()
+        console.log("Closing getUsers connection")
     }
 }
 
@@ -53,7 +53,7 @@ export async function insertUser(data: UserData) {
         const response = await client.db(DATABASE_NAME).collection("users").insertOne(data)
         return response
     } finally {
-        await client.close()
+        console.log("Closing insertUser connection")
     }
 }
 
@@ -80,7 +80,7 @@ export async function updateUser(data: UserDataFull & { status: string }) {
         if (response && response.matchedCount === 1) return data
         return null
     } finally {
-        await client.close()
+        console.log("Closing updateUser connection")
     }
 }
 
@@ -91,7 +91,7 @@ export async function getRestaurantTables() {
         const tables = await cursor.toArray()
         return tables
     } finally {
-        await client.close()
+        console.log("Closing getRestaurantTables connection")
     }
 }
 
@@ -101,7 +101,7 @@ export async function insertTable(data: UserData) {
         const response = await client.db(DATABASE_NAME).collection("tables").insertOne(data)
         return response
     } finally {
-        await client.close()
+        console.log("Closing insertTable connection")
     }
 }
 
@@ -118,7 +118,7 @@ export async function occupyTable(tableId: string) {
         if (response && response.matchedCount === 1) return occupiedAt
         return null
     } finally {
-        await client.close()
+        console.log("Closing occupyTable connection")
     }
 }
 
@@ -134,7 +134,7 @@ export async function updateTable(table: RestaurantTableData) {
         if (response && response.matchedCount === 1) return table
         return null
     } finally {
-        await client.close()
+        console.log("Closing updateTable connection")
     }
 }
 
@@ -150,7 +150,7 @@ export async function setHost(ip: string, restaurant: string) {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log("Closing setHost connection")
     }
 }
 
@@ -161,7 +161,7 @@ export async function getHost(restaurant: string) {
             .findOne({ restaurant }, { projection: { host: 1 } })
         return response
     } finally {
-        await client.close()
+        console.log("Closing getHost connection")
     }
 }
 
@@ -176,7 +176,7 @@ export async function getDishCategories() {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log("Closing getDishCategories connection")
     }
 }
 
@@ -203,7 +203,7 @@ export async function getDishes() {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log("Closing getDishes connection")
     }
 
 }
@@ -237,7 +237,7 @@ export async function insertDish(dish: DishDBInsertion) {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log("Closing insertDish connection")
     }
 }
 
@@ -252,7 +252,7 @@ export async function getOrders() {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log()
     }
 }
 
@@ -271,7 +271,7 @@ export async function insertOrders(orders: OrderData[]) {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log("Closing insertOrders connection")
     }
 }
 
@@ -285,7 +285,7 @@ export async function updateOrder(order: OrderData) {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log("Closing updateOrder connection")
     }
 }
 
@@ -298,7 +298,7 @@ export async function deleteOrder(id: string) {
     } catch (error) {
         console.log(error)
     } finally {
-        await client.close()
+        console.log("Closing deleteOrder connection")
     }
 }
 
@@ -321,7 +321,7 @@ export async function finishOrders(orderIds: string[]) {
     } catch (error) {
         console.error(error)
     } finally {
-        await client.close()
+        console.log("Closing finishOrders connection")
     }
 }
 
@@ -356,7 +356,7 @@ export async function insertImage(imageData: string) {
     } catch (error) {
         console.error(error)
     } finally {
-        await client.close()
+        console.log("Closing insertImage connection")
     }
 }
 
@@ -381,6 +381,6 @@ export async function getCash() {
     } catch (error) {
         console.error(error)
     } finally {
-        await client.close()
+        console.log("Closing getCash connection")
     }
 }

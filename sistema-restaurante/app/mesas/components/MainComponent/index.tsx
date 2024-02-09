@@ -1,5 +1,5 @@
 "use client"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { IoMdArrowBack } from "react-icons/io"
 
 import { useBaseContext } from "@/contexts/MainContext"
@@ -8,6 +8,7 @@ import style from "../../restaurante.module.css"
 import { TableBody } from "../TableBody"
 import { TableHead } from "../TableHead"
 import { useRouter } from "next/navigation"
+import { sumArrayValues } from "@/utils/dataFormater"
 
 type MainComponentProps = {
     restaurantTablesFromAPI: RestaurantTableData[]
@@ -17,12 +18,31 @@ type MainComponentProps = {
 export function MainComponent({ restaurantTablesFromAPI, restaurantOrdersFromAPI }: MainComponentProps) {
     const { restaurantTables, setRestaurantTables, orders, setOrders } = useBaseContext()
     const router = useRouter()
+    const countRender = useRef(0)
 
     const mainPage = () => router.push("/dashboard")
 
+    const dataRequest = async () => {
+        const ordersRes = await fetch("/api/pedidos")
+        const ordersTotal: OrderData[] = await ordersRes.json()
+        setOrders(ordersTotal)
+
+
+        const tableRes = await fetch("/api/mesas")
+        const tables: RestaurantTableData[] = await tableRes.json()
+        setRestaurantTables(tables
+            .map(table => ({
+                ...table,
+                ordersTotalQuantity: sumArrayValues(ordersTotal.
+                    filter(order => order.tableID == table.name)
+                    .map(order => order.itemQuantity)
+                )
+            }))
+        )
+    }
+
     useEffect(() => {
-        setRestaurantTables(currentValues => restaurantTables.length == 0 ? restaurantTablesFromAPI : currentValues)
-        setOrders(currentValues => orders.length == 0 ? restaurantOrdersFromAPI : currentValues)
+        dataRequest()
     }, [])
 
     return (
