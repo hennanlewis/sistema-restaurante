@@ -28,7 +28,7 @@ export default function MenuItem() {
         setIsLoading(true)
         setMessage("Obtendo categorias...")
         try {
-            const response = await fetch("/api/obter-categorias")
+            const response = await fetch("/api/obter-categorias", { next: { revalidate: 1 } })
             if (response.ok) {
                 const data = await response.json()
                 setCategories(data)

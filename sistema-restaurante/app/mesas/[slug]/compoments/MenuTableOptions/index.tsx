@@ -63,7 +63,7 @@ export function MenuTableOptions({ table }: MenuTableOptionsProps) {
 
     const updateOrders = async () => {
 
-        const response = await fetch("/api/pedidos")
+        const response = await fetch("/api/pedidos", { next: { revalidate: 1 } })
         if(response.ok) {
             const updatedOrders = await response.json()
             setOrders(updatedOrders)

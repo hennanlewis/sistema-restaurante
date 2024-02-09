@@ -13,7 +13,7 @@ type ShowOrdersProps = {
 }
 
 export function ShowOrders({ orders, label, showAddInfo = false }: ShowOrdersProps) {
-    const { setOrders, incrementalHexNumber } = useBaseContext()
+    const { setOrders } = useBaseContext()
     const [showInfoInput, setShowInfoInput] = useState(false)
     const [selectedInfoInput, setSelectedInfoInput] = useState("")
     const filteredOrders = showedOrdersFormater(orders)
@@ -42,6 +42,7 @@ export function ShowOrders({ orders, label, showAddInfo = false }: ShowOrdersPro
                                     order.itemQuantity,
                                     order.dishName,
                                     order.sectionName,
+                                    order.servingsCount,
                                     order.info
                                 )}
                                 {showAddInfo && <button onClick={handleShowInfo}><ImInfo /></button>}

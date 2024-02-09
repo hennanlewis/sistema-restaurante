@@ -4,7 +4,7 @@ import { useBaseContext } from "@/contexts/MainContext"
 
 import style from "../close.module.css"
 import TopInfo from "../../compoments/TopInfo"
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { currencyFormater, formatOrderText, showedOrdersFormater, sumArrayValues } from "@/utils/dataFormater"
 import { OrdersByClientToImpress } from "./OrdersByClientToImpress"
 import { AdditionalCharges } from "./AdditionalCharges"
@@ -239,6 +239,7 @@ export function MainComponent() {
                                             order.itemQuantity,
                                             order.dishName,
                                             order.sectionName,
+                                            order.servingsCount,
                                             order.info
                                         )} {currencyFormater(order.reducedPrice || 0)}
                                     </option>
@@ -288,6 +289,7 @@ export function MainComponent() {
                                             order.itemQuantity,
                                             order.dishName,
                                             order.sectionName,
+                                            order.servingsCount,
                                             order.info
                                         )} {currencyFormater(order.reducedPrice || 0)}
                                     </option>

@@ -325,11 +325,12 @@ export async function finishOrders(orderIds: string[]) {
     }
 }
 
-export async function insertTag(finishedData: string[]) {
+export async function insertTag(finishedData: Object) {
     try {
         await client.connect()
+        const updatedData = {...finishedData, finishedAt: new Date() }
 
-        const bulkResult = await client.db(DATABASE_NAME).collection("tags").insertOne(finishedData)
+        const bulkResult = await client.db(DATABASE_NAME).collection("tags").insertOne(updatedData)
         console.log(bulkResult)
 
         return finishedData
@@ -350,7 +351,7 @@ export async function insertImage(imageData: string) {
         }
         const response = await client.db(DATABASE_NAME).collection("images").insertOne({ imageData })
         console.log("Image inserted:", response)
-        return response;
+        return response
 
     } catch (error) {
         console.error(error)
@@ -366,14 +367,16 @@ export async function getCash() {
         const today = new Date()
         today.setUTCHours(0, 0, 0, 0)
 
+        console.log(today.getTime())
         const cursor = client.db(DATABASE_NAME).collection("tags").find({
-            yourDateField: {
-                $gte: today,
+            finishedAt: {
+                $gte: new Date(today.getTime()),
                 $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)
             }
         })
 
         const response = await cursor.toArray()
+        console.log(response)
         return response
     } catch (error) {
         console.error(error)

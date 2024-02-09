@@ -25,8 +25,9 @@ export const formatOrderText = (
     itemQuantity: number,
     dishName: string,
     sectionName: string,
+    servingsCount: string,
     hint?: string
-) => `${itemQuantity}x ${dishName}${writeCategory(sectionName)}${hint ? ` (OBS.: ${hint})` : ""}`
+) => `${itemQuantity}x ${dishName} ${servingsCount} ${writeCategory(sectionName)}${hint ? ` (OBS.: ${hint})` : ""}`
 
 export const sumArrayValues = (array: number[]) =>
     array.reduce((sum, itemValue) => sum += itemValue, 0)

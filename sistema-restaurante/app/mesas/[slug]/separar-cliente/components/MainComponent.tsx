@@ -24,14 +24,14 @@ export function MainComponent() {
             return {
                 ...table,
                 customersQuantity: table.name == params.slug ?
-                Math.max(1, table.customersQuantity - 1) :
-                table.customersQuantity
+                    Math.max(1, table.customersQuantity - 1) :
+                    table.customersQuantity
             }
         })
         setRestaurantTables(updatedTable)
 
         const updatedOrders = orders.map(order => order.clientNumber > maxClientNumber ?
-            {...order, clientNumber: 0} : order)
+            { ...order, clientNumber: 0 } : order)
         setOrders(updatedOrders)
     }
 
@@ -107,7 +107,13 @@ export function MainComponent() {
                                         </option>
                                     ))}
                             </select>
-                            {formatOrderText(order.itemQuantity, order.dishName, order.sectionName, order.info)}
+                            {formatOrderText(
+                                order.itemQuantity,
+                                order.dishName,
+                                order.sectionName,
+                                order.servingsCount,
+                                order.info
+                            )}
                         </div>
                     )}
                 </div>

@@ -2,7 +2,7 @@ import MainComponent from "./MainComponent"
 
 const getTotalCash = async () => {
     const url = `${process.env.VERCEL_URL}/api/caixa`
-    const response = await fetch(url)
+    const response = await fetch(url, { next: { revalidate: 1 } })
     return response.json()
 }
 

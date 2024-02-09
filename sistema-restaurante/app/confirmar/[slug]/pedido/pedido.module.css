@@ -1,5 +1,5 @@
 .main {
-    @apply w-[144mm] min-h-screen p-0 bg-white ;
+    @apply w-[144mm] min-h-screen p-0 pt-40 bg-white ;
 }
 
 .main div {

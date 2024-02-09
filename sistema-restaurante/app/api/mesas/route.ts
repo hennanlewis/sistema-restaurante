@@ -1,5 +1,4 @@
 import { getRestaurantTables, occupyTable, updateTable } from "@/db/db"
-import exp from "constants"
 import { NextRequest } from "next/server"
 
 export async function GET() {

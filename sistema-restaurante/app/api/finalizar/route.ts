@@ -16,8 +16,9 @@ export async function PUT(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         const finishedData = await request.json()
-        const updatedData = await insertTag(finishedData)
-        return Response.json(updatedData, { status: 200 })
+        console.log(finishedData)
+        const result = await insertTag(finishedData)
+        return Response.json(finishedData, { status: 200 })
     } catch (error) {
         return new Response(`Webhook error: ${error}`, {
             status: 400,

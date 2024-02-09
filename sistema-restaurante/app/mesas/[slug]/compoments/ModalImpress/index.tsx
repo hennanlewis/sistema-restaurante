@@ -37,6 +37,7 @@ export function ModalImpress({ closeModal, processOrders, tableName }: ModalProp
                                         item.itemQuantity,
                                         item.dishName,
                                         item.sectionName,
+                                        item.servingsCount,
                                         item.info
                                     )}
                                 </span>

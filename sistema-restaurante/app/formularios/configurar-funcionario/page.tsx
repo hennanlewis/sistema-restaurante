@@ -59,7 +59,7 @@ export default function RecordInfo() {
         setIsLoading(true)
         setMessage("Procurando funcionários...")
         try {
-            const response = await fetch("/api/usuario")
+            const response = await fetch("/api/usuario", { next: { revalidate: 1 } })
             if (response.ok) {
                 const data = await response.json()
                 setfetchedUsers(data)

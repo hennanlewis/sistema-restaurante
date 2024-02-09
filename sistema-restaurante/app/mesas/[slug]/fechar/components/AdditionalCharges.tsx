@@ -1,4 +1,4 @@
-import { capitalizeFirstLetters, currencyFormater, formatOrderText } from "@/utils/dataFormater"
+import { currencyFormater } from "@/utils/dataFormater"
 
 import style from "../close.module.css"
 import { useParams, useRouter } from "next/navigation"

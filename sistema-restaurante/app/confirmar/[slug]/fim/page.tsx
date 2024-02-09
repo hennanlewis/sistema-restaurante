@@ -104,6 +104,7 @@ export default function ConfirmOrders({
                             order.itemQuantity,
                             order.dishName,
                             order.sectionName,
+                            order.servingsCount,
                             order.info
                         )}</span>
                         <span className={style.dots}></span>

@@ -8,7 +8,7 @@ import { MutableRefObject, useRef } from "react"
 import html2canvas from "html2canvas"
 
 export default function ConfirmOrders() {
-    const { orders, restaurantTables } = useBaseContext()
+    const { orders, setOrders, restaurantTables } = useBaseContext()
     const params = useParams()
     const refKitchen = useRef(null)
     const refBar = useRef(null)
@@ -52,9 +52,26 @@ export default function ConfirmOrders() {
         }
     }
 
+    const processOrders = async () => {
+        const ordersToProcess = orders
+            .filter(item => item.tableID == params.slug && item.isPlaced == false)
+            .map(item => ({ ...item, isPlaced: true }))
+
+        const response = await fetch("/api/pedidos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(ordersToProcess)
+        })
+
+        const processedOrders = await response.json()
+        setOrders(processedOrders)
+    }
+
     const printOrders = () => {
         if(kicthen.length > 0) capturePageImage(refKitchen)
         if (bar.length > 0) capturePageImage(refBar)
+
+        processOrders()
     }
 
     return <main className={style.main}>
@@ -69,6 +86,7 @@ export default function ConfirmOrders() {
                                     item.itemQuantity,
                                     item.dishName,
                                     item.sectionName,
+                                    item.servingsCount,
                                     item.info
                                 )}
                             </span>
@@ -100,6 +118,7 @@ export default function ConfirmOrders() {
                                     item.itemQuantity,
                                     item.dishName,
                                     item.sectionName,
+                                    item.servingsCount,
                                     item.info
                                 )}
                             </span>
