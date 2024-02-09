@@ -15,7 +15,6 @@ export const capitalizeFirstLetters = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
-
 export const writeCategory = (sectionName: string) => {
     if (sectionName === "cervejas 600ml") return " (600ml) "
     if(sectionName === "long neck") return " (Long Neck) "
