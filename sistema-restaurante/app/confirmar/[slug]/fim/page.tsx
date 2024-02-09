@@ -107,7 +107,6 @@ export default function ConfirmOrders({
                             order.info
                         )}</span>
                         <span className={style.dots}></span>
-                        <span className={style.dots}></span>
                         <span className={style.price}>
                             {currencyFormater((order.dishPrice) * order.itemQuantity - (order.reducedPrice || 0))}
                         </span>
