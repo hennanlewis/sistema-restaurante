@@ -61,10 +61,12 @@ def listar_arquivos(diretorio):
 if __name__ == "__main__":
     diretorio = "sistema-restaurante/public/uploaded-images/"
 
+    counter = 0
+    print("Verificando novos arquivos...")
+
     # Loop infinito
     while True:
         arquivos = listar_arquivos(diretorio)
-        print("Verificando novos arquivos...")
         # Verifica se há arquivos no diretório
         if arquivos:
             print(f"Encontrados {len(arquivos)} novos arquivos para impressão.")
@@ -73,7 +75,8 @@ if __name__ == "__main__":
                 print(f"Imprimindo arquivo: {arquivo}")
                 print_file(arquivo)
             print("Todos os arquivos foram impressos.")
-        else:
+
+        if counter == 0:
             print("Nenhum novo arquivo encontrado.")
         
         # Aguarda 3 segundos antes de verificar novamente
