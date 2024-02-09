@@ -6,11 +6,11 @@ import style from "./caixa.module.css"
 import { currencyFormater, sumArrayValues } from "@/utils/dataFormater"
 
 type Cash = {
-    orders: OrderData[],
-    paymentMethod: "pix",
-    discount: 38.72,
-    serviceFee: 17.6,
-    tableID: "1"
+    orders: OrderData[]
+    paymentMethod: string
+    discount: number
+    serviceFee: number
+    tableID: string
 }
 
 export default function MainComponent({ totalCash }: { totalCash: Cash[] }) {

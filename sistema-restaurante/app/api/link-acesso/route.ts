@@ -6,7 +6,7 @@ export async function PUT(req: NextRequest) {
         const { ip, restaurant } = await req.json()
         const result = await setHost(ip, restaurant)
         if (result && result.matchedCount == 1)
-            return Response.json({ host: `http://${ip}:3000` }, { status: 200 })
+            return Response.json({ host: `http://10.0.0.174:3000` }, { status: 200 })
 
         return Response.json({ host: process.env.VERCEL_URL }, { status: 200 })
     } catch (error) {

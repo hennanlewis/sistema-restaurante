@@ -3,13 +3,13 @@ import { MainComponent } from "./components/MainComponent"
 
 async function getTables() {
 	const url = `${process.env.VERCEL_URL}/api/mesas`
-	const response = await fetch(url, { next: { revalidate: 10 } })
+	const response = await fetch(url)
 	return response.json()
 }
 
 async function getOrders() {
     const url = `${process.env.VERCEL_URL}/api/pedidos`
-    const response = await fetch(url, { next: { revalidate: 10 } })
+    const response = await fetch(url)
     return response.json()
 }
 

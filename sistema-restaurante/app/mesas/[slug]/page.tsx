@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 const getMenuData = async () => {
     const url = `${process.env.VERCEL_URL}/api/menu`
-    const response = await fetch(url, { next: { revalidate: 10 } })
+    const response = await fetch(url)
     return response.json()
 }
 

@@ -57,15 +57,18 @@ export function MainComponent({ itemsMenu }: { itemsMenu: MenuSection[] }) {
                                     className={style.select}
                                     onChange={(e) => selectItem(e)}
                                 >
+                                    <option value={0}> </option>
                                     {processedOrders.map((item, index) =>
                                         <option key={index} value={item.keyOrderID}>
                                             {item.itemQuantity}x {item.dishName} {item.info ? `(OBS.: ${item.info})` : ""}
                                         </option>
                                     )}
                                 </select>
-                                <button onClick={deleteConfirm} className={style.buttonOptions}>
-                                    Confirmar exclusão
-                                </button>
+                                {deleteItemID != String(0) &&
+                                    <button onClick={deleteConfirm} className={style.buttonOptions}>
+                                        Confirmar exclusão
+                                    </button>
+                                }
                             </>
                         }
 

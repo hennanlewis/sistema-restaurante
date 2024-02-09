@@ -158,8 +158,6 @@ export function MainComponent() {
         }
     }
 
-    useEffect(() => { handleGive20Percent() }, [selectedClient])
-
     return (
         <main className={style.main}>
             <TopInfo hideCloseOrder />
