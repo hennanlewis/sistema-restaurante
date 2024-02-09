@@ -18,7 +18,7 @@ export function MainComponent({ restaurantTablesFromAPI, restaurantOrdersFromAPI
     const { restaurantTables, setRestaurantTables, orders, setOrders } = useBaseContext()
     const router = useRouter()
 
-    const mainPage = () => router.back()
+    const mainPage = () => router.push("/dashboard")
 
     useEffect(() => {
         setRestaurantTables(currentValues => restaurantTables.length == 0 ? restaurantTablesFromAPI : currentValues)

@@ -358,3 +358,26 @@ export async function insertImage(imageData: string) {
         await client.close()
     }
 }
+
+export async function getCash() {
+    try {
+        await client.connect()
+
+        const today = new Date()
+        today.setUTCHours(0, 0, 0, 0)
+
+        const cursor = client.db(DATABASE_NAME).collection("tags").find({
+            yourDateField: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)
+            }
+        })
+
+        const response = await cursor.toArray()
+        return response
+    } catch (error) {
+        console.error(error)
+    } finally {
+        await client.close()
+    }
+}

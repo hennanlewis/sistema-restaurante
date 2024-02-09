@@ -15,7 +15,8 @@ export function MainComponent() {
         { keyNumber: 4, label: "Cadastrar funcionário", url: "/formularios/cadastrar-funcionario", permission: hasAdminPermission(user?.role!) },
         { keyNumber: 5, label: "Configurar funcionário", url: "/formularios/configurar-funcionario", permission: hasAdminPermission(user?.role!) },
         { keyNumber: 6, label: "Cadastrar item ao menu", url: "/formularios/cadastrar-prato", permission: hasAdminPermission(user?.role!) },
-        { keyNumber: 7, label: "Sair", url: "/logoff", permission: true },
+        { keyNumber: 7, label: "Ver caixa", url: "/caixa", permission: hasAdminPermission(user?.role!) },
+        { keyNumber: 8, label: "Sair", url: "/logoff", permission: true },
     ]
 
     return (
