@@ -17,8 +17,9 @@ export const capitalizeFirstLetters = (string: string) => {
 
 
 export const writeCategory = (sectionName: string) => {
-    const is600mlBeer = sectionName === "cervejas 600ml"
-    return is600mlBeer ? " (600ml) " : ""
+    if (sectionName === "cervejas 600ml") return " (600ml) "
+    if(sectionName === "long neck") return " (Long Neck) "
+    return ""
 }
 
 export const formatOrderText = (
@@ -26,7 +27,7 @@ export const formatOrderText = (
     dishName: string,
     sectionName: string,
     hint?: string
-) => `${itemQuantity}x ${dishName}${writeCategory(sectionName)}${hint ? ` (${hint})` : ""}`
+) => `${itemQuantity}x ${dishName}${writeCategory(sectionName)}${hint ? ` (OBS.: ${hint})` : ""}`
 
 export const sumArrayValues = (array: number[]) =>
     array.reduce((sum, itemValue) => sum += itemValue, 0)

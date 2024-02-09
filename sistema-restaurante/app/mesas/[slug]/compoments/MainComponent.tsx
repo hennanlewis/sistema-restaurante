@@ -59,7 +59,7 @@ export function MainComponent({ itemsMenu }: { itemsMenu: MenuSection[] }) {
                                 >
                                     {processedOrders.map((item, index) =>
                                         <option key={index} value={item.keyOrderID}>
-                                            {item.itemQuantity}x {item.dishName} {item.info ? `(${item.info})` : ""}
+                                            {item.itemQuantity}x {item.dishName} {item.info ? `(OBS.: ${item.info})` : ""}
                                         </option>
                                     )}
                                 </select>

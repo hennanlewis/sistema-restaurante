@@ -24,6 +24,7 @@ export default function ConfirmOrders({
     const routerBack = () => router.back()
 
     const discount = - Number(searchParams.discount) || 0
+    const selectedClient = searchParams.selectedClient || 0
 
     const [loading, setLoading] = useState(false)
 
@@ -32,7 +33,9 @@ export default function ConfirmOrders({
         .filter(item => item.itemQuantity > 0 && item.tableID == currentTable.name)
 
     const allClientsOrders = orders
-        .filter(order => order.tableID == currentTable.name && order.isPlaced)
+        .filter(order => selectedClient == 0 ?
+            order.tableID == currentTable.name && order.isPlaced :
+            order.tableID == currentTable.name && order.isPlaced && order.clientNumber == selectedClient)
         .sort((a, b) => a.dishName < b.dishName ? -1 : 1)
         .map(order => ({ ...order, dishPrice: order.dishPrice }))
 
@@ -67,11 +70,11 @@ export default function ConfirmOrders({
         setLoading(true)
         if (local.current) {
             html2canvas(local.current)
-            .then(canvas => {
-                const image = canvas.toDataURL("image/png")
-                sendImageToServer(image)
-            })
-            .finally(() => setLoading(false))
+                .then(canvas => {
+                    const image = canvas.toDataURL("image/png")
+                    sendImageToServer(image)
+                })
+                .finally(() => setLoading(false))
         }
     }
 
@@ -105,7 +108,7 @@ export default function ConfirmOrders({
                         )}</span>
                         <span className={style.dots}></span>
                         <span className={style.dots}></span>
-                        <span>
+                        <span className={style.price}>
                             {currencyFormater((order.dishPrice) * order.itemQuantity - (order.reducedPrice || 0))}
                         </span>
                     </li>

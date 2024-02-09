@@ -30,7 +30,7 @@ export function AdditionalCharges({
         if (selectedClient == 0)
             return router.push(`/confirmar/${params.slug}/fim?discount=${additionalCharges[1].value}`)
 
-        router.push(`/confirmar/${params.slug}/fim/${selectedClient}`)
+        router.push(`/confirmar/${params.slug}/fim?discount=${additionalCharges[1].value}&selectedClient=${selectedClient}`)
     }
 
     return (

@@ -1,5 +1,5 @@
 .main {
-    @apply h-screen mt-0 pr-4 bg-white text-black text-[2rem];
+    @apply min-h-screen mt-0 pr-4 bg-white text-black text-[2rem];
 }
 
 .main div {
@@ -56,8 +56,21 @@
     @apply flex-shrink-0 max-w-full font-medium;
 }
 
- .dots {
+.dots {
     @apply flex-1 min-w-[8px] border-b-4 border-dotted border-black;
+}
+
+.price {
+    @apply flex items-baseline leading-[1.4];
+}
+
+.dots::before, .price::before {
+    content: "";
+    @apply h-0 w-full min-w-[8px] border-b-4 border-dotted border-black;
+}
+
+.price {
+    @apply flex-1;
 }
 
 .list .date {

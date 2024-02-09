@@ -164,6 +164,64 @@ export function MainComponent() {
         <main className={style.main}>
             <TopInfo hideCloseOrder />
 
+            {selectedClient >= 0 &&
+                <div className={style.containerPrint}>
+                    <div className={style.content}>
+                        <button
+                            className={style.buttonOptions}
+                            onClick={() => handleSelectedClient(0)}
+                        >
+                            Selecionar mesa completa
+                        </button>
+
+                        {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index).map((_, index) =>
+                            <button
+                                key={currentTable._id + index}
+                                className={style.buttonOptionsHalf}
+                                onClick={() => handleSelectedClient(index + 1)}
+                            >
+                                Cliente {index + 1}
+                            </button>
+                        )}
+                    </div>
+
+                    <div className={style.content}>
+                        <label className={style.inputLabel}>
+                            Método de Pagamento:
+                            <select
+                                value={paymentMethod}
+                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                required
+                            >
+                                <option value=""> </option>
+                                <option value="pix">PIX</option>
+                                <option value="dinheiro">Dinheiro</option>
+                                <option value="cartão de crédito">Cartão de crédito</option>
+                                <option value="cartão de débito">Cartão de débito</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div className={style.contentPrint}>
+                        <OrdersByClientToImpress
+                            selectedClientOrders={showedOrdersFormater(selectedClient == 0 ?
+                                allClientsOrders : selectedClientOrders)}
+                            selectedClient={selectedClient}
+                            text="Restaurante Sabor do Mar"
+                            type="final price"
+                            cupom={true}
+                        />
+                        <AdditionalCharges
+                            additionalCharges={selectedClient == 0 ?
+                                allAdditionalCharges : additionalCharges}
+                            selectedClient={selectedClient}
+                            paymentMethod={paymentMethod}
+                            hasDate={true}
+                        />
+                    </div>
+                </div>
+            }
+
             {selectedClient == 0 &&
                 <div className={style.container}>
                     <div className={style.contentPrint}>
@@ -209,76 +267,6 @@ export function MainComponent() {
                             <input type="number" onChange={handleDiscount} value={Number(discount)} min={0} />
                         </label>
                         <button className={style.buttonOptions} onClick={handleGive20Percent}>Calcular 20%</button>
-                    </div>
-                </div>
-            }
-
-            {selectedClient == 0 &&
-                <div className={style.containerPrint}>
-                    <div className={style.content}>
-                        <button
-                            className={style.buttonOptions}
-                            onClick={() => handleSelectedClient(0)}
-                        >
-                            Selecionar mesa completa
-                        </button>
-
-                        {Array.from({ length: currentTable.customersQuantity }, (_, index) => ++index).map((_, index) =>
-                            <button
-                                key={currentTable._id + index}
-                                className={style.buttonOptionsHalf}
-                                onClick={() => handleSelectedClient(index + 1)}
-                            >
-                                Cliente {index + 1}
-                            </button>
-                        )}
-                    </div>
-
-                    <div className={style.content}>
-                        <label className={style.inputLabel}>
-                            Método de Pagamento:
-                            <select
-                                value={paymentMethod}
-                                onChange={(e) => setPaymentMethod(e.target.value)}
-                                required
-                            >
-                                <option value=""> </option>
-                                <option value="pix">PIX</option>
-                                <option value="dinheiro">Dinheiro</option>
-                                <option value="cartão de crédito">Cartão de crédito</option>
-                                <option value="cartão de débito">Cartão de débito</option>
-                            </select>
-                        </label>
-                    </div>
-
-                    <div className={style.contentPrint}>
-                        <OrdersByClientToImpress
-                            selectedClientOrders={showedOrdersFormater(allClientsOrders)}
-                            selectedClient={selectedClient}
-                            text="Restaurante Sabor do Mar"
-                            type="final price"
-                            cupom={true}
-                        />
-                        <AdditionalCharges
-                            additionalCharges={allAdditionalCharges}
-                            selectedClient={selectedClient}
-                            paymentMethod={paymentMethod}
-                            hasDate={true}
-                        />
-                    </div>
-                </div>
-            }
-
-            {selectedClient == 0 &&
-                <div className={style.container}>
-                    <div className={style.content}>
-                        <button
-                            className={style.buttonOptions}
-                            onClick={handleSendPaymentData}
-                        >
-                            FINALIZAR PEDIDO (Cliente {selectedClient})
-                        </button>
-                        <button className={style.buttonOptions} onClick={handleFinishOrders}>FECHAR MESA</button>
                     </div>
                 </div>
             }
@@ -365,6 +353,20 @@ export function MainComponent() {
                             paymentMethod={paymentMethod}
                             hasDate={true}
                         />
+                    </div>
+                </div>
+            }
+
+            {selectedClient == 0 &&
+                <div className={style.container}>
+                    <div className={style.content}>
+                        <button
+                            className={style.buttonOptions}
+                            onClick={handleSendPaymentData}
+                        >
+                            FINALIZAR PEDIDO (Cliente {selectedClient})
+                        </button>
+                        <button className={style.buttonOptions} onClick={handleFinishOrders}>FECHAR MESA</button>
                     </div>
                 </div>
             }
