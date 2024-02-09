@@ -78,6 +78,7 @@ if __name__ == "__main__":
 
         if counter == 0:
             print("Nenhum novo arquivo encontrado.")
-        
+            counter += 1
+
         # Aguarda 3 segundos antes de verificar novamente
         time.sleep(3)
